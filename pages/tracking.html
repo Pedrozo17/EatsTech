@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Tracking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-image: url(hero-slider-2.jpg);
+        }
+        h1 { 
+            color: #ffffff;
+        }
+        h2 {
+            color: #ffffff;
+        }
+        #eventForm {
+            margin-bottom: 20px;
+        }
+        #eventList {
+            border: 1px solid #ddd;
+            padding: 10px;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sistema de Tracking Simple</h1>
+    <div id="eventForm">
+        <input type="text" id="eventInput" placeholder="Nombre del evento">
+        <button onclick="addEvent()">Registrar Evento</button>
+    </div>
+    <h2>Eventos Registrados:</h2>
+    <div id="eventList"></div>
+
+    <script>
+        let events = [];
+
+        function addEvent() {
+            const eventInput = document.getElementById('eventInput');
+            const eventName = eventInput.value.trim();
+            
+            if (eventName) {
+                const timestamp = new Date().toLocaleString();
+                events.push({ name: eventName, time: timestamp });
+                eventInput.value = '';
+                updateEventList();
+            }
+        }
+
+        function updateEventList() {
+            const eventList = document.getElementById('eventList');
+            eventList.innerHTML = events.map(event => 
+                `<p><strong>${event.time}</strong>: ${event.name}</p>`
+            ).join('');
+        }
+    </script>
+</body>
+</html>

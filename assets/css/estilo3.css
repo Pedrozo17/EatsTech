@@ -1,0 +1,66 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    
+ 
+}
+
+.contenido {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.formulario-pago h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button.btn {
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 4px #0056b3;
+    margin-top: 10px;
+}
+
+button.btn:hover {
+    background-color: #0056b3;
+}
+
+button.btn:active {
+    background-color: #003d80;
+    box-shadow: 0 2px #0056b3;
+    transform: translateY(2px);
+}

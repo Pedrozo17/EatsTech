@@ -1,0 +1,164 @@
+html,
+
+:root {
+
+  /* COLORES */
+  --gold-crayola: hsl(38, 61%, 73%);
+  --white: hsla(0, 0%, 100%, 1);
+  --smoky-black-3: hsla(0, 3%, 7%, 1);
+  --eerie-black-3: hsla(180, 2%, 8%, 1);
+
+  /* GRADIENTE DEL TEXTO */
+  --loading-text-gradient: linear-gradient(
+    90deg,
+    transparent 0% 16.66%,
+    var(--smoky-black-3) 33.33% 50%,
+    transparent 66.66% 75%
+  );
+
+  /* TIPOGRAFÍA */
+  --weight-bold: 700;
+
+  /* BORDER */
+  --radius-circle: 50%;
+
+  /* TRANSICIONES */
+  --transition-1: 250ms ease;
+  --transition-2: 500ms ease;
+
+}
+
+body{
+    position: relative;
+    height: 100%;
+}
+body{
+    background-color: #323232;
+    font-family: Helvetica Neue, Helvetica;
+    font-size: 14px;
+    color: #000;
+    margin: 0;
+    padding: 0;
+}
+
+.preload {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--gold-crayola);
+  z-index: 10;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  transition: var(--transition-2);
+}
+
+.preload > * { transition: var(--transition-1); }
+
+.preload.loaded > * { opacity: 0; }
+
+.preload.loaded {
+  transition-delay: 250ms;
+  transform: translateY(100%);
+}
+
+.circle {
+  width: 112px;
+  height: 112px;
+  border-radius: var(--radius-circle);
+  border: 3px solid var(--white);
+  border-block-start-color: var(--smoky-black-3);
+  margin-block-end: 45px;
+  animation: rotate360 1s linear infinite;
+}
+
+@keyframes rotate360 {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(1turn); }
+}
+
+.preload .text {
+  background-image: var(--loading-text-gradient);
+  background-size: 500%;
+  font-size: calc(2rem + 3vw);
+  font-weight: var(--weight-bold);
+  line-height: 1em;
+  text-transform: uppercase;
+  letter-spacing: 16px;
+  padding-inline-start: 16px;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 0.5px var(--eerie-black-3);
+  animation: loadingText linear 2s infinite;
+}
+
+@keyframes loadingText {
+  0% { background-position: 100%; }
+  100% { background-position: 0%; }
+}
+
+.swiper{
+    width: 100%;
+    padding: 150px 0 50px 0;
+}
+.swiper-slide{
+    width: 300px;
+    height: 500px;
+    background-color: #323232;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    padding: 40px;
+    text-align: center;
+}
+.icons{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+.icons i {
+    font-size: 20px;
+    color: #FFB900;
+}
+.icons img{
+    width: 120px;
+}
+.product-content{
+    display: flex;
+    justify-content: space-between;
+}
+.product-txt{
+    flex-basis: 50%;
+}
+.product-txt span{
+    font-size: 25px;
+    color: #FFB900;
+    font-weight: bold;
+}
+.product-txt h3{
+    font-size: 20px;
+    color: #FFFFFF;
+    text-transform: uppercase;
+}
+.product-txt p {
+    font-size: 14px;
+    color: #C4C4C4;
+}
+.product-img{
+    flex-basis: 50%;
+    text-align: right;
+}
+.product-img img{
+    width: 120px;
+}
+.btn-1{
+    display: inline-block;
+    padding: 13px 55px;
+    border: 1px solid #FFB900;
+    border-radius: 25px;
+    color: #FFB900;
+    text-decoration: none;
+    margin-top: 50px;
+}

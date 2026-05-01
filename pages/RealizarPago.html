@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Pago</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url(hero-slider-2.jpg);
+        }
+        .container {
+            background-color: #fff8dc; /* Fondo amarillo claro */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            border-radius: 25px;
+        }
+        h1 {
+            text-align: center;
+            color: #8B4513; /* Café */
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+            color: #8B4513; /* Café */
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 20px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus,
+        input[type="tel"]:focus,
+        select:focus {
+            border-color: #FFD700; /* Amarillo */
+            outline: none;
+        }
+        input[type="submit"] {
+            background-color: #8B4513; /* Café */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #A0522D; /* Café más claro */
+        }
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .form-footer a {
+            color: #8B4513; /* Café */
+            text-decoration: none;
+        }
+    </style>
+    <script>
+        // Función para mostrar alertas dependiendo del estado del pago
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status');
+            if (status === 'exito') {
+                alert("Pago exitoso. Gracias por su compra.");
+            } else if (status === 'fallo') {
+                alert("El pago no fue exitoso. Por favor, inténtelo de nuevo.");
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Formulario de Pago</h1>
+        <form action="/modules/pagos/procesar_pago.php" method="POST">
+            
+            <label for="id_pedido">ID del Pedido:</label>
+            <input type="text" id="id_pedido" name="id_pedido" required> <!-- Nueva casilla ID del Pedido -->
+
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" id="cantidad" name="cantidad" step="0.01" required>
+
+            <label for="numero_tarjeta">Número de Tarjeta:</label>
+            <input type="text" id="numero_tarjeta" name="numero_tarjeta" required>
+
+            <label for="fecha_expiracion">Fecha de Expiración:</label>
+            <input type="text" id="fecha_expiracion" name="fecha_expiracion" placeholder="MM/AA" required>
+
+            <label for="codigo_seguridad">Código de Seguridad:</label>
+            <input type="text" id="codigo_seguridad" name="codigo_seguridad" required>
+
+            <label for="metodo_pago">Método de Pago:</label>
+            <select id="metodo_pago" name="metodo_pago" required>
+                <option value="" disabled selected>Seleccione un método</option>
+                <option value="tarjeta">Tarjeta de Crédito</option>
+                <option value="paypal">PayPal</option>
+            </select>
+
+            <input type="submit" value="Realizar Pago">
+        </form>
+        
+    </div>
+</body>
+</html>
