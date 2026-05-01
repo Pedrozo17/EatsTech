@@ -177,7 +177,7 @@ header {
                 <ul class="nav nav-pills">
                     <li role="presentation"><a href="/Eatstech\modules\carrito\carritodecompras.php">Inicio</a></li>
                     <li role="presentation" class="active"><a href="/Eatstech\modules\menu\VerCarta.php">Carrito de Compras</a></li>
-                    <li role="presentation"><a href="/Eatstech\modules\pagos\Pagos.php">Pagar</a></li>
+                    <li role="presentation"><a href="/Eatstech\pages\RealizarPago.html">Pagar</a></li>
                   
                 </ul>
             </div>

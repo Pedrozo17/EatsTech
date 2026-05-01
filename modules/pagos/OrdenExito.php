@@ -158,7 +158,7 @@ header {
         <ul class="nav nav-pills">
           <li role="presentation" class="active"><a href="../carrito/carritodecompras.php">Volver</a></li>
           <ul class="nav nav-pillss">
-          <li role="presentation" class="active"><a href="..../pages/RealizarPago.html">Pagar</a></li>
+          <li role="presentation" class="active"><a href="../../pages/RealizarPago.html">Pagar</a></li>
       
       </div>
 

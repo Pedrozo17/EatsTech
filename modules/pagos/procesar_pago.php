@@ -30,13 +30,13 @@ if (mysqli_query($db, $sql)) {
     // Pago exitoso, mostrar mensaje emergente y redirigir
     echo "<script type='text/javascript'>
             alert('Pago exitoso');
-            window.location.href = 'Pagos.php';
+            window.location.href = '../carrito/carritodecompras.php';
           </script>";
 } else {
     // Pago fallido, mostrar mensaje emergente y redirigir
     echo "<script type='text/javascript'>
             alert('El pago no fue exitoso, por favor intenta de nuevo.');
-            window.location.href = 'RealizarPago.html';
+            window.location.href = '../pages/RealizarPago.html';
           </script>";
 }
 
