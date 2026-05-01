@@ -1,5 +1,5 @@
 <?php
-include("/config/con_db.php");
+include("../../config/con_db.php");
 
 if (isset($_POST['login'])) {
     if (strlen($_POST['correo']) >= 1 && strlen($_POST['contraseña']) >= 1) {
@@ -11,7 +11,7 @@ if (isset($_POST['login'])) {
         $resultado = mysqli_query($conex, $consulta);
         
         if (mysqli_num_rows($resultado) > 0) {
-            header("Location: index.html");
+            header("Location: /Eatstech\pages\index.html");
             exit();
         } else {
             ?> 

@@ -1,33 +1,4 @@
 html,
-
-:root {
-
-  /* COLORES */
-  --gold-crayola: hsl(38, 61%, 73%);
-  --white: hsla(0, 0%, 100%, 1);
-  --smoky-black-3: hsla(0, 3%, 7%, 1);
-  --eerie-black-3: hsla(180, 2%, 8%, 1);
-
-  /* GRADIENTE DEL TEXTO */
-  --loading-text-gradient: linear-gradient(
-    90deg,
-    transparent 0% 16.66%,
-    var(--smoky-black-3) 33.33% 50%,
-    transparent 66.66% 75%
-  );
-
-  /* TIPOGRAFÍA */
-  --weight-bold: 700;
-
-  /* BORDER */
-  --radius-circle: 50%;
-
-  /* TRANSICIONES */
-  --transition-1: 250ms ease;
-  --transition-2: 500ms ease;
-
-}
-
 body{
     position: relative;
     height: 100%;
@@ -41,68 +12,118 @@ body{
     padding: 0;
 }
 
-.preload {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--gold-crayola);
-  z-index: 10;
-  display: grid;
-  place-content: center;
-  justify-items: center;
-  transition: var(--transition-2);
+body.loading {
+    overflow: hidden;
 }
 
-.preload > * { transition: var(--transition-1); }
-
-.preload.loaded > * { opacity: 0; }
-
-.preload.loaded {
-  transition-delay: 250ms;
-  transform: translateY(100%);
+.loading-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    background: #323232; /* mismo color de tu body */
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
 }
 
-.circle {
-  width: 112px;
-  height: 112px;
-  border-radius: var(--radius-circle);
-  border: 3px solid var(--white);
-  border-block-start-color: var(--smoky-black-3);
-  margin-block-end: 45px;
-  animation: rotate360 1s linear infinite;
+#svg {
+    height: 500px;
+    width: 500px;
+    object-fit: contain;
 }
 
-@keyframes rotate360 {
-  0% { transform: rotate(0); }
-  100% { transform: rotate(1turn); }
+.name-container {
+    height: 30px;
+    overflow: hidden;
 }
 
-.preload .text {
-  background-image: var(--loading-text-gradient);
-  background-size: 500%;
-  font-size: calc(2rem + 3vw);
-  font-weight: var(--weight-bold);
-  line-height: 1em;
-  text-transform: uppercase;
-  letter-spacing: 16px;
-  padding-inline-start: 16px;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-stroke: 0.5px var(--eerie-black-3);
-  animation: loadingText linear 2s infinite;
+.logo-name {
+    color: #FFB900;
+    font-size: 20px;
+    letter-spacing: 12px;
+    text-transform: uppercase;
+    font-weight: bolder;
+    opacity: 0;
 }
 
-@keyframes loadingText {
-  0% { background-position: 100%; }
-  100% { background-position: 0%; }
+.navbar {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+    width: 90%;
+    max-width: 900px;
+}
+
+.nav-container {
+    background-color: #1a1a1a;
+    border-radius: 50px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.nav-logo {
+    height: 35px;
+    width: 35px;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    font-family: Helvetica Neue, Helvetica;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #FFB900;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-login {
+    background-color: #FFB900;
+    color: #000;
+    padding: 7px 18px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-login:hover {
+    background-color: #e0a800;
 }
 
 .swiper{
     width: 100%;
     padding: 150px 0 50px 0;
+    visibility: hidden;
 }
 .swiper-slide{
     width: 300px;
@@ -111,6 +132,7 @@ body{
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
     padding: 40px;
     text-align: center;
+    border-radius: 20px;
 }
 .icons{
     display: flex;

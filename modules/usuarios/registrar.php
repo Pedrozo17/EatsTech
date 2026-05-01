@@ -1,6 +1,6 @@
 <?php 
 
-include("/config/con_db.php");
+include("../../config/con_db.php");
 
 if (isset($_POST['register'])) {
     if (strlen($_POST['nombre']) >= 1 && 
@@ -8,21 +8,21 @@ if (isset($_POST['register'])) {
     strlen($_POST['cedula']) >= 1 && 
     strlen($_POST['contraseña']) >= 1 && 
     strlen($_POST['confirmar_contraseña']) >= 1) {
-        $name = trim($_POST['nombre']);
+        $nombre = trim($_POST['nombre']);
         $correo = trim($_POST['correo']);
         $cedula = trim($_POST['cedula']);
         $contraseña = trim($_POST['contraseña']);
         $confirmar_contraseña = trim($_POST['confirmar_contraseña']);
-        $consulta = "INSERT INTO datos(nombre, correo, cedula, contraseña, confirmar_contraseña) VALUES ('$name','$correo','$cedula','$contraseña','$confirmar_contraseña')";
+        $consulta = "INSERT INTO datos(nombre, correo, cedula, contraseña, confirmar_contraseña) VALUES ('$nombre','$correo','$cedula','$contraseña','$confirmar_contraseña')";
         $resultado = mysqli_query($conex, $consulta);
         
         if ($resultado) {
             ?> 
-            <h3 class="ok"></h3>
+            <h3 class="ok">¡Te has inscripto correctamente!</h3>
             <?php
         } else {
             ?> 
-            <h3 class="bad"></h3>
+            <h3 class="bad">¡Ups ha ocurrido un error!</h3>
             <?php
         }
     } else {
@@ -44,16 +44,16 @@ if (isset($_POST['login'])) {
         $resultado = mysqli_query($conex, $consulta);
         
         if (mysqli_num_rows($resultado) > 0) {
-            header("Location: /pages/index.html");
+            header("Location: /Eatstech\pages\index.html");
             exit();
         } else {
             ?> 
-            <h3 class="bad"></h3>
+            <h3 class="bad">¡Correo o contraseña incorrectos!</h3>
             <?php
         }
     } else {
         ?> 
-        <h3 class="bad"></h3>
+        <h3 class="bad">¡Por favor complete los campos!</h3>
         <?php
     }
 }
