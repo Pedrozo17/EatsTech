@@ -21,7 +21,7 @@
         <!-- Sign Up -->
         <div class="container__form container--signup">
         <h2 class="form__title">Sign up</h2>
-        <form method="post">
+        <form method="post" action="/Eatstech\modules\usuarios\login.php"> 
             <input type="text" name="nombre" placeholder="Nombre completo">
             <input type="correo" name="correo" placeholder="correo">
             <input type="text" name="cedula" placeholder="Numero de cedula">
@@ -34,7 +34,7 @@
         <!-- Sign In -->
         <div class=" container__form container--signin">
         <h2 class="form__title">Sign In</h2>
-        <form method="post">
+        <form method="post" action="/Eatstech\modules\usuarios\login.php">
                 <input type="correo" name="correo" placeholder="correo">
                 <input type="password" name="contraseña" placeholder="contraseña">
                 <input type="submit" name="login">

@@ -33,13 +33,14 @@
             <li><a href="#">Contáctanos</a></li>
         </ul>
         <div class="nav-buttons">
-            <?php if (isset($_SESSION['logueado'])): ?>
-                <span class="nav-user">👤 <?php echo $_SESSION['nombre'] = $usuario['correo']; ?></span>
-                <a href="../modules/usuarios/logout.php" class="btn-login">Cerrar sesión</a>
-            <?php else: ?>
-                <a href="../modules/usuarios/iniciodesesion.php" class="btn-login">Login</a>
-            <?php endif; ?>
-        </div>
+            
+            <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
+        <span class="nav-user">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
+        <a href="../modules/usuarios/logout.php" class="btn-login">Cerrar sesión</a>
+    <?php else: ?>
+        <a href="../modules/usuarios/iniciodesesion.php" class="btn-login">Login</a>
+    <?php endif; ?>
+</div>
     </div>
 </nav>
 
