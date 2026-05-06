@@ -54,61 +54,7 @@
 
 
 
-  <!-- 
-    - #TOP BAR
-  -->
 
-  <div class="topbar">
-    <div class="container">
-
-      <address class="topbar-item">
-        <div class="icon">
-          <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
-        </div>
-
-        <span class="span">
-            Calle de las Flores, No. 123
-        </span>
-      </address>
-
-      <div class="separator"></div>
-
-      <div class="topbar-item item-2">
-        <div class="icon">
-          <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
-        </div>
-
-        <span class="span">Apertura : 8.00 am to 10.00 pm</span>
-      </div>
-
-      <a href="tel:+573001546734" class="topbar-item link">
-        <div class="icon">
-          <ion-icon name="call-outline" aria-hidden="true"></ion-icon>
-        </div>
-
-        <span class="span">+57 300 154 6734</span>
-      </a>
-
-      <div class="separator"></div>
-
-      <a href="eatstech24@gmail.com" class="topbar-item link">
-        <div class="icon">
-          <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
-        </div>
-
-        <span class="span">eatstech24@gmail.com</span>
-      </a>
-
-    </div>
-  </div>
-
-
-
-
-
-  <!-- 
-    - #HEADER
-  -->
 
   <header class="header" data-header>
     <div class="container">
@@ -196,10 +142,10 @@
 
       </nav>
 
-      <a href="#reservation" class="btn btn-secondary">
-        <span class="text text-1">Encontrar una mesa</span>
-
-        <span class="text text-2" aria-hidden="true">Encontrar una mesa</span>
+      <a href="/Eatstech\modules\usuarios\iniciodesesion.php " class="btn btn-secondary">
+        <span class="text text-1">login</span>
+        
+        <span class="text text-2" aria-hidden="true">login</span>
       </a>
 
       <button class="nav-open-btn" aria-label="open menu" data-nav-toggler>
@@ -515,9 +461,9 @@
             </div>
 
             <a href="../modules/carrito/carritodecompras.php" class="btn btn-primary">
-              <span class="text text-1">Ver todo el menú <link rel="stylesheet" href="./index.html"></span>
+              <span class="text text-1">Ver todo el menú <link rel="stylesheet" href="./index.php"></span>
 
-              <span class="text text-2" aria-hidden="true">Ver todo el menú <link rel="stylesheet" href="./index.html"></span>
+              <span class="text text-2" aria-hidden="true">Ver todo el menú <link rel="stylesheet" href="./index.php"></span>
             </a>
 
           </div>
@@ -720,9 +666,9 @@
           </p>
 
           <a href="../modules/carrito/carritodecompras.php" class="btn btn-primary">
-            <span class="text text-1">Ver Todo El Menú <link rel="stylesheet" href="./index.html"> </span>
+            <span class="text text-1">Ver Todo El Menú <link rel="stylesheet" href="./index.php"> </span>
 
-            <span class="text text-2" aria-hidden="true">Ver Todo El Menú <link rel="stylesheet" href="./index.html"> </span>
+            <span class="text text-2" aria-hidden="true">Ver Todo El Menú <link rel="stylesheet" href="./index.php"> </span>
           </a>
 
           <img src="../assets/images/shape-5.png" width="921" height="1036" loading="lazy" alt="shape"

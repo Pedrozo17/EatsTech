@@ -17,19 +17,41 @@
         </div>
     </div>
 
+<nav class="navbar">
+    <div class="nav-container">
+        <img src="\Eatstech\assets\images\logo.png" alt="Logo" class="nav-logo">
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Servicios</a></li>
+            <li><a href="#">Sobre Nosotros</a></li>
+            <li><a href="#">Contáctanos</a></li>
+        </ul>
+        <div class="nav-buttons">
+            
+            <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
+        <span class="nav-user">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
+        <a href="../modules/usuarios/logout.php" class="btn-login">Cerrar sesión</a>
+    <?php else: ?>
+        
+    <?php endif; ?>
+</div>
+    </div>
+</nav>
+
+
     <div class="container right-panel-active">
         <!-- Sign Up -->
-        <div class="container__form container--signup">
-        <h2 class="form__title">Sign up</h2>
-        <form method="post" action="/Eatstech\modules\usuarios\login.php"> 
-            <input type="text" name="nombre" placeholder="Nombre completo">
-            <input type="correo" name="correo" placeholder="correo">
-            <input type="text" name="cedula" placeholder="Numero de cedula">
-            <input type="password" name="contraseña" placeholder="contraseña">
-            <input type="password" name="confirmar_contraseña" placeholder="confirmar_contraseña">
-            <input type="submit" name="register">
-        </form>
-        </div>
+<div class="container__form container--signup">
+    <h2 class="form__title">Sign up</h2>
+    <form method="post" action="/Eatstech/modules/usuarios/registrar.php">
+        <input class="input" type="text" name="nombre" placeholder="Nombre completo">
+        <input class="input" type="correo" name="correo" placeholder="Correo">
+        <input class="input" type="text" name="cedula" placeholder="Número de cédula">
+        <input class="input" type="password" name="contraseña" placeholder="Contraseña">
+        <input class="input" type="password" name="confirmar_contraseña" placeholder="Confirmar contraseña">
+        <input class="btn" type="submit" name="register" value="Registrarse">
+    </form>
+</div>
     
         <!-- Sign In -->
         <div class=" container__form container--signin">
@@ -53,9 +75,6 @@
             </div>
         </div>
     </div>
-    <?php 
-                include("./registrar.php");
-            ?>
 
     <script>
                 document.body.classList.add("loading");

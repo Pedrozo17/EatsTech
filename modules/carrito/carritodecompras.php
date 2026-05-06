@@ -148,7 +148,7 @@ header {
             <div class="panel-heading">
 
                 <ul class="nav nav-pills">
-                    <li role="presentation" class="active"><a href="/Eatstech\pages\casarolla.html">Inicio</a></li>
+                    <li role="presentation" class="active"><a href="/Eatstech\pages\casarolla.php">Inicio</a></li>
                     <li role="presentation"><a href="/Eatstech\modules\menu\VerCarta.php">Carrito de Compras</a></li>
                     <li role="presentation"><a href="/Eatstech\modules\pagos\Pagos.php">Pagar</a></li>
                    

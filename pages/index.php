@@ -38,7 +38,7 @@
         <span class="nav-user">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
         <a href="../modules/usuarios/logout.php" class="btn-login">Cerrar sesión</a>
     <?php else: ?>
-        <a href="../modules/usuarios/iniciodesesion.php" class="btn-login">Login</a>
+        <a href="../modules/usuarios/iniciodesesion.php" class="btn-login">Iniciar sesión</a>
     <?php endif; ?>
 </div>
     </div>
@@ -70,7 +70,7 @@
 
                     </div>
                 </div>
-                <a href="./casarolla.html" class="btn-1">entrar</a>
+                <a href="./casarolla.php" class="btn-1">entrar</a>
             </div>
 
             <div class="swiper-slide">
