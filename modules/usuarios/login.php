@@ -1,4 +1,5 @@
 <?php
+session_start();
 include("../../config/con_db.php");
 
 if (isset($_POST['login'])) {
@@ -6,22 +7,24 @@ if (isset($_POST['login'])) {
         $correo = trim($_POST['correo']);
         $contraseña = trim($_POST['contraseña']);
         
-        // Consulta para verificar el usuario
         $consulta = "SELECT * FROM datos WHERE correo='$correo' AND contraseña='$contraseña'";
         $resultado = mysqli_query($conex, $consulta);
         
         if (mysqli_num_rows($resultado) > 0) {
-            header("Location: /Eatstech\pages\index.html");
+            $usuario = mysqli_fetch_assoc($resultado);
+            
+            // Guardamos los datos en sesión
+            $_SESSION['logueado'] = true;
+            $_SESSION['correo'] = $usuario['correo'];
+            $_SESSION['nombre'] = $usuario['nombre']; // ajusta si el campo se llama diferente
+            
+            header("Location: /Eatstech\pages\index.php");
             exit();
         } else {
-            ?> 
-            <h3 class="bad">¡Correo o contraseña incorrectos!</h3>
-            <?php
+            echo '<h3 class="bad">¡Correo o contraseña incorrectos!</h3>';
         }
     } else {
-        ?> 
-        <h3 class="bad">¡Por favor complete los campos!</h3>
-        <?php
+        echo '<h3 class="bad">¡Por favor complete los campos!</h3>';
     }
 }
 ?>

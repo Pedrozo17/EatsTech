@@ -1,6 +1,7 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
-
+<!-- resto de tu HTML igual -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +23,7 @@
         </div>
     </div>
 
- <nav class="navbar">
+<nav class="navbar">
     <div class="nav-container">
         <img src="../assets/images/logo.png" alt="Logo" class="nav-logo">
         <ul class="nav-links">
@@ -32,10 +33,15 @@
             <li><a href="#">Contáctanos</a></li>
         </ul>
         <div class="nav-buttons">
-            <a href="/Eatstech\modules\usuarios\iniciodesesion.php" class="btn-login">Login</a>
+            <?php if (isset($_SESSION['logueado'])): ?>
+                <span class="nav-user">👤 <?php echo $_SESSION['nombre'] = $usuario['correo']; ?></span>
+                <a href="../modules/usuarios/logout.php" class="btn-login">Cerrar sesión</a>
+            <?php else: ?>
+                <a href="../modules/usuarios/iniciodesesion.php" class="btn-login">Login</a>
+            <?php endif; ?>
         </div>
     </div>
- </nav>
+</nav>
 
     <div class="swiper mySwiper">
 

@@ -5,9 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/Eatstech\assets\css\estilo2.css">
     <script defer src="/Eatstech\assets\js\main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <title>Document</title>
 </head>
 <body>
+
+    <div class="loading-page">
+        <img id="svg" src="/Eatstech\assets\images\logo.png" alt="Logo">
+        <div class="name-container">
+            <div class="logo-name">EATSTECH</div>
+        </div>
+    </div>
+
     <div class="container right-panel-active">
         <!-- Sign Up -->
         <div class="container__form container--signup">
@@ -47,5 +56,38 @@
     <?php 
                 include("./registrar.php");
             ?>
+
+    <script>
+                document.body.classList.add("loading");
+
+        gsap.fromTo(
+            ".logo-name",
+            { y: 50, opacity: 0 },
+            { y: 0, opacity: 1, duration: 2, delay: 0.5 }
+        );
+
+        gsap.fromTo(
+            "#svg",
+            { scale: 0.5, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 1.5, ease: "back.out(1.7)" }
+        );
+
+        gsap.fromTo(
+            ".loading-page",
+            { opacity: 1 },
+            {
+                opacity: 0,
+                duration: 1.0,
+                delay: 2.0,
+                onComplete: () => {
+                    // Cuando termina la animación, oculta la pantalla
+                    // y muestra el contenido
+                    document.querySelector(".loading-page").style.display = "none";
+                    document.querySelector(".swiper").style.visibility = "visible";
+                    document.body.classList.remove("loading");
+                }
+            }
+        );
+    </script>
 </body>
 </html>

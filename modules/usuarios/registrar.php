@@ -1,5 +1,6 @@
 <?php 
 
+
 include("../../config/con_db.php");
 
 if (isset($_POST['register'])) {
@@ -44,7 +45,7 @@ if (isset($_POST['login'])) {
         $resultado = mysqli_query($conex, $consulta);
         
         if (mysqli_num_rows($resultado) > 0) {
-            header("Location: /Eatstech\pages\index.html");
+            header("Location: /Eatstech\pages\index.php");
             exit();
         } else {
             ?> 

@@ -25,6 +25,41 @@ body {
     margin: 0;
 }
 
+.loading-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    background: #323232; /* mismo color de tu body */
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+#svg {
+    height: 500px;
+    width: 500px;
+    object-fit: contain;
+}
+
+.name-container {
+    height: 30px;
+    overflow: hidden;
+}
+
+.logo-name {
+    color: #FFB900;
+    font-size: 20px;
+    letter-spacing: 12px;
+    text-transform: uppercase;
+    font-weight: bolder;
+    opacity: 0;
+}
+
 .container {
     background-color: var(--black);
     border-radius: var(--button-radius);
