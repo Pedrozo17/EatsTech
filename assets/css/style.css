@@ -252,6 +252,95 @@ body.nav-active { overflow: hidden; }
   #REUSED STYLE
 \*-----------------------------------*/
 
+
+
+.topbar {
+  
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.topbar-container {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.topbar-label {
+    color: #888;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    white-space: nowrap;
+}
+
+.topbar-links {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.topbar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 4px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.topbar-item img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.topbar-item span {
+    color: #aaa;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+}
+
+.topbar-item:hover img {
+    border-color: #FFB900;
+}
+
+.topbar-item:hover span {
+    color: #FFB900;
+}
+
+.topbar-item.active img {
+    border-color: #FFB900;
+}
+
+.topbar-item.active span {
+    color: #FFB900;
+    font-weight: bold;
+}
+
+.topbar-item.proximamente {
+    opacity: 0.4;
+    cursor: default;
+    pointer-events: none;
+}
+
+/* Para que el header no quede tapado */
+
+
 .container { padding-inline: 16px; }
 
 .separator {
@@ -1465,8 +1554,6 @@ textarea.input-field {
     top: 0;
     left: 0;
     width: 100%;
-    padding-block: 10px;
-    border-block-end: 1px solid var(--white-alpha-20);
     z-index: 4;
     transition: var(--transition-1);
   }

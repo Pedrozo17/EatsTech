@@ -2,6 +2,16 @@
 session_start();
 include("../../config/con_db.php");
 
+// Páginas permitidas para redirigir
+$paginas = [
+    'casarolla' => '/Eatstech/pages/casarolla.php',
+    'index'     => '/Eatstech/pages/index.php'
+];
+
+$redirect = isset($_GET['redirect']) && isset($paginas[$_GET['redirect']]) 
+    ? $paginas[$_GET['redirect']] 
+    : '/Eatstech/pages/index.php';
+
 if (isset($_POST['login'])) {
     $correo = trim($_POST['correo']);
     $contraseña = trim($_POST['contraseña']);
@@ -16,10 +26,10 @@ if (isset($_POST['login'])) {
         $_SESSION['correo'] = $usuario['correo'];
         $_SESSION['nombre'] = $usuario['nombre'];
         
-        header("Location: /Eatstech/pages/index.php");
+        header("Location: " . $redirect);
         exit();
     } else {
-        header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?error=1");
+        header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?error=1&redirect=" . $_GET['redirect']);
         exit();
     }
 }

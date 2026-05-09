@@ -43,7 +43,7 @@
         <!-- Sign Up -->
 <div class="container__form container--signup">
     <h2 class="form__title">Sign up</h2>
-    <form method="post" action="/Eatstech/modules/usuarios/registrar.php">
+    <form method="post" action="/Eatstech/modules/usuarios/registrar.php?redirect=<?php echo isset($_GET['redirect']) ? $_GET['redirect'] : ''; ?>">
         <input class="input" type="text" name="nombre" placeholder="Nombre completo">
         <input class="input" type="correo" name="correo" placeholder="Correo">
         <input class="input" type="text" name="cedula" placeholder="Número de cédula">
@@ -56,7 +56,7 @@
         <!-- Sign In -->
         <div class=" container__form container--signin">
         <h2 class="form__title">Sign In</h2>
-        <form method="post" action="/Eatstech\modules\usuarios\login.php">
+            <form method="post" action="/Eatstech/modules/usuarios/login.php?redirect=<?php echo isset($_GET['redirect']) ? $_GET['redirect'] : ''; ?>">
                 <input type="correo" name="correo" placeholder="correo">
                 <input type="password" name="contraseña" placeholder="contraseña">
                 <input type="submit" name="login">
