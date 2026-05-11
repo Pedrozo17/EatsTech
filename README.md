@@ -1,7 +1,6 @@
 # EatsTech
 
-EatsTech es una plataforma web de restaurantes que permite a los usuarios explorar, navegar por el menu, seleccionar productos y realizar pedidos en linea. Desarrollado con PHP, MySQL y JavaScript para restaurantes en Mosquera, Cundinamarca.
-
+EatsTech es una plataforma web de restaurantes que resuelve la falta de visibilidad digital de los negocios gastronómicos en Mosquera, Cundinamarca. Permite a los restaurantes mostrar sus productos, gestionar pedidos y conectar con sus clientes a través de un aplicativo web. Los usuarios pueden explorar restaurantes, navegar por el menu, agregar productos al carrito y realizar pedidos en linea.
 ---
 
 ## Funcionalidades
@@ -89,39 +88,87 @@ Eatstech/
 └── README.md
 ```
 
----
+## Requisitos previos
 
-## Instalacion y configuracion
+### Hardware minimo
 
-### Requisitos previos
+| Componente | Minimo |
+|---|---|
+| Procesador | Intel Core i3 o AMD equivalente |
+| Memoria RAM | 4 GB |
+| Almacenamiento | 500 MB libres |
+| Sistema operativo | Windows 10, macOS 10.14, o Linux Ubuntu 20.04 |
+| Conexion a internet | Requerida para cargar fuentes y librerias externas |
 
-- XAMPP instalado (Apache + MySQL + PHP)
-- Navegador web moderno
+### Hardware recomendado
 
-### Pasos
+| Componente | Recomendado |
+|---|---|
+| Procesador | Intel Core i5 o superior |
+| Memoria RAM | 8 GB o mas |
+| Almacenamiento | 1 GB libres |
+| Sistema operativo | Windows 11, macOS 12 o Linux Ubuntu 22.04 |
 
-1. Clona o descarga el proyecto en la carpeta htdocs de XAMPP:
-   ```
+## Instalacion
+
+1. Descarga o clona el repositorio:
+
+   git clone https://github.com/usuario/Eatstech.git
+
+O descarga el ZIP y extrae la carpeta.
+
+2. Copia la carpeta del proyecto dentro de htdocs de XAMPP:
+
    C:/xampp/htdocs/Eatstech/
-   ```
 
-2. Inicia XAMPP y activa los modulos Apache y MySQL.
+## Ejecucion local
 
-3. Importa las bases de datos en phpMyAdmin (localhost/phpmyadmin). Importa cada archivo en orden desde la carpeta database/:
-   - registro.sql
-   - restaurante.sql
-   - comida.sql
-   - carrito.sql
-   - carrito2.sql
-   - carrito3.sql
-   - pagos.sql
+1. Abre XAMPP y activa los modulos Apache y MySQL.
+2. Importa la base de datos (ver seccion Base de datos).
+3. Abre el navegador y entra a:
 
-4. Abre el proyecto en el navegador:
-   ```
    http://localhost/Eatstech/pages/index.php
-   ```
 
----
+## Base de datos
+
+1. Abre phpMyAdmin en:
+
+   http://localhost/phpmyadmin
+
+2. Importa los archivos SQL en este orden desde la carpeta database/:
+
+registro.sql
+restaurante.sql
+comida.sql
+carrito.sql
+carrito2.sql
+carrito3.sql
+pagos.sql
+
+
+3. Verifica que la conexion en config/con_db.php coincida con tu configuracion local:
+
+- php   $conex = mysqli_connect("localhost", "root", "", "registro");
+
+## Variables de entorno
+- Este proyecto no requiere variables de entorno. La configuracion de la base de datos se maneja directamente en config/con_db.php.
+
+## Usuario de prueba
+- El sistema no tiene un usuario de prueba predefinido. Para probar el sistema:
+
+1. Ve a: http://localhost/Eatstech/modules/usuarios/iniciodesesion.php
+2. Registrate con cualquier correo y contraseña.
+3. sesion con las mismas credenciales.
+
+
+## Despliegue
+- El proyecto esta disenado para correr en un servidor local con XAMPP. Para desplegarlo en produccion se recomienda:
+
+- Hosting con soporte PHP 8 y MySQL (por ejemplo: Hostinger, InfinityFree, o 000webhost)
+- Subir los archivos via FTP o panel de control del hosting
+- Crear la base de datos en el panel del hosting e importar los archivos SQL
+- Actualizar las rutas en config/con_db.php con los datos del servidor de produccion
+- Implementar HTTPS para proteger los datos de los usuarios
 
 ## Flujo de usuario
 
@@ -157,8 +204,11 @@ Eatstech/
 
 ---
 
-## Autor
+## Autores
 
+Samuel Pedrozo Baena 
+Juan David Fernandez Peréz
+Cristopher Stuard Romero Monsalve 
 Desarrollado como proyecto final de curso.
 EatsTech - Plataforma de restaurantes, Mosquera, Cundinamarca.
 
