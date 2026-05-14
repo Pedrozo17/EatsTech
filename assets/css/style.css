@@ -457,7 +457,7 @@ body.nav-active { overflow: hidden; }
   text-align: center;
 }
 
-.btn .text { transition: var(--transition-1);text-align: center; }
+.btn .text { transition: var(--transition-1); text-align: center; }
 
 .btn .text-2 {
   position: absolute;
@@ -469,24 +469,23 @@ body.nav-active { overflow: hidden; }
   text-align: center;
 }
 
-.btn:is(:hover, :focus-visible)::before { bottom: -50%; text-align: center;}
+.btn:is(:hover, :focus-visible)::before { bottom: -50%; }
 
-.btn:is(:hover, :focus-visible) .text-1 { transform: translateY(-40px); text-align: center;}
+.btn:is(:hover, :focus-visible) .text-1 { transform: translateY(-40px); }
 
 .btn:is(:hover, :focus-visible) .text-2 {
   top: 50%;
-  transform: translate(-50%, -50%); text-align: center;
+  transform: translate(-50%, -50%);
 }
 
 .btn-secondary {
-  background-color: #9FD5D1;
+  background-color: var(--gold-crayola);
   color: var(--black);
 }
 
 .btn-secondary::before { background-color: var(--smoky-black-1); }
 
 .btn-secondary .text-2 { color: var(--white); }
-
 .has-before,
 .has-after {
   position: relative;
@@ -880,6 +879,14 @@ body.nav-active { overflow: hidden; }
 
 .hero .slider-btn { display: none; }
 
+.hero .slider-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #32302e91;
+  z-index: 1;
+}
+
 .hero {
   position: relative;
   padding-block: 120px;
@@ -920,6 +927,8 @@ body.nav-active { overflow: hidden; }
   user-select: none;
   z-index: -1;
 }
+
+
 
 .hero .slider-item.active .slider-bg {
   animation: smoothScale 7s linear forwards;
