@@ -1,150 +1,24 @@
 <?php
-// initializ shopping cart class
 include './La-carta.php';
 $cart = new Cart;
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-    <title>View Cart - PHP Shopping Cart Tutorial</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito - Camaron Express</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="\Eatstech\assets\css\style3.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <style>
-        .container {
-            padding: 20px;
-        }
 
-        input[type="number"] {
-            width: 20%;
-
-          }
-          
-
-body {
-  background-color:#943126 ; 
-  background-image: linear-gradient(to bottom,#f4d03f , #E5B8A3); /* degradado de beige claro a marrón claro */
-}           
-
-header {
-  background-color: #c0392b ; /* color beige claro de Cassarola */
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo-container {
-  display: flex;
-  align-items: center;
-}
-
-.logo {
-  width: 50px; /* ancho del logo */
-  height: 50px; /* alto del logo */
-  margin-right: 20px;
-}
-
-.extra-space {
-  width: 50px; /* ancho del espacio adicional */
-  height: 50px; /* alto del espacio adicional */
-  border: 1px solid #E5B8A3; /* borde marrón claro para el espacio adicional */
-  border-radius: 10px; /* esquinas redondeadas para el espacio adicional */
-}
-
-.container { 
-  max-width: 1000px; 
-  margin: 40px auto; 
-  text-align: center; 
-  padding: 20px; 
-  border: 1px solid #E5B8A3; 
-  border-radius: 10px; 
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-  font-family: 'Pacifico', cursive;
- }
-.title {
-  font-size: 36px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #754975; /* color marrón oscuro de Cassarola */
-}
-
-.nav-pills {
-  list-style: none;
-  padding: 0;
-  margin: 0;
- 
-}
-
-.nav-pills li {
-  margin-right: 20px;
-}
-
-.nav-pills li a {
-  color: #E5B8A3;
-  text-decoration: none;
-}
-
-.nav-pills li a:hover {
-  color: #E5B8A3;
-}
-
-.nav-pills {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin-top: 10px;
-  margin-right: 20px;
-}
-
-.nav-pills li {
-  display: inline-block;
-  margin-right: 20px;
-}
-
-.nav-pills li a {
-  color: #E5B8A3;
-  text-decoration: none;
-}
-
-.nav-pills li a:hover {
-  color:#E5B8A3;
-}
-
-.cart-link {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin-top: 10px;
-  margin-right: 40px;
-  font-size: 22px;
-  color: #E5B8A3;
-}
-
-.cart-link:hover {
-  color:#E5B8A3;
-}
-.cart-link {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin-top: 10px;
-  margin-right: 40px;
-  font-size: 22px;
-  color: #E5B8A3;
-}
-
-.cart-link:hover {
-  color: #E5B8A3;
-}
-
-    </style>
     <script>
         function updateCartItem(obj, id) {
-            $.get("cartAction.php", {
+            $.get("../carrito/AccionCarta.php", {
                 action: "updateCartItem",
                 id: id,
                 qty: obj.value
@@ -152,92 +26,117 @@ header {
                 if (data == 'ok') {
                     location.reload();
                 } else {
-                    alert('Cart update failed, please try again.');
+                    alert('No se pudo actualizar el carrito, intenta de nuevo.');
                 }
             });
         }
     </script>
 </head>
-</head>
-<header>
-  <div class="logo-container">
-    <img src="data:image/jpeg;base64,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" class="logo">
-    <div class="extra-space"></div>
-    <img src="../assets/images/logo_producto.png" alt="">
-  </div>
-  <nav class="nav-pills">
-    <!-- elementos de navegación -->
-  </nav>
-</header>
-<body>  
-    <div class="container">
-        <div class="panel panel-default">
-            <div class="panel-heading">
 
-                <ul class="nav nav-pills">
-                    <li role="presentation"><a href="/Eatstech\modules\carrito\carritodecompras.php">Inicio</a></li>
-                    <li role="presentation" class="active"><a href="/Eatstech\modules\menu\VerCarta.php">Carrito de Compras</a></li>
-                    <li role="presentation"><a href="/Eatstech\pages\RealizarPago.html">Pagar</a></li>
-                  
-                </ul>
-            </div>
+<body>
 
-            <div class="panel-body">
+    <!-- HEADER -->
+    <header class="site-header">
+        <a href="/Eatstech/pages/casarolla.php" class="header-logo">
+            <img src="../../assets/images/logo_empresa-removebg-preview.png" alt="Camaron Express">
+            <span>Camaron Express</span>
+        </a>
 
+        <ul class="header-nav">
+            <li><a href="/Eatstech/pages/casarolla.php">Inicio</a></li>
+            <li><a href="/Eatstech/modules/carrito/carritodecompras.php">Menú</a></li>
+            <li><a href="/Eatstech/modules/menu/VerCarta.php" class="active">Mi Carrito</a></li>
+            <li><a href="/Eatstech/modules/pagos/Pagos.php">Pagar</a></li>
+        </ul>
+    </header>
 
-                <h1>Carrito de compras</h1>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Producto</th>
-                            <th>Precio</th>
-                            <th>Cantidad</th>
-                            <th>Sub total</th>
-                            <th>&nbsp;</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if ($cart->total_items() > 0) {
-                            //get cart items from session
-                            $cartItems = $cart->contents();
-                            foreach ($cartItems as $item) {
-                        ?>
-                                <tr>
-                                    <td><?php echo $item["name"]; ?></td>
-                                    <td><?php echo '$' . $item["price"] . ' COP'; ?></td>
-                                    <td><input type="number" class="form-control text-center" value="<?php echo $item["qty"]; ?>" onchange="updateCartItem(this, '<?php echo $item["rowid"]; ?>')"></td>
-                                    <td><?php echo '$' . $item["subtotal"] . ' COP'; ?></td>
-                                    <td>
-                                        <a href="../carrito/AccionCarta.php?action=removeCartItem&id=<?php echo $item["rowid"]; ?>" class="btn btn-danger" onclick="return confirm('Confirma eliminar?')"><i class="glyphicon glyphicon-trash"></i></a>
-                                    </td>
-                                </tr>
-                            <?php }
-                        } else { ?>
-                            <tr>
-                                <td colspan="5">
-                                    <p>No has solicitado ningún producto.....</p>
-                                </td>
-                            <?php } ?>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td><a href="../carrito/carritodecompras.php" class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Volver a la tienda</a></td>
-                            <td colspan="2"></td>
-                            <?php if ($cart->total_items() > 0) { ?>
-                                <td class="text-center"><strong>Total <?php echo '$' . $cart->total() . ' COP'; ?></strong></td>
-                                <td><a href="../pagos/Pagos.php" class="btn btn-success btn-block">Pagos <i class="glyphicon glyphicon-menu-right"></i></a></td>
-                            <?php } ?>
-                        </tr>
-                    </tfoot>
-                </table>
-
-            </div>
-            
-        </div>
-        <!--Panek cierra-->
-
+    <!-- HERO -->
+    <div class="cart-hero">
+        <p class="subtitle">Revisa tu pedido</p>
+        <h1>Carrito de Compras</h1>
     </div>
-</body>
 
+    <!-- CONTENIDO -->
+    <div class="cart-wrapper">
+        <div class="cart-table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($cart->total_items() > 0):
+                        $cartItems = $cart->contents();
+                        foreach ($cartItems as $item): ?>
+                            <tr>
+                                <td class="product-name"><?php echo htmlspecialchars($item['name']); ?></td>
+                                <td class="price-cell">$<?php echo number_format($item['price'], 0, ',', '.'); ?> COP</td>
+                                <td>
+                                    <input type="number"
+                                           class="qty-input"
+                                           value="<?php echo $item['qty']; ?>"
+                                           min="1"
+                                           onchange="updateCartItem(this, '<?php echo $item['rowid']; ?>')">
+                                </td>
+                                <td class="price-cell">$<?php echo number_format($item['subtotal'], 0, ',', '.'); ?> COP</td>
+                                <td>
+                                    <a href="../carrito/AccionCarta.php?action=removeCartItem&id=<?php echo $item['rowid']; ?>"
+                                       class="btn-delete"
+                                       onclick="return confirm('¿Eliminar este producto del carrito?')"
+                                       title="Eliminar">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endforeach;
+                    else: ?>
+                        <tr>
+                            <td colspan="5">
+                                <div class="empty-cart">
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                    <p>Tu carrito está vacío.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>
+                            <a href="/Eatstech/modules/carrito/carritodecompras.php" class="btn-back">
+                                <i class="fa-solid fa-chevron-left"></i> Volver al menú
+                            </a>
+                        </td>
+                        <td colspan="2"></td>
+                        <?php if ($cart->total_items() > 0): ?>
+                            <td class="total-label">
+                                Total: <span class="total-amount">$<?php echo number_format($cart->total(), 0, ',', '.'); ?> COP</span>
+                            </td>
+                            <td>
+                                <a href="/Eatstech/modules/pagos/Pagos.php" class="btn-pay">
+                                    Pagar <i class="fa-solid fa-chevron-right"></i>
+                                </a>
+                            </td>
+                        <?php else: ?>
+                            <td colspan="2"></td>
+                        <?php endif; ?>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <p>© 2024 Camaron Express &mdash; Mosquera, Cundinamarca &mdash;
+           <a href="tel:+573248933841">+57 324 893 3841</a>
+        </p>
+    </footer>
+
+</body>
 </html>

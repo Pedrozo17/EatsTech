@@ -1,0 +1,310 @@
+        :root {
+            --camaron-gold:  #cf9465;
+            --camaron-cream: #ECE2C6;
+            --camaron-teal:  #9FD5D1;
+            --dark-1: hsla(40, 12%, 5%, 1);
+            --dark-2: hsla(30, 8%, 5%, 1);
+            --white: #ffffff;
+            --forum: 'Forum', cursive;
+            --dm-sans: 'DM Sans', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--camaron-cream);
+            font-family: var(--dm-sans);
+            color: var(--dark-1);
+            min-height: 100vh;
+        }
+
+        /* ── HEADER ── */
+        .site-header {
+            background-color: var(--dark-1);
+            padding: 14px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .header-logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--camaron-gold);
+        }
+
+        .header-logo span {
+            font-family: var(--forum);
+            font-size: 1.6rem;
+            color: var(--camaron-gold);
+            letter-spacing: 2px;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .header-nav a {
+            color: var(--camaron-cream);
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover { color: var(--camaron-teal); }
+
+        .header-nav a.active {
+            color: var(--camaron-teal);
+            border-bottom: 2px solid var(--camaron-teal);
+            padding-bottom: 2px;
+        }
+
+        /* ── HERO ── */
+        .cart-hero {
+            background: linear-gradient(to right, rgba(0,0,0,0.75), rgba(0,0,0,0.3)),
+                        url('../../assets/images/foto-slider.png') center/cover no-repeat;
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .cart-hero .subtitle {
+            color: var(--camaron-teal);
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+        }
+
+        .cart-hero h1 {
+            font-family: var(--forum);
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            color: var(--white);
+        }
+
+        /* ── CONTENEDOR PRINCIPAL ── */
+        .cart-wrapper {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        /* ── TABLA ── */
+        .cart-table-wrap {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: var(--dark-1);
+        }
+
+        thead th {
+            color: var(--camaron-cream);
+            font-family: var(--forum);
+            font-size: 1.5rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 18px 20px;
+            text-align: left;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+            transition: background-color 0.2s;
+        }
+
+        tbody tr:hover { background-color: rgba(159,213,209,0.08); }
+
+        tbody td {
+            padding: 18px 20px;
+            font-size: 1.5rem;
+            color: #3d2b1f;
+            vertical-align: middle;
+        }
+
+        .product-name {
+            font-family: var(--forum);
+            font-size: 1.8rem;
+            color: #3d2b1f;
+        }
+
+        .price-cell {
+            color: var(--camaron-gold);
+            font-family: var(--forum);
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        /* ── INPUT CANTIDAD ── */
+        .qty-input {
+            width: 70px;
+            padding: 8px 10px;
+            border: 2px solid var(--camaron-teal);
+            border-radius: 8px;
+            font-size: 1.4rem;
+            text-align: center;
+            color: #3d2b1f;
+            background: var(--white);
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .qty-input:focus { border-color: var(--camaron-gold); }
+
+        /* ── BOTÓN ELIMINAR ── */
+        .btn-delete {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background-color: #e74c3c;
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.4rem;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+            transform: scale(1.1);
+        }
+
+        /* ── EMPTY STATE ── */
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-cart i {
+            font-size: 5rem;
+            color: var(--camaron-gold);
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .empty-cart p {
+            font-family: var(--forum);
+            font-size: 2rem;
+            color: #5c3d2e;
+        }
+
+        /* ── FOOTER DE LA TABLA ── */
+        tfoot {
+            background-color: #f9f5ee;
+            border-top: 2px solid rgba(207,148,101,0.2);
+        }
+
+        tfoot td {
+            padding: 20px;
+            vertical-align: middle;
+        }
+
+        .total-label {
+            font-family: var(--forum);
+            font-size: 2rem;
+            color: #3d2b1f;
+            text-align: right;
+        }
+
+        .total-amount {
+            color: var(--camaron-gold);
+            font-size: 2.2rem;
+        }
+
+        /* ── BOTONES ACCIÓN ── */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: transparent;
+            color: #5c3d2e;
+            border: 2px solid #5c3d2e;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-back:hover {
+            background-color: #5c3d2e;
+            color: var(--white);
+        }
+
+        .btn-pay {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--camaron-teal);
+            color: #1a3a38;
+            border: 2px solid var(--camaron-teal);
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-pay:hover {
+            background-color: transparent;
+            color: var(--camaron-teal);
+        }
+
+        /* ── FOOTER ── */
+        .site-footer {
+            background-color: var(--dark-1);
+            text-align: center;
+            padding: 24px;
+            margin-top: 60px;
+            color: #888;
+            font-size: 1.3rem;
+        }
+
+        .site-footer a { color: var(--camaron-teal); text-decoration: none; }
+
+        @media (max-width: 640px) {
+            .site-header { padding: 12px 16px; }
+            .header-logo span { display: none; }
+            .header-nav { gap: 14px; }
+            thead th, tbody td, tfoot td { padding: 12px; font-size: 1.3rem; }
+        }

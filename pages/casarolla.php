@@ -43,12 +43,12 @@
         </a>
 
         <a href="/Eatstech/pages/fogon.php" class="topbar-item proximamente" title="Fogón Antioqueño">
-          <img src="../assets/images/logo_fogon.png" alt="Fogón Antioqueño">
+          <img src="\Eatstech\assets\images\fogon antioqueño.jpg" alt="Fogón Antioqueño">
           <span>Fogón</span>
         </a>
 
         <a href="#" class="topbar-item proximamente" title="Toskana - Próximamente">
-          <img src="../assets/images/logo_toskana.png" alt="Toskana">
+          <img src="\Eatstech\assets\images\la toskana.jpg" alt="Toskana">
           <span>Toskana</span>
         </a>
 
@@ -281,12 +281,12 @@
               <div class="service-card">
                 <a href="#menu" class="has-before hover:shine">
                   <figure class="card-banner img-holder" style="--width: 285; --height: 336;">
-                    <img src="\Eatstech\assets\images\cocacola.png" width="285" height="336" loading="lazy"
+                    <img src="\Eatstech\assets\images\Camaclitos.png" width="285" height="336" loading="lazy"
                       alt="Bebidas" class="img-cover">
                   </figure>
                 </a>
                 <div class="card-content">
-                  <h3 class="title-4 card-title"><a href="#menu">Bebidas</a></h3>
+                  <h3 class="title-4 card-title"><a href="#menu">Bowls</a></h3>
                   <a href="#menu" class="btn-text hover-underline label-2">Ver Menú</a>
                 </div>
               </div>
@@ -337,9 +337,7 @@
               <img src="\Eatstech\assets\images\foto-complemento2.png" width="285" height="285" loading="lazy"
                 alt="" class="w-100">
             </div>
-            <div class="abs-img abs-img-2 has-before">
-              <img src="../assets/images/badge-2.png" width="133" height="134" loading="lazy" alt="">
-            </div>
+
           </figure>
 
           <img src="../assets/images/shape-3.png" width="197" height="194" loading="lazy" alt="" class="shape">
@@ -512,8 +510,9 @@
             <span class="span">viernes a domingo 2pm–9pm</span>
           </p>
 
-          <a href="\Eatstech\modules\carrito\carritodecompras.php" target="_blank" class="btn btn-primary">
-            <span class="text text-1">Ver menú</span>
+          <a href="\Eatstech\modules\carrito\carritodecompras.php" class="btn btn-primary">
+              <span class="text text-1">Ver menú</span>
+              <span class="text text-2" aria-hidden="true">Ver menú</span>
           </a>
 
           <img src="../assets/images/shape-5.png" width="921" height="1036" loading="lazy" alt="shape" class="shape shape-2 move-anim">
