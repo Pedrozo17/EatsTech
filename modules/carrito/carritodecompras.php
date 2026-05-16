@@ -1,5 +1,8 @@
 <?php
 include __DIR__ . '/../../config/Configuracion.php';
+include __DIR__ . '/../menu/La-carta.php';
+$cart = new Cart;
+$cart_count = $cart->total_items();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -33,6 +36,9 @@ include __DIR__ . '/../../config/Configuracion.php';
 
         <a href="/Eatstech/modules/menu/VerCarta.php" class="cart-icon-btn" title="Ver carrito">
             <i class="fa-solid fa-cart-shopping"></i>
+            <?php if ($cart_count > 0): ?>
+                <span class="cart-badge"><?php echo $cart_count; ?></span>
+            <?php endif; ?>
         </a>
     </header>
 

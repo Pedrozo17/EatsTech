@@ -20,7 +20,7 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
         );
         
         $insertItem = $cart->insert($itemData);
-        $redirectLoc = $insertItem?'../menu/VerCarta.php':'../pages/index.php';
+        $redirectLoc = $insertItem?'../carrito/carritodecompras.php':'../pages/index.php';
         header("Location: ".$redirectLoc);
     }elseif($_REQUEST['action'] == 'updateCartItem' && !empty($_REQUEST['id'])){
         $itemData = array(
