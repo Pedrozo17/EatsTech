@@ -13,9 +13,6 @@ $nombre   = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : '';
 $correo   = isset($_SESSION['correo']) ? $_SESSION['correo'] : '';
 
 // Si además tienes tabla clientes, traer más datos
-$_SESSION['sessCustomerID'] = 1;
-$query   = $db->query("SELECT * FROM clientes WHERE id = " . $_SESSION['sessCustomerID']);
-$custRow = $query ? $query->fetch_assoc() : [];
 ?>
 <!DOCTYPE html>
 <html lang="es">

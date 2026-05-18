@@ -52,7 +52,7 @@ $cart_count = $cart->total_items();
     <section class="products-section">
         <div class="products-grid">
             <?php
-            $query = $db->query("SELECT * FROM mis_productos WHERE status = '1' ORDER BY id DESC");
+            $query = $db->query("SELECT * FROM mis_productos WHERE status = '1' ORDER BY id ASC");
             if ($query && $query->num_rows > 0):
                 while ($row = $query->fetch_assoc()):
             ?>
