@@ -20,7 +20,6 @@ $cart_count = $cart->total_items();
 
 <body>
 
-    <!-- HEADER -->
     <header class="site-header">
         <a href="/Eatstech/pages/casarolla.php" class="header-logo">
             <img src="../../assets/images/logo_empresa-removebg-preview.png" alt="Camaron Express">
@@ -42,13 +41,11 @@ $cart_count = $cart->total_items();
         </a>
     </header>
 
-    <!-- HERO BANNER -->
     <div class="menu-hero">
         <p class="subtitle">Selección especial</p>
         <h1>Menú Camaron Express</h1>
     </div>
 
-    <!-- PRODUCTOS -->
     <section class="products-section">
         <div class="products-grid">
             <?php
@@ -58,10 +55,12 @@ $cart_count = $cart->total_items();
             ?>
                 <div class="product-card">
 
-                    <!-- Imagen -->
                     <div class="card-img-wrap">
-                        <?php if (!empty($row['imagen'])): ?>
-                            <img src="<?php echo htmlspecialchars($row['imagen']); ?>"
+                        <?php if (!empty($row['imagen'])): 
+                            // 🟢 AQUÍ ESTÁ EL TRUCO: Concatenamos la ruta física de la carpeta assets
+                            $ruta_completa = "../../assets/images/" . $row['imagen'];
+                        ?>
+                            <img src="<?php echo htmlspecialchars($ruta_completa); ?>"
                                  alt="<?php echo htmlspecialchars($row['name']); ?>">
                         <?php else: ?>
                             <div class="no-image-placeholder">
@@ -71,7 +70,6 @@ $cart_count = $cart->total_items();
                         <?php endif; ?>
                     </div>
 
-                    <!-- Contenido -->
                     <div class="card-body">
                         <h3 class="card-name"><?php echo htmlspecialchars($row['name']); ?></h3>
                         <p class="card-description"><?php echo htmlspecialchars($row['description']); ?></p>
@@ -101,9 +99,8 @@ $cart_count = $cart->total_items();
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="site-footer">
-        <p>© 2024 Camaron Express &mdash; Mosquera, Cundinamarca &mdash;
+        <p>© 2026 Camaron Express &mdash; Mosquera, Cundinamarca &mdash;
            <a href="tel:+573248933841">+57 324 893 3841</a>
         </p>
     </footer>

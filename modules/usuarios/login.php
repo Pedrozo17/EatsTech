@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include("../../config/con_db.php");
 
 // Páginas permitidas para redirigir
@@ -13,23 +15,36 @@ $redirect = isset($_GET['redirect']) && isset($paginas[$_GET['redirect']])
     : '/Eatstech/pages/index.php';
 
 if (isset($_POST['login'])) {
-    $correo = trim($_POST['correo']);
+    $correo = mysqli_real_escape_string($conex, trim($_POST['correo']));
     $contraseña = trim($_POST['contraseña']);
     
-    $consulta = "SELECT * FROM datos WHERE correo='$correo' AND contraseña='$contraseña'";
+    // 1. Buscamos al usuario ÚNICAMENTE por su correo
+    $consulta = "SELECT * FROM datos WHERE correo='$correo'";
     $resultado = mysqli_query($conex, $consulta);
     
-    if (mysqli_num_rows($resultado) > 0) {
+    if ($resultado && mysqli_num_rows($resultado) > 0) {
         $usuario = mysqli_fetch_assoc($resultado);
         
-        $_SESSION['logueado'] = true;
-        $_SESSION['correo'] = $usuario['correo'];
-        $_SESSION['nombre'] = $usuario['nombre'];
-        
-        header("Location: " . $redirect);
-        exit();
+        // 2. VERIFICACIÓN DE CONTRASEÑA ENCRIPTADA
+        if (password_verify($contraseña, $usuario['contraseña'])) {
+            
+            // ¡Login exitoso! Guardamos todo en la sesión
+            $_SESSION['logueado'] = true;
+            $_SESSION['correo'] = $usuario['correo'];
+            $_SESSION['nombre'] = $usuario['nombre'];
+            $_SESSION['telefono'] = $usuario['telefono'];   // Enviado al carrito
+            $_SESSION['direccion'] = $usuario['direccion']; // Enviado al carrito
+            
+            header("Location: " . $redirect);
+            exit();
+        } else {
+            // Contraseña incorrecta
+            header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?error=1&redirect=" . (isset($_GET['redirect']) ? $_GET['redirect'] : ''));
+            exit();
+        }
     } else {
-        header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?error=1&redirect=" . $_GET['redirect']);
+        // Correo no encontrado
+        header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?error=1&redirect=" . (isset($_GET['redirect']) ? $_GET['redirect'] : ''));
         exit();
     }
 }

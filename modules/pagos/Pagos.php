@@ -8,11 +8,36 @@ if ($cart->total_items() <= 0) {
     exit();
 }
 
-// Traer datos del cliente desde sesión (login)
-$nombre   = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : '';
-$correo   = isset($_SESSION['correo']) ? $_SESSION['correo'] : '';
+// 🟢 JALAMOS TODA LA INFORMACIÓN ACTUALIZADA DE LA SESIÓN:
+$nombre    = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : '';
+$correo    = isset($_SESSION['correo']) ? $_SESSION['correo'] : '';
+$telefono  = isset($_SESSION['telefono']) ? $_SESSION['telefono'] : '';
+$direccion = isset($_SESSION['direccion']) ? $_SESSION['direccion'] : '';
 
-// Si además tienes tabla clientes, traer más datos
+// Construir el mensaje de WhatsApp con el resumen del pedido
+$waMessage  = "🦐 *Nuevo pedido - Camaron Express*\n\n";
+$waMessage .= "👤 *Cliente:* " . ($nombre ?: 'Sin nombre') . "\n";
+$waMessage .= "📧 *Correo:* " . ($correo ?: 'Sin correo') . "\n";
+
+// 🔴 AGREGAMOS LAS DOS NUEVAS FILAS AL MENSAJE:
+$waMessage .= "📞 *Teléfono:* " . ($telefono ?: 'No registrado') . "\n";
+$waMessage .= "📍 *Dirección de Envío:* " . ($direccion ?: 'No registrada') . "\n\n";
+
+$waMessage .= "🛒 *Productos:*\n";
+
+if ($cart->total_items() > 0) {
+    foreach ($cart->contents() as $item) {
+        $waMessage .= "• " . $item['name'] . " x" . $item['qty']
+                    . " — $" . number_format($item['subtotal'], 0, ',', '.') . " COP\n";
+    }
+}
+
+$waMessage .= "\n💰 *Total: $" . number_format($cart->total(), 0, ',', '.') . " COP*";
+$waMessage .= "\n⏰ Pedido realizado el " . date('d/m/Y H:i');
+
+// Pasar mensaje codificado a JS para abrir WhatsApp
+$waMessageEncoded = urlencode($waMessage);
+$waNumber = "573248933841";
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -26,7 +51,6 @@ $correo   = isset($_SESSION['correo']) ? $_SESSION['correo'] : '';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="\Eatstech\assets\css\style4.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
 </head>
 
 <body>
@@ -100,13 +124,9 @@ $correo   = isset($_SESSION['correo']) ? $_SESSION['correo'] : '';
                         <?php endif; ?>
                     </table>
 
-                    <!-- Botones -->
                     <div class="action-buttons">
                         <a href="../menu/VerCarta.php" class="btn-back">
                             <i class="fa-solid fa-chevron-left"></i> Volver
-                        </a>
-                        <a href="../carrito/AccionCarta.php?action=placeOrder" class="btn-order">
-                            Confirmar pedido <i class="fa-solid fa-check"></i>
                         </a>
                     </div>
                 </div>
@@ -122,7 +142,7 @@ $correo   = isset($_SESSION['correo']) ? $_SESSION['correo'] : '';
                     <div class="payment-methods">
 
                         <!-- Nequi -->
-                        <label class="payment-option" onclick="selectPayment(this, 'nequi')">
+                        <label class="payment-option" onclick="selectPayment(this, 'nequi', 'Nequi')">
                             <input type="radio" name="payment" value="nequi">
                             <div class="payment-icon icon-nequi"><i class="fa-solid fa-mobile-screen"></i></div>
                             <div class="payment-info">
@@ -136,14 +156,10 @@ $correo   = isset($_SESSION['correo']) ? $_SESSION['correo'] : '';
                                <strong>Número Nequi: 324 893 3841</strong><br>
                                Nombre: Camaron Express Delivery SC<br>
                                Luego envía el comprobante por WhatsApp.</p>
-                            <a href="https://wa.me/573248933841?text=Hola!%20Acabo%20de%20realizar%20mi%20pago%20por%20Nequi%20para%20mi%20pedido."
-                               target="_blank" class="whatsapp-btn">
-                                <i class="fa-brands fa-whatsapp"></i> Enviar comprobante
-                            </a>
                         </div>
 
                         <!-- Daviplata -->
-                        <label class="payment-option" onclick="selectPayment(this, 'daviplata')">
+                        <label class="payment-option" onclick="selectPayment(this, 'daviplata', 'Daviplata')">
                             <input type="radio" name="payment" value="daviplata">
                             <div class="payment-icon icon-daviplata"><i class="fa-solid fa-d"></i></div>
                             <div class="payment-info">
@@ -157,14 +173,10 @@ $correo   = isset($_SESSION['correo']) ? $_SESSION['correo'] : '';
                                <strong>Número Daviplata: 324 893 3841</strong><br>
                                Nombre: Camaron Express Delivery SC<br>
                                Luego envía el comprobante por WhatsApp.</p>
-                            <a href="https://wa.me/573248933841?text=Hola!%20Acabo%20de%20realizar%20mi%20pago%20por%20Daviplata%20para%20mi%20pedido."
-                               target="_blank" class="whatsapp-btn">
-                                <i class="fa-brands fa-whatsapp"></i> Enviar comprobante
-                            </a>
                         </div>
 
                         <!-- Bancolombia -->
-                        <label class="payment-option" onclick="selectPayment(this, 'bancolombia')">
+                        <label class="payment-option" onclick="selectPayment(this, 'bancolombia', 'Transferencia Bancolombia')">
                             <input type="radio" name="payment" value="bancolombia">
                             <div class="payment-icon icon-bancol"><i class="fa-solid fa-building-columns"></i></div>
                             <div class="payment-info">
@@ -181,14 +193,10 @@ $correo   = isset($_SESSION['correo']) ? $_SESSION['correo'] : '';
                                Titular: Camaron Express Delivery SC<br>
                                Cédula: 2193903403<br>
                                Luego envía el comprobante por WhatsApp.</p>
-                            <a href="https://wa.me/573248933841?text=Hola!%20Acabo%20de%20realizar%20mi%20transferencia%20para%20mi%20pedido."
-                               target="_blank" class="whatsapp-btn">
-                                <i class="fa-brands fa-whatsapp"></i> Enviar comprobante
-                            </a>
                         </div>
 
                         <!-- Efectivo -->
-                        <label class="payment-option" onclick="selectPayment(this, 'efectivo')">
+                        <label class="payment-option" onclick="selectPayment(this, 'efectivo', 'Efectivo contra entrega')">
                             <input type="radio" name="payment" value="efectivo">
                             <div class="payment-icon icon-efectivo"><i class="fa-solid fa-money-bill-wave"></i></div>
                             <div class="payment-info">
@@ -202,14 +210,10 @@ $correo   = isset($_SESSION['correo']) ? $_SESSION['correo'] : '';
                                <strong>Calle 20 #5-94, Mosquera</strong><br>
                                Horario: Lun–Jue 5pm–9pm / Vie–Dom 2pm–9pm<br>
                                Ten el dinero exacto listo al momento de la entrega.</p>
-                            <a href="https://wa.me/573248933841?text=Hola!%20Quiero%20pagar%20en%20efectivo%20mi%20pedido."
-                               target="_blank" class="whatsapp-btn">
-                                <i class="fa-brands fa-whatsapp"></i> Confirmar por WhatsApp
-                            </a>
                         </div>
 
                         <!-- Efecty -->
-                        <label class="payment-option" onclick="selectPayment(this, 'efecty')">
+                        <label class="payment-option" onclick="selectPayment(this, 'efecty', 'Efecty')">
                             <input type="radio" name="payment" value="efecty">
                             <div class="payment-icon icon-efecty"><i class="fa-solid fa-store"></i></div>
                             <div class="payment-info">
@@ -223,10 +227,6 @@ $correo   = isset($_SESSION['correo']) ? $_SESSION['correo'] : '';
                                <strong>Camaron Express Delivery SC</strong><br>
                                Cédula: Agrega tu cédula<br>
                                Luego envía el comprobante por WhatsApp.</p>
-                            <a href="https://wa.me/573248933841?text=Hola!%20Acabo%20de%20pagar%20por%20Efecty%20mi%20pedido."
-                               target="_blank" class="whatsapp-btn">
-                                <i class="fa-brands fa-whatsapp"></i> Enviar comprobante
-                            </a>
                         </div>
 
                     </div>
@@ -236,55 +236,55 @@ $correo   = isset($_SESSION['correo']) ? $_SESSION['correo'] : '';
         </div>
 
         <!-- COLUMNA DERECHA: Info del cliente -->
-        <div class="right-col">
-            <div class="card">
+            <div class="right-col">
+                <div class="card">
                 <div class="card-header">
                     <i class="fa-solid fa-user"></i>
                     <h2>Tus Datos</h2>
                 </div>
                 <div class="card-body">
                     <div class="client-info">
-
-                        <?php if (!empty($nombre)): ?>
+                        
+                        <?php if (!empty($_SESSION['nombre'])): ?>
                         <div class="client-row">
                             <i class="fa-solid fa-user"></i>
-                            <span><?php echo htmlspecialchars($nombre); ?></span>
+                            <span><?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
                         </div>
                         <?php endif; ?>
-
-                        <?php if (!empty($correo)): ?>
+                        
+                        <?php if (!empty($_SESSION['correo'])): ?>
                         <div class="client-row">
                             <i class="fa-solid fa-envelope"></i>
-                            <span><?php echo htmlspecialchars($correo); ?></span>
+                            <span><?php echo htmlspecialchars($_SESSION['correo']); ?></span>
                         </div>
                         <?php endif; ?>
-
-                        <?php if (!empty($custRow['phone'])): ?>
+                        
+                        <?php if (!empty($_SESSION['telefono'])): ?>
                         <div class="client-row">
                             <i class="fa-solid fa-phone"></i>
-                            <span><?php echo htmlspecialchars($custRow['phone']); ?></span>
+                            <span><?php echo htmlspecialchars($_SESSION['telefono']); ?></span>
                         </div>
                         <?php endif; ?>
-
-                        <?php if (!empty($custRow['address'])): ?>
+                        
+                        <?php if (!empty($_SESSION['direccion'])): ?>
                         <div class="client-row">
                             <i class="fa-solid fa-location-dot"></i>
-                            <span><?php echo htmlspecialchars($custRow['address']); ?></span>
+                            <span><?php echo htmlspecialchars($_SESSION['direccion']); ?></span>
                         </div>
                         <?php endif; ?>
-
-                        <?php if (empty($nombre) && empty($correo) && empty($custRow['phone'])): ?>
+                        
+                        <?php if (empty($_SESSION['logueado'])): ?>
                         <div class="client-row">
                             <i class="fa-solid fa-circle-info"></i>
                             <span style="color:#7a5c44;">Inicia sesión para ver tus datos.</span>
                         </div>
                         <?php endif; ?>
-
+                        
                     </div>
                 </div>
             </div>
 
-            <!-- Resumen de totales -->
+            <!-- Total a pagar + botón confirmar -->
             <div class="card">
                 <div class="card-header">
                     <i class="fa-solid fa-calculator"></i>
@@ -294,15 +294,15 @@ $correo   = isset($_SESSION['correo']) ? $_SESSION['correo'] : '';
                     <p style="font-family: var(--forum); font-size: 3.5rem; color: var(--camaron-gold);">
                         $<?php echo number_format($cart->total(), 0, ',', '.'); ?>
                     </p>
-                    <p style="font-size: 1.4rem; color: #7a5c44; margin-top: 6px;">COP — <?php echo $cart->total_items(); ?> producto(s)</p>
-
-                    <a href="../carrito/AccionCarta.php?action=placeOrder"
-                       class="btn-order" style="margin-top: 24px; width: 100%; justify-content: center;">
+                    <p style="font-size: 1.4rem; color: #7a5c44; margin-top: 6px;">
+                        COP — <?php echo $cart->total_items(); ?> producto(s)
+                    </p>
+                    <button onclick="abrirModal()" class="btn-order"
+                            style="margin-top: 24px; width: 100%; justify-content: center;">
                         <i class="fa-solid fa-check"></i> Confirmar pedido
-                    </a>
+                    </button>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -313,16 +313,93 @@ $correo   = isset($_SESSION['correo']) ? $_SESSION['correo'] : '';
         </p>
     </footer>
 
+    <!-- MODAL DE CONFIRMACIÓN -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal-box">
+            <div class="modal-icon">
+                <i class="fa-solid fa-bag-shopping"></i>
+            </div>
+            <h3>¿Confirmar pedido?</h3>
+            <p>Tu pedido será enviado y recibirás un mensaje de WhatsApp para coordinar el pago.</p>
+            <div class="modal-method">
+                <i class="fa-solid fa-circle-check" style="color:var(--camaron-teal)"></i>
+                <span id="modalMethodName">—</span>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-cancel" onclick="cerrarModal()">Cancelar</button>
+                <button class="modal-confirm" onclick="confirmarPedido()">
+                    <i class="fa-brands fa-whatsapp"></i> Sí, confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        Selecciona un método de pago
+    </div>
+
     <script>
-        function selectPayment(el, method) {
-            // Quitar selección de todos
+        // ── Variables PHP → JS ───────────────────────────────────────
+        const WA_NUMBER  = "<?php echo $waNumber; ?>";
+        const WA_MESSAGE = "<?php echo addslashes($waMessageEncoded); ?>";
+
+        // ID de orden que generará el backend (AccionCarta)
+        // Lo pasamos como parámetro en la URL de redirección
+        let selectedMethod     = null;
+        let selectedMethodName = null;
+
+        // ── Selección de método ──────────────────────────────────────
+        function selectPayment(el, method, name) {
             document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
             document.querySelectorAll('.payment-detail').forEach(d => d.classList.remove('active'));
-
-            // Activar el seleccionado
             el.classList.add('selected');
             const detail = document.getElementById('detail-' + method);
             if (detail) detail.classList.add('active');
+            selectedMethod     = method;
+            selectedMethodName = name;
+        }
+
+        // ── Abrir modal ──────────────────────────────────────────────
+        function abrirModal() {
+            if (!selectedMethod) {
+                showToast();
+                return;
+            }
+            document.getElementById('modalMethodName').textContent = selectedMethodName;
+            document.getElementById('confirmModal').classList.add('active');
+        }
+
+        function cerrarModal() {
+            document.getElementById('confirmModal').classList.remove('active');
+        }
+
+        // Cerrar modal al click fuera
+        document.getElementById('confirmModal').addEventListener('click', function(e) {
+            if (e.target === this) cerrarModal();
+        });
+
+        // ── Toast ────────────────────────────────────────────────────
+        function showToast() {
+            const t = document.getElementById('toast');
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        // ── Confirmar pedido ─────────────────────────────────────────
+        function confirmarPedido() {
+            cerrarModal();
+
+            // 1. Abrir WhatsApp con el resumen del pedido
+            const waUrl = "https://wa.me/" + WA_NUMBER + "?text=" + WA_MESSAGE
+                        + encodeURIComponent("\n\n💳 *Método de pago elegido:* " + selectedMethodName);
+            window.open(waUrl, '_blank');
+
+            // 2. Redirigir al backend que registra la orden y luego a OrdenExito
+            //    AccionCarta?action=placeOrder ya genera el id de orden
+            window.location.href = "/Eatstech/modules/carrito/AccionCarta.php?action=placeOrder&metodo="
+                                  + encodeURIComponent(selectedMethod);
         }
     </script>
 

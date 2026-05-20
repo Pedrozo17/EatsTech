@@ -370,7 +370,7 @@
               <span class="span body-1">Desde $24.000</span>
             </div>
 
-            <a href="https://wa.me/c/573248933841" target="_blank" class="btn btn-primary">
+            <a href="\Eatstech\modules\carrito\carritodecompras.php" class="btn btn-primary">
               <span class="text text-1">Ver catálogo completo</span>
               <span class="text text-2" aria-hidden="true">Ver catálogo completo</span>
             </a>

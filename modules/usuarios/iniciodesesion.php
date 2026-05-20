@@ -47,6 +47,8 @@
         <input class="input" type="text" name="nombre" placeholder="Nombre completo">
         <input class="input" type="correo" name="correo" placeholder="Correo">
         <input class="input" type="text" name="cedula" placeholder="Número de cédula">
+        <input class="input" type="text" name="telefono" placeholder="Número de teléfono">
+        <input class="input" type="text" name="direccion" placeholder="Dirección de envío">
         <input class="input" type="password" name="contraseña" placeholder="Contraseña">
         <input class="input" type="password" name="confirmar_contraseña" placeholder="Confirmar contraseña">
         <input class="btn" type="submit" name="register" value="Registrarse">

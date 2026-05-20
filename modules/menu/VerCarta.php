@@ -1,4 +1,5 @@
 <?php
+
 include './La-carta.php';
 $cart = new Cart;
 ?>
@@ -35,7 +36,6 @@ $cart = new Cart;
 
 <body>
 
-    <!-- HEADER -->
     <header class="site-header">
         <a href="/Eatstech/pages/casarolla.php" class="header-logo">
             <img src="../../assets/images/logo_empresa-removebg-preview.png" alt="Camaron Express">
@@ -50,13 +50,11 @@ $cart = new Cart;
         </ul>
     </header>
 
-    <!-- HERO -->
     <div class="cart-hero">
         <p class="subtitle">Revisa tu pedido</p>
         <h1>Carrito de Compras</h1>
     </div>
 
-    <!-- CONTENIDO -->
     <div class="cart-wrapper">
         <div class="cart-table-wrap">
             <table>
@@ -72,9 +70,22 @@ $cart = new Cart;
                 <tbody>
                     <?php if ($cart->total_items() > 0):
                         $cartItems = $cart->contents();
-                        foreach ($cartItems as $item): ?>
+                        foreach ($cartItems as $item): 
+                            
+                            // 🔴 DEFINIMOS LA RUTA DE LA IMAGEN EN LA CARPETA ASSETS
+                            // Si por algún motivo el plato no tiene foto, pondrá una por defecto
+                            $imgName = !empty($item['image']) ? $item['image'] : 'default.png';
+                            $ruta_imagen = "../../assets/images/" . $imgName;
+                        ?>
                             <tr>
-                                <td class="product-name"><?php echo htmlspecialchars($item['name']); ?></td>
+                                <td class="product-name">
+                                    <div style="display: flex; align-items: center; gap: 15px;">
+                                        <img src="<?php echo $ruta_imagen; ?>" 
+                                             alt="<?php echo htmlspecialchars($item['name']); ?>" 
+                                             style="width: 55px; height: 55px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;">
+                                        <span><?php echo htmlspecialchars($item['name']); ?></span>
+                                    </div>
+                                </td>
                                 <td class="price-cell">$<?php echo number_format($item['price'], 0, ',', '.'); ?> COP</td>
                                 <td>
                                     <input type="number"
@@ -131,10 +142,9 @@ $cart = new Cart;
         </div>
     </div>
 
-    <!-- FOOTER -->
     <footer class="site-footer">
-        <p>© 2024 Camaron Express &mdash; Mosquera, Cundinamarca &mdash;
-           <a href="tel:+573248933841">+57 324 893 3841</a>
+        <p>© 2026 Camaron Express &mdash; Mosquera, Cundinamarca &mdash;
+            <a href="tel:+573248933841">+57 324 893 3841</a>
         </p>
     </footer>
 

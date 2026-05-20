@@ -126,7 +126,9 @@ body {
     border-radius: var(--button-radius);
     box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.5),
         0 0.7rem 0.7rem rgba(0, 0, 0, 0.3);
-    height: var(--max-height);
+    height: auto;
+    min-height: var(--max-height);
+    padding-bottom: 25px;
     max-width: var(--max-width);
     overflow: hidden;
     position: relative;
@@ -138,6 +140,8 @@ body {
     position: absolute;
     top: 0;
     transition: all 0.6s ease-in-out;
+    overflow-y: auto;
+    scrollbar-width: thin;
 }
 
 .container--signin {
@@ -159,6 +163,18 @@ body {
     z-index: 1;
     background-color: #2a2a2a;
     text-align: center;
+    overflow-y: auto;
+}
+
+.container__form::-webkit-scrollbar {
+    width: 6px;
+}
+.container__form::-webkit-scrollbar-thumb {
+    background-color: var(--amarillo);
+    border-radius: 10px;
+}
+.container__form::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 .container.right-panel-active .container--signup {
@@ -253,18 +269,19 @@ body {
     background-color: #2a2a2a;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content:  flex-start;
     flex-direction: column;
-    padding: 0 3rem;
+    padding: 2rem 1.5rem;
     height: 100%;
     text-align: center;
 }
 
+
 .form__title {
     color: var(--amarillo);
     font-weight: bold;
-    font-size: 1.3rem;
-    margin: 0 0 1.25rem 0;
+    font-size: 1.2rem;
+    margin: 0.5rem 0 0.8rem 0;
 }
 
 .input {
@@ -272,10 +289,10 @@ body {
     border: 1px solid #444;
     border-radius: 4px;
     color: var(--white);
-    padding: 0.75rem 1rem;
-    margin: 0.4rem 0;
+    padding: 0.45rem 0.8rem;
+    margin: 0.25rem 0;
     width: 100%;
-    font-size: 14px;
+    font-size: 13px;
     transition: border-color 0.3s ease;
 }
 
@@ -299,10 +316,10 @@ body {
     font-size: 0.8rem;
     font-weight: bold;
     letter-spacing: 0.1rem;
-    padding: 0.75rem 3rem;
+    padding: 0.6rem 2.5rem;
     text-transform: uppercase;
     transition: background-color 0.3s ease, transform 80ms ease-in;
-    margin-top: 1rem;
+    margin-top: 0.6rem;
 }
 
 .btn:hover {
@@ -346,7 +363,7 @@ form {
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: auto;
 }
 
 /* Estilos de los campos de entrada */
