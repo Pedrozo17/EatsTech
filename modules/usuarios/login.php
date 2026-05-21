@@ -14,6 +14,9 @@ $redirect = isset($_GET['redirect']) && isset($paginas[$_GET['redirect']])
     ? $paginas[$_GET['redirect']] 
     : '/Eatstech/pages/index.php';
 
+// Capturamos el parámetro crudo para poder reenviarlo en caso de error
+$redirect_param = isset($_GET['redirect']) ? $_GET['redirect'] : '';
+
 if (isset($_POST['login'])) {
     $correo = mysqli_real_escape_string($conex, trim($_POST['correo']));
     $contraseña = trim($_POST['contraseña']);
@@ -32,19 +35,19 @@ if (isset($_POST['login'])) {
             $_SESSION['logueado'] = true;
             $_SESSION['correo'] = $usuario['correo'];
             $_SESSION['nombre'] = $usuario['nombre'];
-            $_SESSION['telefono'] = $usuario['telefono'];   // Enviado al carrito
-            $_SESSION['direccion'] = $usuario['direccion']; // Enviado al carrito
+            $_SESSION['telefono'] = $usuario['telefono'];   
+            $_SESSION['direccion'] = $usuario['direccion']; 
             
             header("Location: " . $redirect);
             exit();
         } else {
-            // Contraseña incorrecta
-            header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?error=1&redirect=" . (isset($_GET['redirect']) ? $_GET['redirect'] : ''));
+            // Contraseña incorrecta -> 🟢 Ruta corregida a /pages/
+            header("Location: \Eatstech\modules\usuarios\iniciodesesion.php?error=1&redirect=" . $redirect_param);
             exit();
         }
     } else {
-        // Correo no encontrado
-        header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?error=1&redirect=" . (isset($_GET['redirect']) ? $_GET['redirect'] : ''));
+        // 🟢 Correo no encontrado -> Lo mandamos a registrarse con 'no_existe' y mantenemos su destino
+        header("Location: \Eatstech\modules\usuarios\iniciodesesion.php?error=no_existe&redirect=" . $redirect_param);
         exit();
     }
 }

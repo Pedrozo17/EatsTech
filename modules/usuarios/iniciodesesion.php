@@ -43,6 +43,28 @@
         <!-- Sign Up -->
 <div class="container__form container--signup">
     <h2 class="form__title">Sign up</h2>
+    
+    <?php 
+        if (isset($_GET['error'])): 
+        // Definimos el mensaje según el error que venga en la URL
+        $mensajeError = "";
+        if ($_GET['error'] == 'duplicado') $mensajeError = "⚠️ El correo ya está registrado.";
+        if ($_GET['error'] == 'password') $mensajeError = "❌ Las contraseñas no coinciden.";
+        if ($_GET['error'] == 'vacio')    $mensajeError = "📝 Por favor, llene todos los campos.";
+        if ($_GET['error'] == 'db')       $mensajeError = "⚙️ Error interno. Intente más tarde.";
+        if ($_GET['error'] == 'no_existe') $mensajeError = "🔍 El correo no existe. ¡Regístrate aquí!";
+
+        // SOLUCIÓN: Solo si encontramos un mensaje válido, dibujamos la caja en la pantalla
+        if (!empty($mensajeError)): 
+    ?>
+        <div style="background: rgba(231, 76, 60, 0.15); border: 1px solid #e74c3c; color: #ff6b6b; padding: 10px; margin-bottom: 15px; border-radius: 6px; text-align: center; font-size: 13px; font-family: sans-serif; font-weight: bold; width: 100%; box-sizing: border-box;">
+            <?php echo $mensajeError; ?>
+        </div>
+    <?php 
+        endif; 
+    endif; 
+    ?>
+
     <form method="post" action="/Eatstech/modules/usuarios/registrar.php?redirect=<?php echo isset($_GET['redirect']) ? $_GET['redirect'] : ''; ?>">
         <input class="input" type="text" name="nombre" placeholder="Nombre completo">
         <input class="input" type="correo" name="correo" placeholder="Correo">
@@ -54,7 +76,7 @@
         <input class="btn" type="submit" name="register" value="Registrarse">
     </form>
 </div>
-    
+    <div>
         <!-- Sign In -->
         <div class=" container__form container--signin">
         <h2 class="form__title">Sign In</h2>
@@ -62,6 +84,12 @@
                 <input type="correo" name="correo" placeholder="correo">
                 <input type="password" name="contraseña" placeholder="contraseña">
                 <input type="submit" name="login">
+                <a href="/Eatstech/pages/OlvideClave.php" class="forgot-link">¿Olvidaste tu contraseña?</a>
+                <?php if (isset($_GET['error']) && $_GET['error'] == 'no_existe'): ?>
+                <div style="background: rgba(231, 76, 60, 0.15); border: 1px solid #e74c3c; color: #ff6b6b; padding: 10px; margin-bottom: 15px; border-radius: 6px; text-align: center; font-size: 13px; font-family: sans-serif; font-weight: bold; width: 100%; box-sizing: border-box;">
+                    ⚠️ El correo no está registrado. ¡Regístrate gratis abajo!
+                </div>
+                <?php endif; ?>
             </form>
         </div>
     
@@ -77,6 +105,7 @@
             </div>
         </div>
     </div>
+    
 
     <script>
                 document.body.classList.add("loading");
@@ -109,6 +138,17 @@
                 }
             }
         );
+
+    // 🪄 Animación UX Automática al fallar el Login por cuenta inexistente
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error') === 'no_existe') {
+        const container = document.querySelector(".container");
+        if (container) {
+            // Activa el panel de registro de una forma fluida
+            container.classList.add("right-panel-active");
+        }
+    }
+
     </script>
 </body>
 </html>
