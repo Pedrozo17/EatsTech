@@ -46,6 +46,12 @@
         <!-- Sign Up -->
 <div class="container__form container--signup">
     <h2 class="form__title">Sign up</h2>
+
+    <?php if (isset($_GET['registro']) && $_GET['registro'] == 'exito'): ?>
+    <div style="background: rgba(46, 204, 113, 0.15); border: 1px solid #2ecc71; color: #2ecc71; padding: 10px; margin-bottom: 15px; border-radius: 6px; text-align: center; font-size: 13px; font-family: sans-serif; font-weight: bold; width: 100%; box-sizing: border-box;">
+        🎉 ¡Cuenta creada con éxito! Ingresa tu correo para seleccionar tu empresa.
+    </div>
+<?php endif; ?>
     
     <?php 
         if (isset($_GET['error'])): 
@@ -69,6 +75,20 @@
     ?>
 
     <form method="post" action="/Eatstech/modules/usuarios/registrar.php?redirect=<?php echo isset($_GET['redirect']) ? $_GET['redirect'] : ''; ?>">
+        <div class="role-selector">
+    <label class="role-option">
+        <input type="radio" name="tipo_usuario" value="persona" checked onclick="toggleRegistroEmpresa(false)">
+        <span class="role-box">👤 Persona</span>
+    </label>
+    <label class="role-option">
+        <input type="radio" name="tipo_usuario" value="empresa" onclick="toggleRegistroEmpresa(true)">
+        <span class="role-box">🏢 Empresa</span>
+    </label>
+</div>
+
+<div id="campos-empresa-container" style="display: none; width: 100%; margin-top: 15px;">
+    <input type="text" name="nombre_restaurante" placeholder="Nombre de tu Restaurante/Negocio">
+</div>
         <input class="input" type="text" name="nombre" placeholder="Nombre completo">
         <input class="input" type="correo" name="correo" placeholder="Correo">
         <input class="input" type="text" name="cedula" placeholder="Número de cédula">
@@ -79,23 +99,137 @@
         <input class="btn" type="submit" name="register" value="Registrarse">
     </form>
 </div>
-    <div>
-        <!-- Sign In -->
-        <div class=" container__form container--signin">
-        <h2 class="form__title">Sign In</h2>
-            <form method="post" action="/Eatstech/modules/usuarios/login.php?redirect=<?php echo isset($_GET['redirect']) ? $_GET['redirect'] : ''; ?>">
-                <input type="correo" name="correo" placeholder="correo">
-                <input type="password" name="contraseña" placeholder="contraseña">
-                <input type="submit" name="login">
-                <a href="/Eatstech/pages/OlvideClave.php" class="forgot-link">¿Olvidaste tu contraseña?</a>
-                <?php if (isset($_GET['error']) && $_GET['error'] == 'no_existe'): ?>
-                <div style="background: rgba(231, 76, 60, 0.15); border: 1px solid #e74c3c; color: #ff6b6b; padding: 10px; margin-bottom: 15px; border-radius: 6px; text-align: center; font-size: 13px; font-family: sans-serif; font-weight: bold; width: 100%; box-sizing: border-box;">
-                    ⚠️ El correo no está registrado. ¡Regístrate gratis abajo!
-                </div>
-                <?php endif; ?>
-            </form>
-        </div>
+
+<script>
+function toggleRegistroEmpresa(show) {
+    const container = document.getElementById('campos-empresa-container');
+    container.style.display = show ? 'block' : 'none';
     
+    // Si es persona, limpiamos y quitamos el 'required' para que no tranque el formulario
+    const inputs = container.querySelectorAll('input');
+    inputs.forEach(input => {
+        if(input.type !== 'color') {
+            input.required = show;
+            if(!show) input.value = '';
+        }
+    });
+}
+</script>
+
+<div>
+    <div class="container__form container--signin">
+        <h2 class="form__title">Sign In</h2>
+        <form method="post" action="/Eatstech/modules/usuarios/login.php?redirect=<?php echo isset($_GET['redirect']) ? $_GET['redirect'] : ''; ?>">
+            
+            <div class="role-selector">
+                <label class="role-option">
+                    <input type="radio" name="tipo_usuario" value="persona" checked onclick="toggleRestauranteSelector(false)">
+                    <span class="role-box">👤 Persona</span>
+                </label>
+                <label class="role-option">
+                    <input type="radio" name="tipo_usuario" value="empresa" onclick="toggleRestauranteSelector(true)">
+                    <span class="role-box">🏢 Empresa</span>
+                </label>
+            </div>
+
+            <input type="text" id="login_correo" name="correo" placeholder="correo" required>
+            <input type="password" name="contraseña" placeholder="contraseña" required>
+
+            <div id="restaurante-select-container" style="display: none; width: 100%; margin-bottom: 15px; text-align: left;">
+                <label style="color: var(--davys-grey, #6f675d); font-size: 12px; display: block; margin-bottom: 5px; font-weight: bold; font-family: sans-serif;">
+                    Selecciona el restaurante a gestionar:
+                </label>
+                <select name="restaurante_slug" id="restaurante_slug" style="width: 100%; padding: 12px; background: #efe6d3; border: 1px solid #6f675d; color: #2a241d; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                    <option value="">Escribe tu correo primero...</option>
+                </select>
+            </div>
+
+            <input type="submit" name="login">
+            <a href="/Eatstech/pages/OlvideClave.php" class="forgot-link">¿Olvidaste tu contraseña?</a>
+            
+            <?php if (isset($_GET['error']) && $_GET['error'] == 'no_existe'): ?>
+            <div style="background: rgba(231, 76, 60, 0.15); border: 1px solid #e74c3c; color: #ff6b6b; padding: 10px; margin-top: 15px; margin-bottom: 15px; border-radius: 6px; text-align: center; font-size: 13px; font-family: sans-serif; font-weight: bold; width: 100%; box-sizing: border-box;">
+                ⚠️ El correo no está registrado. ¡Regístrate gratis abajo!
+            </div>
+            <?php endif; ?>
+        </form>
+    </div>
+</div>
+
+<script>
+function toggleRestauranteSelector(show) {
+    // 1. Buscamos el contenedor y el select
+    const container = document.getElementById('restaurante-select-container');
+    const select = document.getElementById('restaurante_slug');
+    
+    if (!container || !select) return;
+    
+    // 2. Mostramos u ocultamos el contenedor
+    container.style.display = show ? 'block' : 'none';
+    
+    if (show) {
+        // SOLUCCIÓN ABSOLUTA: Buscamos el input name="correo" que esté dentro del mismo formulario
+        const formulario = select.closest('form');
+        const correoInput = formulario ? formulario.querySelector('input[name="correo"]') : null;
+        const correo = correoInput ? correoInput.value.trim() : '';
+        
+        if (correo === '') {
+            select.innerHTML = '<option value="">⚠️ Digita tu correo primero</option>';
+            return;
+        }
+
+        select.innerHTML = '<option value="">⏳ Buscando restaurantes...</option>';
+
+        // Petición AJAX al backend
+        fetch(`buscar_restaurantes.php?correo=${encodeURIComponent(correo)}`)
+            .then(res => res.json())
+            .then(data => {
+                select.innerHTML = '';
+                if (!data || data.length === 0) {
+                    select.innerHTML = '<option value="">No tienes restaurantes asignados</option>';
+                } else {
+                    data.forEach(rest => {
+                        select.innerHTML += `<option value="${rest.slug_carpeta}">${rest.nombre_restaurante}</option>`;
+                    });
+                }
+            })
+            .catch(err => {
+                console.error("Error en Fetch:", err);
+                select.innerHTML = '<option value="">Error al conectar con el servidor</option>';
+            });
+    }
+}
+
+// Evento en tiempo real: Escucha a TODOS los inputs de correo por si acaso
+document.querySelectorAll('input[name="correo"]').forEach(input => {
+    input.addEventListener('input', function() {
+        const formulario = this.closest('form');
+        if (!formulario) return;
+        
+        // Verificamos si en este formulario específico está marcado "empresa"
+        const radioEmpresa = formulario.querySelector('input[name="tipo_usuario"]:checked');
+        if (radioEmpresa && radioEmpresa.value === 'empresa') {
+            const select = formulario.querySelector('#restaurante_slug');
+            const correo = this.value.trim();
+            
+            if (select && correo !== '') {
+                fetch(`buscar_restaurantes.php?correo=${encodeURIComponent(correo)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        select.innerHTML = '';
+                        if (!data || data.length === 0) {
+                            select.innerHTML = '<option value="">No tienes restaurantes asignados</option>';
+                        } else {
+                            data.forEach(rest => {
+                                select.innerHTML += `<option value="${rest.slug_carpeta}">${rest.nombre_restaurante}</option>`;
+                            });
+                        }
+                    });
+            }
+        }
+    });
+});
+</script>
         <!-- Overlay -->
         <div class="container__overlay">
             <div class="overlay">

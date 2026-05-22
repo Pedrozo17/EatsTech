@@ -445,6 +445,59 @@ input:focus {
     background-color: #e0a800;
 }
 
+:root {
+    --amarillo: #FFB900;
+    --amarillo-hover: #e0a800;
+}
+
+.role-selector {
+    display: flex;
+    background-color: #1a1a1a; /* Fondo oscuro a juego con las tarjetas */
+    border-radius: 12px;
+    padding: 5px;
+    margin: 15px 0 20px 0;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #333; /* Borde sutil para dar profundidad */
+}
+
+.role-option {
+    flex: 1;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Ocultamos por completo el círculo nativo (radio button) del HTML */
+.role-option input[type="radio"] {
+    display: none;
+}
+
+/* Estilo base de las pestañas internas */
+.role-box {
+    display: block;
+    padding: 12px;
+    text-align: center;
+    color: #888;
+    font-size: 13px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efecto Hover cuando el usuario pasa el mouse por encima de la opción no seleccionada */
+.role-option:hover .role-box {
+    color: #fff;
+    background-color: rgba(255, 185, 0, 0.03);
+}
+
+/* Transición Activa: Cuando el Radio Button está seleccionado (+ selecciona al hermano .role-box) */
+.role-option input[type="radio"]:checked + .role-box {
+    background-color: var(--amarillo);
+    color: #000; /* Texto oscuro para que contraste perfectamente con el amarillo */
+    box-shadow: 0 4px 15px rgba(255, 185, 0, 0.25); /* Destello dorado característico */
+}
+
 /* ==========================================================================
    MEDIA QUERY: Despliegue Vertical hacia Abajo (Igual a index.php)
    ========================================================================== */

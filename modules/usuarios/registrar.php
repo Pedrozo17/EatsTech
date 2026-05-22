@@ -1,7 +1,5 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
 include("../../config/con_db.php");
 
 if (isset($_POST['register'])) {
@@ -20,40 +18,66 @@ if (isset($_POST['register'])) {
         $direccion = mysqli_real_escape_string($conex, trim($_POST['direccion'])); 
         $contraseña = trim($_POST['contraseña']);
         $confirmar_contraseña = trim($_POST['confirmar_contraseña']);
+        $tipo_usuario = mysqli_real_escape_string($conex, $_POST['tipo_usuario']); 
 
-        // 1. Validamos que ambas contraseñas coincidan
         if ($contraseña !== $confirmar_contraseña) {
-            header("Location: \Eatstech\modules\usuarios\iniciodesesion.php?error=password");
+            header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?error=password");
             exit();
         } else {
-            
-            // 2. VALIDACIÓN ANTIDUPLICADOS: ¿El correo ya existe?
             $buscarCorreo = "SELECT id FROM datos WHERE correo = '$correo'";
             $resultadoCorreo = mysqli_query($conex, $buscarCorreo);
 
             if (mysqli_num_rows($resultadoCorreo) > 0) {
-                header("Location: \Eatstech\modules\usuarios\iniciodesesion.php?error=duplicado");
+                header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?error=duplicado");
                 exit();
             } else {
-                // Si todo está bien, registramos...
-                $contraseña_encriptada = password_hash($contraseña, PASSWORD_DEFAULT);
+                $contraseña_encrypted = password_hash($contraseña, PASSWORD_DEFAULT);
 
-                $consulta = "INSERT INTO datos(nombre, correo, cedula, telefono, direccion, contraseña) 
-                             VALUES ('$nombre','$correo','$cedula','$telefono','$direccion','$contraseña_encriptada')";
+                // 1. Guardamos el usuario en la tabla 'datos'
+                $consulta = "INSERT INTO datos(nombre, correo, contraseña, cedula, telefono, direccion, tipo) 
+                             VALUES ('$nombre','$correo','$contraseña_encrypted','$cedula','$telefono','$direccion', '$tipo_usuario')";
                 
                 $resultado = mysqli_query($conex, $consulta);
 
                 if ($resultado) {
-                    $_SESSION['logueado'] = true;
-                    $_SESSION['correo'] = $correo;
-                    $_SESSION['nombre'] = $nombre;
-                    $_SESSION['telefono'] = $telefono;     
-                    $_SESSION['direccion'] = $direccion;   
+                    $nuevo_usuario_id = mysqli_insert_id($conex);
 
-                    header("Location: /Eatstech/pages/index.php");
-                    exit();
+                    // ==========================================================================
+                    // EVALUACIÓN DE FLUJO SEGÚN EL ROL
+                    // ==========================================================================
+                    if ($tipo_usuario === 'empresa') {
+                        // Flujo Empresa: Registramos restaurante base y mandamos al login para que lo seleccione
+                        $nombre_restaurante = mysqli_real_escape_string($conex, trim($_POST['nombre_restaurante']));
+                        
+                        $slug_carpeta = 'admin';      
+                        $color_principal = '#cf9465'; 
+
+                        $consulta_restaurante = "INSERT INTO restaurantes (usuario_id, nombre_restaurante, slug_carpeta, color_principal) 
+                                                 VALUES ('$nuevo_usuario_id', '$nombre_restaurante', '$slug_carpeta', '$color_principal')";
+                        
+                        mysqli_query($conex, $consulta_restaurante);
+
+                        // Redirección al login con aviso para seleccionar empresa
+                        header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?registro=exito");
+                        exit();
+
+                    } else {
+                        // Flujo Persona: Iniciamos sesión automáticamente para romper la fricción
+                        $_SESSION['logueado'] = true;
+                        $_SESSION['id_usuario'] = $nuevo_usuario_id; 
+                        $_SESSION['correo'] = $correo;
+                        $_SESSION['nombre'] = $nombre;
+                        $_SESSION['telefono'] = $telefono;     
+                        $_SESSION['direccion'] = $direccion;   
+                        $_SESSION['tipo'] = $tipo_usuario; 
+
+                        // Mandamos directo al index público a comprar
+                        header("Location: /Eatstech/pages/index.php");
+                        exit();
+                    }
+                    
                 } else {
-                    header("Location: \Eatstech\modules\usuarios\iniciodesesion.php?error=db");
+                    header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?error=db");
                     exit();
                 }
             }
