@@ -599,22 +599,132 @@ body {
     text-decoration: none;
 }
 
-
-
 @media (max-width: 768px) {
+    /* 1. Evitar desborde general del contenedor */
     .pay-wrapper {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 20px 0 !important;
+        padding: 0 10px !important;
+        gap: 20px !important;
+        overflow-x: hidden;
     }
 
+    /* --- HEADER FLUIDO --- */
     .site-header {
-        padding: 12px 16px;
+        padding: 10px 16px;
+        flex-wrap: wrap;
+    }
+
+    .header-logo img {
+        width: 42px;
+        height: 42px;
     }
 
     .header-logo span {
-        display: none;
+        font-size: 1.3rem;
+        letter-spacing: 1px;
     }
 
     .header-nav {
-        gap: 14px;
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 10px;
+        border-top: 1px solid rgba(236, 226, 198, 0.1);
+        padding-top: 8px;
     }
+
+    .header-nav a {
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+    }
+
+    /* 3. Evitar que las tarjetas individuales empujen la pantalla */
+    .card {
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 12px !important;
+    }
+
+    .card-body {
+        padding: 15px !important; /* Padding más pequeño en móvil */
+    }
+
+    /* 4. Convertir la tabla en filas verticales limpias */
+    .order-table thead {
+        display: none !important;
+    }
+
+    .order-table tbody tr {
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 12px 0 !important;
+        border-bottom: 1px dashed rgba(207, 148, 101, 0.4) !important;
+    }
+
+    .order-table tbody td {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 6px 0 !important;
+        border: none !important;
+        font-size: 1.3rem !important;
+        width: 100% !important;
+    }
+
+    .order-table .product-name {
+        font-size: 1.5rem !important;
+        display: block !important;
+        margin-bottom: 4px !important;
+        color: var(--dark-1) !important;
+    }
+
+    /* Textos guía en las filas */
+    .order-table tbody td:nth-child(2)::before { content: "Precio:"; font-weight: bold; color: #7a5c44; }
+    .order-table tbody td:nth-child(3)::before { content: "Cantidad:"; font-weight: bold; color: #7a5c44; }
+    .order-table tbody td:nth-child(4)::before { content: "Subtotal:"; font-weight: bold; color: #7a5c44; }
+
+    /* Ajustar el total de la orden */
+    .order-total-row {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+        padding-top: 12px !important;
+    }
+
+    .order-total-row td {
+        border: none !important;
+    }
+
+/* 5. Asegurar las cajas de datos del cliente (Alineado a la izquierda) */
+    .client-row {
+        display: flex !important;
+        flex-direction: row !important;      /* Mantiene el icono al lado del texto */
+        align-items: center !important;       /* Centra verticalmente icono y texto */
+        justify-content: flex-start !important; /* Fuerza la alineación a la izquierda */
+        text-align: left !important;          /* Evita que el texto interno se centre */
+        padding: 12px 15px !important;
+        font-size: 1.3rem !important;
+        max-width: 100% !important;
+        gap: 15px !important;                 /* Espacio fijo entre el icono y el texto */
+        word-break: break-word; 
+    }
+    
+    .client-row span {
+        font-size: 1.3rem !important;
+        white-space: normal !important;
+        text-align: left !important;
+    }
+
+    /* Si los iconos se desalinean, asegúrate de que mantengan un tamaño constante */
+    .client-row i, .client-row img, .client-row svg {
+        flex-shrink: 0 !important;            /* Evita que el icono se encoja si el texto es largo */
+    }
+    /* Forzar orden: Primero pagar/datos, luego el desglose abajo si prefieres */
+    .left-col { order: 2; }
+    .right-col { order: 1; }
 }

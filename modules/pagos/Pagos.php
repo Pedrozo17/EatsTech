@@ -115,9 +115,9 @@ $waNumber = "573248933841";
                         <?php if ($cart->total_items() > 0): ?>
                         <tfoot>
                             <tr class="order-total-row">
-                                <td colspan="3" style="text-align:right;">Total:</td>
+                                <td>Total:</td>
                                 <td class="price-cell total-amount">
-                                    $<?php echo number_format($cart->total(), 0, ',', '.'); ?> COP
+                                 $<?php echo number_format($cart->total(), 0, ',', '.'); ?> COP
                                 </td>
                             </tr>
                         </tfoot>

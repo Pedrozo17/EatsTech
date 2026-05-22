@@ -316,20 +316,115 @@ body {
 }
 
 /* ── RESPONSIVE ── */
-@media (max-width: 600px) {
-    .site-header {
-        padding: 12px 16px;
-    }
 
-    .header-logo span {
-        display: none;
+/* 1. Ajustes para Tablets y pantallas medianas (Menos de 900px) */
+@media (max-width: 900px) {
+    .site-header {
+        padding: 14px 20px;
     }
 
     .header-nav {
-        gap: 16px;
+        gap: 15px; /* Reducimos separación para que quepa en tablets */
     }
 
+    .header-nav a {
+        font-size: 1.1rem; /* Tipografía un poco más pequeña */
+    }
+}
+
+/* 2. Ajustes críticos para Celulares (Menos de 650px) */
+@media (max-width: 650px) {
+    /* --- HEADER RESPONSIVE --- */
+    .site-header {
+        padding: 10px 16px;
+        flex-wrap: wrap; /* Permite que los elementos se organicen en bloques si es necesario */
+    }
+
+    .header-logo img {
+        width: 40px; /* Logo más compacto */
+        height: 40px;
+    }
+
+    .header-logo span {
+        font-size: 1.3rem; /* Ocultamos el texto largo solo en pantallas diminutas, aquí reducimos */
+        letter-spacing: 1px;
+    }
+
+    /* Redireccionamos la navegación a la parte inferior del header de manera fluida */
+    .header-nav {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 10px;
+        border-top: 1px solid rgba(236, 226, 198, 0.1);
+        padding-top: 8px;
+    }
+
+    .header-nav a {
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+    }
+
+    .cart-icon-btn {
+        font-size: 1.6rem; /* Ícono de carrito adaptado al pulgar */
+    }
+
+    /* --- HERO DEL MENÚ --- */
+    .menu-hero {
+        height: 160px; /* Reducimos altura para no consumir toda la pantalla del móvil */
+    }
+
+    /* --- CUADRÍCULA DE PLATOS --- */
+    .products-section {
+        margin: 25px auto;
+        padding: 0 15px;
+    }
+
+    /* Cambiamos a tarjetas en una sola columna limpia y fluida */
     .products-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    /* --- TARJETA INDIVIDUAL (CARD) --- */
+    .card-img-wrap {
+        height: 180px; /* Ajuste proporcional de la imagen del plato */
+    }
+
+    .card-name {
+        font-size: 1.6rem;
+    }
+
+    .card-description {
+        font-size: 1.1rem;
+    }
+
+    /* --- BOTÓN Y PRECIO COMPACTOS --- */
+    .card-footer-row {
+        flex-direction: row; /* Mantenemos fila pero controlamos desbordes */
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .card-price {
+        font-size: 1.5rem; /* Ajuste para evitar que choque con el botón */
+    }
+
+    .btn-add-cart {
+        font-size: 1rem;
+        padding: 8px 16px; /* Botón estilizado, fácil de cliquear con el dedo */
+    }
+}
+
+/* 3. Micro-ajustes para celulares extremadamente pequeños (Menos de 380px) */
+@media (max-width: 380px) {
+    .header-logo span {
+        display: none; /* Oculta el texto si el dispositivo es demasiado angosto */
+    }
+    
+    .header-nav a {
+        font-size: 0.9rem;
     }
 }

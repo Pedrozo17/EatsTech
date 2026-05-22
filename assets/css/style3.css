@@ -290,21 +290,229 @@
             color: var(--camaron-teal);
         }
 
-        /* ── FOOTER ── */
-        .site-footer {
-            background-color: var(--dark-1);
-            text-align: center;
-            padding: 24px;
-            margin-top: 60px;
-            color: #888;
-            font-size: 1.3rem;
-        }
+/* ── FOOTER GENERAL ── */
+.site-footer {
+    background-color: var(--dark-1);
+    text-align: center;
+    padding: 24px;
+    margin-top: 60px;
+    color: #888;
+    font-size: 1.3rem;
+}
 
-        .site-footer a { color: var(--camaron-teal); text-decoration: none; }
+.site-footer a { color: var(--camaron-teal); text-decoration: none; }
 
-        @media (max-width: 640px) {
-            .site-header { padding: 12px 16px; }
-            .header-logo span { display: none; }
-            .header-nav { gap: 14px; }
-            thead th, tbody td, tfoot td { padding: 12px; font-size: 1.3rem; }
-        }
+
+/* ── 📱 SECCIÓN RESPONSIVE COMPLETA ── */
+
+/* 1. Ajustes intermedios para Tablets (Menos de 900px) */
+@media (max-width: 900px) {
+    .site-header {
+        padding: 14px 20px;
+    }
+
+    .header-nav {
+        gap: 15px;
+    }
+
+    .header-nav a {
+        font-size: 1.1rem;
+    }
+
+    .cart-wrapper {
+        padding: 0 15px;
+        margin: 30px auto;
+    }
+}
+
+/* 2. Transformación Radical para Celulares (Menos de 768px) */
+@media (max-width: 768px) {
+    
+    /* --- HEADER FLUIDO --- */
+    .site-header {
+        padding: 10px 16px;
+        flex-wrap: wrap;
+    }
+
+    .header-logo img {
+        width: 42px;
+        height: 42px;
+    }
+
+    .header-logo span {
+        font-size: 1.3rem;
+        letter-spacing: 1px;
+    }
+
+    .header-nav {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 10px;
+        border-top: 1px solid rgba(236, 226, 198, 0.1);
+        padding-top: 8px;
+    }
+
+    .header-nav a {
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+    }
+
+    /* --- DESTRUCCIÓN Y RECONSTRUCCIÓN DE LA TABLA A TARJETAS MOBILE --- */
+    .cart-table-wrap {
+        background: transparent;
+        box-shadow: none;
+        overflow: visible;
+    }
+
+    table, thead, tbody, th, td, tr {
+        display: block; /* Convertimos todo en bloques independientes */
+    }
+
+    /* Ocultamos los encabezados de la tabla (Producto, Precio...) ya que no caben horizontalmente */
+    thead {
+        display: none;
+    }
+
+    /* Cada fila (Cada plato agregado) ahora se comporta como una tarjeta separada */
+    tbody tr {
+        background: var(--white);
+        margin-bottom: 16px;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        border: 1px solid rgba(0,0,0,0.03);
+        position: relative;
+    }
+
+    tbody tr:hover { background-color: var(--white); }
+
+    /* Estilos para las celdas individuales dentro de la tarjeta móvil */
+    tbody td {
+        padding: 8px 0;
+        font-size: 1.2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: none;
+        width: 100%;
+    }
+
+    /* El contenedor del Nombre e Imagen del plato */
+    .product-name {
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        padding-bottom: 12px;
+        margin-bottom: 6px;
+    }
+
+    .product-name div {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .product-name span {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    /* Truco: Inyectamos etiquetas falsas antes de los valores para saber qué es cada cosa */
+    .price-cell:nth-of-type(2)::before {
+        content: "Precio unitario:";
+        color: #777;
+        font-family: var(--dm-sans);
+        font-size: 1.1rem;
+        font-weight: 400;
+    }
+
+    td:nth-of-type(3)::before {
+        content: "Cantidad:";
+        color: #777;
+        font-size: 1.1rem;
+    }
+
+    .price-cell:nth-of-type(4)::before {
+        content: "Subtotal:";
+        color: #777;
+        font-family: var(--dm-sans);
+        font-size: 1.1rem;
+        font-weight: 400;
+    }
+
+    /* El botón de eliminar lo flotamos arriba a la derecha de la tarjeta */
+    td:nth-of-type(5) {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: auto;
+        padding: 0;
+    }
+
+    .btn-delete {
+        width: 34px;
+        height: 34px;
+        font-size: 1.2rem;
+    }
+
+/* --- RESTRUCTURACIÓN DEL FOOTER DE LA TABLA (TOTALES Y ACCIONES) --- */
+    tfoot tr {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        display: flex;
+        flex-direction: column; /* Apila los elementos verticalmente uno tras otro */
+        gap: 15px; /* Espaciado uniforme entre total, volver y pagar */
+    }
+
+    tfoot td {
+        padding: 0 !important;
+        width: 100% !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    /* Forzamos a que las celdas vacías del tfoot no ocupen espacio ni rompan el flexflow */
+    tfoot tr td:empty, 
+    tfoot tr td:nth-child(2), 
+    tfoot tr td:nth-child(3) { 
+        display: none !important; 
+    }
+
+    .total-label {
+        font-size: 1.6rem;
+        justify-content: space-between !important; /* Separa la palabra Total del número en los extremos */
+        width: 100%;
+        border-bottom: 1px dashed rgba(207,148,101,0.3);
+        padding-bottom: 12px !important;
+        margin-bottom: 5px;
+    }
+
+    .total-amount {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--camaron-gold);
+    }
+
+    /* Aseguramos que los botones se estiren al 100% y no se pisen */
+    .btn-back, .btn-pay {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 14px !important; /* Un poco más alto para que sea más fácil darle tap */
+        font-size: 1.2rem !important;
+        box-sizing: border-box;
+    }
+}
+
+/* 3. Ajustes finos para pantallas extra angostas (Menos de 380px) */
+@media (max-width: 380px) {
+    .header-logo span {
+        display: none;
+    }
+    
+    .header-nav a {
+        font-size: 0.9rem;
+    }
+}

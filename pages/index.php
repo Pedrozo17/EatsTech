@@ -1,7 +1,7 @@
 <?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
-<!-- resto de tu HTML igual -->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +15,6 @@
 
 <body>
 
-
     <div class="loading-page">
         <img id="svg" src="../assets/images/logo.png" alt="Logo">
         <div class="name-container">
@@ -23,33 +22,39 @@
         </div>
     </div>
 
-<nav class="navbar">
-    <div class="nav-container">
-        <img src="../assets/images/logo.png" alt="Logo" class="nav-logo">
-        <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Servicios</a></li>
-            <li><a href="#">Sobre Nosotros</a></li>
-            <li><a href="#">Contáctanos</a></li>
-        </ul>
-        <div class="nav-buttons">
+    <nav class="navbar">
+        <div class="nav-container">
+            <img src="../assets/images/logo.png" alt="Logo" class="nav-logo">
             
-            <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
-        <span class="nav-user">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
-        <a href="../modules/usuarios/logout.php" class="btn-login">Cerrar sesión</a>
-    <?php else: ?>
-        <a href="../modules/usuarios/iniciodesesion.php" class="btn-login">Iniciar sesión</a>
-    <?php endif; ?>
-</div>
-    </div>
-</nav>
+            <button class="menu-toggle" id="mobile-menu-btn" aria-label="Abrir menú">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
 
-
+            <div class="nav-collapse" id="navbar-collapse-target">
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Servicios</a></li>
+                    <li><a href="#">Sobre Nosotros</a></li>
+                    <li><a href="#">Contáctanos</a></li>
+                </ul>
+                <div class="nav-buttons">
+                    <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
+                        <div class="user-logged-wrapper">
+                            <span class="nav-user">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
+                            <a href="../modules/usuarios/logout.php" class="btn-login">Cerrar sesión</a>
+                        </div>
+                    <?php else: ?>
+                        <a href="../modules/usuarios/iniciodesesion.php" class="btn-login">Iniciar sesión</a>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </nav>
 
     <div class="swiper mySwiper">
-
         <div class="swiper-wrapper">
-
             <div class="swiper-slide">
                 <div class="icons">
                     <i class="fa-solid fa-circle-arrow-left"></i>
@@ -62,13 +67,10 @@
                         <p>
                             Somos un espacio enfocado en los cocteles de camarón, basándonos en recetas tradicionales así como innovaciones
                             constantes traída de otros departamentos y de la costa colombiana
-
                         </p>
                     </div>
                     <div class="product-img">
-                        <img src="\Eatstech\assets\images\logo_empresa.png"
-                            alt="">
-
+                        <img src="/Eatstech/assets/images/logo_empresa.png" alt="">
                     </div>
                 </div>
                 <a href="./casarolla.php" class="btn-1">entrar</a>
@@ -86,7 +88,6 @@
                         <p>
                             La mejor comida paisa con una excelente atención estamos ubicados frente al acueducto, a una
                             cuadra del comando de la policía . en mosquera , cundinamarca.
-
                         </p>
                     </div>
                     <div class="product-img">
@@ -109,7 +110,7 @@
                         <h3>TOSKANA</h3>
                         <p>
                             nos enorgullece ofrecer una experiencia culinaria única que combina la auténtica cocina de
-                            autor con la comida tradicional colombiana. Mezclando matices, tendencias y sabores llegando
+                            autor con la comida tradicional colombiana. Mezclando matices, trends y sabores llegando
                             al punto de nuestra identidad propia.
                         </p>
                     </div>
@@ -121,16 +122,12 @@
                 </div>
                 <a href="./index.html" class="btn-1">proximamente</a>
             </div>
-
-            x
         </div>
-
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"> </script>
     <script>
-
         var swiper = new Swiper(".mySwiper", {
             effect: "coverflow",
             grabCursor: true,
@@ -144,12 +141,20 @@
                 rotate: 0,
                 stretch: 0
             }
+        });
 
-        }
+        // --- CONTROL DEL MENÚ DE HAMBURGUESA ---
+        document.addEventListener("DOMContentLoaded", function() {
+            const menuBtn = document.getElementById("mobile-menu-btn");
+            const navCollapse = document.getElementById("navbar-collapse-target");
 
-        );
+            menuBtn.addEventListener("click", function() {
+                navCollapse.classList.toggle("show");
+                menuBtn.classList.toggle("open");
+            });
+        });
 
-        // Agrega la clase 'loading' al body al inicio
+        // Animaciones de carga existentes
         document.body.classList.add("loading");
 
         gsap.fromTo(
@@ -172,18 +177,12 @@
                 duration: 1.5,
                 delay: 2.5,
                 onComplete: () => {
-                    // Cuando termina la animación, oculta la pantalla
-                    // y muestra el contenido
                     document.querySelector(".loading-page").style.display = "none";
                     document.querySelector(".swiper").style.visibility = "visible";
                     document.body.classList.remove("loading");
                 }
             }
         );
-
     </script>
-
-
 </body>
-
 </html>

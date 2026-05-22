@@ -17,26 +17,29 @@
         </div>
     </div>
 
-<nav class="navbar">
-    <div class="nav-container">
-        <img src="\Eatstech\assets\images\logo.png" alt="Logo" class="nav-logo">
-        <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Servicios</a></li>
-            <li><a href="#">Sobre Nosotros</a></li>
-            <li><a href="#">Contáctanos</a></li>
-        </ul>
-        <div class="nav-buttons">
+    <nav class="navbar">
+        <div class="nav-container">
+            <img src="\Eatstech\assets\images\logo.png" alt="Logo" class="nav-logo">
             
-            <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
-        <span class="nav-user">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
-        <a href="../modules/usuarios/logout.php" class="btn-login">Cerrar sesión</a>
-    <?php else: ?>
-        
-    <?php endif; ?>
-</div>
-    </div>
-</nav>
+            <button class="menu-toggle" id="mobile-menu-btn" aria-label="Abrir menú">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
+            <div class="nav-collapse" id="navbar-collapse-target">
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Servicios</a></li>
+                    <li><a href="#">Sobre Nosotros</a></li>
+                    <li><a href="#">Contáctanos</a></li>
+                </ul>
+                <div class="nav-buttons">
+                        <a href="\Eatstech\pages\index.php" class="btn-login">Volver</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
 
     <div class="container right-panel-active">
@@ -148,6 +151,19 @@
             container.classList.add("right-panel-active");
         }
     }
+
+
+        // --- CONTROL DEL MENÚ DE HAMBURGUESA ---
+        document.addEventListener("DOMContentLoaded", function() {
+            const menuBtn = document.getElementById("mobile-menu-btn");
+            const navCollapse = document.getElementById("navbar-collapse-target");
+
+            menuBtn.addEventListener("click", function() {
+                navCollapse.classList.toggle("show");
+                menuBtn.classList.toggle("open");
+            });
+        });
+
 
     </script>
 </body>

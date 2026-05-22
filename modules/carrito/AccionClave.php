@@ -7,23 +7,30 @@ include '../../config/Configuracion.php'; // Tu conexión oficial $db
 
     if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])){
     
-    // --- ACCIÓN 1: GENERAR CÓDIGO Y ENVIAR POR WHATSAPP (FLUJO UX AUTOMÁTICO) ---
+    // --- ACCIÓN 1: GENERAR CÓDIGO CON DOBLE FACTOR DE VERIFICACIÓN (CORREO + TELÉFONO) ---
     if($_POST['action'] == 'solicitar_codigo'){
         $correo = $db->real_escape_string($_POST['correo']);
         
-        $checkEmail = $db->query("SELECT id, telefono FROM registro.datos WHERE correo = '$correo'");
+        // Capturamos el teléfono digitado por el usuario y le removemos caracteres raros por si acaso
+        $telefonoIngresado = preg_replace('/[^0-9]/', '', $_POST['telefono']);
         
-        if($checkEmail && $checkEmail->num_rows > 0){
-            $userRow = $checkEmail->fetch_assoc();
-            $telefonoCliente = preg_replace('/[^0-9]/', '', $userRow['telefono']);
+        // 🟢 DOBLE CANDADO: La consulta busca que coincidan obligatoriamente el CORREO Y el TELEFONO
+        $checkUser = $db->query("SELECT id, telefono FROM registro.datos WHERE correo = '$correo' AND telefono = '$telefonoIngresado'");
+        
+        if($checkUser && $checkUser->num_rows > 0){
+            $userRow = $checkUser->fetch_assoc();
+            $telefonoCliente = $userRow['telefono']; // Usamos el de la BD verificado
             
+            // Si el teléfono no tiene el prefijo de Colombia (57), se lo agregamos para WhatsApp
             if (strlen($telefonoCliente) == 10) {
                 $telefonoCliente = "57" . $telefonoCliente;
             }
 
+            // Generamos el código secreto
             $codigo = rand(100000, 999999);
             $expira = date("Y-m-d H:i:s", strtotime('+15 minutes'));
             
+            // Guardamos el código seguro ligado al correo verificado
             $update = $db->query("UPDATE registro.datos SET codigo_reset = '$codigo', codigo_expira = '$expira' WHERE correo = '$correo'");
             
             if($update){
@@ -33,8 +40,7 @@ include '../../config/Configuracion.php'; // Tu conexión oficial $db
                 $mensajeUrl = urlencode($mensajeTxt);
                 $enlaceWhatsapp = "https://wa.me/" . $telefonoCliente . "?text=" . $mensajeUrl;
                 
-                // 🪄 TRUCO MÁGICO: Inyectamos el enlace real en la pestaña que el navegador ya aprobó,
-                // y movemos la ventana principal al formulario de verificación. ¡Cero clics extra!
+                // Disparamos el WhatsApp en la pestaña ya autorizada y redirigimos a verificar
                 echo "<script>
                     window.open('$enlaceWhatsapp', 'enlace_whatsapp');
                     window.location.href = '../../pages/VerificarCodigo.php';
@@ -45,8 +51,8 @@ include '../../config/Configuracion.php'; // Tu conexión oficial $db
                 exit();
             }
         } else {
-            // Si el correo no existe, cerramos la pestaña huérfana que abrimos y devolvemos error
-            echo "<script>window.close('enlace_whatsapp'); window.location.href='../../pages/OlvideClave.php?error=no_existe';</script>";
+            // ❌ SI NO COINCIDEN: Cerramos la pestaña automática y devolvemos el error de datos inválidos
+            echo "<script>window.close('enlace_whatsapp'); window.location.href='../../pages/OlvideClave.php?error=no_coincide';</script>";
             exit();
         }
     }

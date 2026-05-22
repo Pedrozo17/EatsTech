@@ -6,37 +6,230 @@ if (empty($_SESSION['reset_correo'])) { header("Location: OlvideClave.php"); exi
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verificar Código - Camaron Express</title>
     <link rel="stylesheet" href="\Eatstech\assets\css\style2.css">
+    
     <style>
-        .form-container { max-width: 400px; margin: 80px auto; padding: 30px; background: #111; border: 1px solid #d4af37; border-radius: 8px; text-align: center; color: #fff; }
-        .form-group input { width: 100%; padding: 12px; background: #222; border: 1px solid #444; color: #fff; text-align: center; font-size: 20px; letter-spacing: 5px; border-radius: 4px; }
-        .btn-reset { background: #d4af37; color: #000; padding: 12px; border: none; width: 100%; font-weight: bold; cursor: pointer; border-radius: 4px; margin-top: 15px; }
-        .error-msg { color: #ff4d4d; margin-bottom: 15px; }
+        /* Variables Corporativas de EatsTech */
+        :root {
+            --white: #e9e9e9;
+            --black: #323232;
+            --amarillo: #FFB900;
+            --amarillo-hover: #e0a800;
+            --bg-card: #1a1a1a;
+            --bg-input: #2a2a2a;
+            --button-radius: 20px;
+        }
+
+        body {
+            background-color: var(--black);
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }
+
+        /* --- CONTENEDOR FLOTANTE PREMIUM --- */
+        .recovery-wrapper {
+            width: 100%;
+            max-width: 450px;
+            margin: 120px auto 40px auto; /* Separación prudente del navbar */
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .form-container {
+            background-color: var(--bg-card);
+            border-radius: 1.5rem;
+            box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.6);
+            padding: 2.5rem;
+            width: 100%;
+            text-align: center;
+            color: #fff;
+            box-sizing: border-box;
+            border: 1px solid #2a2a2a;
+        }
+
+        /* Icono decorativo de validación de código */
+        .recovery-icon {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(255, 185, 0, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem auto;
+        }
+
+        .form-container h2 {
+            color: var(--amarillo);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 0 0.8rem 0;
+        }
+
+        .form-container .subtitle {
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        /* --- INPUT ENFOCADO EN EL CÓDIGO NUMÉRICO --- */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            background: var(--bg-input);
+            border: 1px solid #444;
+            color: #fff;
+            text-align: center;
+            font-size: 24px; /* Un poco más grande para facilitar la lectura */
+            letter-spacing: 8px; /* Mayor separación de los números */
+            font-weight: bold;
+            border-radius: 8px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--amarillo);
+            box-shadow: 0 0 8px rgba(255, 185, 0, 0.25);
+        }
+
+        .form-group input::placeholder {
+            color: #555;
+            letter-spacing: 8px;
+        }
+
+        /* --- BOTÓN PRINCIPAL --- */
+        .btn-reset {
+            background: var(--amarillo);
+            color: #000;
+            padding: 14px;
+            border: none;
+            width: 100%;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            border-radius: var(--button-radius);
+            margin-top: 10px;
+            transition: background-color 0.3s ease, transform 80ms ease;
+        }
+
+        .btn-reset:hover {
+            background: var(--amarillo-hover);
+        }
+
+        .btn-reset:active {
+            transform: scale(0.98);
+        }
+
+        /* --- ALERTAS DE ERROR --- */
+        .error-msg {
+            background-color: rgba(255, 77, 77, 0.15);
+            border: 1px solid #ff4d4d;
+            color: #ff4d4d;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        /* --- ENLACE INFERIOR --- */
+        .recovery-footer {
+            margin-top: 1.5rem;
+            border-top: 1px solid #2a2a2a;
+            padding-top: 1.2rem;
+        }
+
+        .back-link {
+            color: #888;
+            font-size: 13px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--amarillo);
+        }
+
+        /* ==========================================================================
+           RESPONSIVE (PANTALLAS CELULARES)
+           ========================================================================== */
+        @media (max-width: 767px) {
+            .recovery-wrapper {
+                margin-top: 100px;
+            }
+
+            .form-container {
+                padding: 1.8rem 1.2rem;
+                border-radius: 1rem;
+            }
+
+            .form-container h2 {
+                font-size: 1.3rem;
+            }
+
+            .form-group input {
+                font-size: 20px;
+                letter-spacing: 6px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h2>Verificar Código</h2>
-        
-        <p style="color: #aaa; font-size: 14px; margin-bottom: 20px;">Hemos enviado un código de verificación a tu WhatsApp registrado. Por favor, digítalo a continuación para continuar.</p>
-
-        <?php if(isset($_GET['error'])): ?>
-            <div class="error-msg">
-                <?php 
-                    if($_GET['error'] == 'incorrecto') echo "El código ingresado es incorrecto.";
-                    if($_GET['error'] == 'expirado') echo "El código ha expirado (Límite 15 min).";
-                ?>
+    <div class="recovery-wrapper">
+        <div class="form-container">
+            
+            <div class="recovery-icon">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFB900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    <polyline points="9 11 12 14 16 9"></polyline>
+                </svg>
             </div>
-        <?php endif; ?>
 
-        <form action="../modules/carrito/AccionClave.php" method="POST">
-            <input type="hidden" name="action" value="verificar_codigo">
-            <div class="form-group">
-                <input type="text" name="codigo" maxlength="6" required placeholder="000000" autocomplete="off">
+            <h2>Verificar Código</h2>
+            <p class="subtitle">Hemos enviado un código de verificación a tu WhatsApp registrado. Por favor, digítalo a continuación para continuar.</p>
+            
+            <?php if(isset($_GET['error'])): ?>
+                <div class="error-msg">
+                    <?php 
+                        if($_GET['error'] == 'incorrecto') echo "⚠️ El código ingresado es incorrecto.";
+                        if($_GET['error'] == 'expirado') echo "⏳ El código ha expirado (Límite 15 min).";
+                    ?>
+                </div>
+            <?php endif; ?>
+
+            <form action="../modules/carrito/AccionClave.php" method="POST">
+                <input type="hidden" name="action" value="verificar_codigo">
+                
+                <div class="form-group">
+                    <input type="text" name="codigo" maxlength="6" required placeholder="000000" autocomplete="off" pattern="[0-9]+">
+                </div>
+
+                <button type="submit" class="btn-reset">Validar Código</button>
+            </form>
+
+            <div class="recovery-footer">
+                <a href="\Eatstech\pages\OlvideClave.php" class="back-link">← Solicitar un nuevo código</a>
             </div>
-            <button type="submit" class="btn-reset">Validar Código</button>
-        </form>
+        </div>
     </div>
 </body>
 </html>
