@@ -1,219 +1,198 @@
+
 # EatsTech
 
-EatsTech es una plataforma web de restaurantes que resuelve la falta de visibilidad digital de los negocios gastronómicos en Mosquera, Cundinamarca. Permite a los restaurantes mostrar sus productos, gestionar pedidos y conectar con sus clientes a través de un aplicativo web. Los usuarios pueden explorar restaurantes, navegar por el menu, agregar productos al carrito y realizar pedidos en linea.
+EatsTech es una plataforma web de restaurantes que resuelve la falta de visibilidad digital de los negocios gastronómicos en Mosquera, Cundinamarca. Permite a los restaurantes mostrar sus productos, gestionar pedidos y conectar con sus clientes a través de un aplicativo web. Los usuarios pueden explorar restaurantes, navegar por el menú, agregar productos al carrito y realizar pedidos en línea; mientras que los administradores de los negocios cuentan con un panel de control avanzado para la gestión de su inventario y el monitoreo de órdenes en tiempo real.
+
+---
+
+## Integrantes / Autores
+- **Samuel Pedrozo Baena**
+- **Juan David Fernández Pérez**
+- **Cristopher Stuard Romero Monsalve**
+
+*Proyecto de desarrollo de software - Orientado a la gestión e integración de servicios gastronómicos locales.*
+
 ---
 
 ## Funcionalidades
 
-- Pantalla de carga animada con logo usando GSAP
-- Navbar flotante con sesion de usuario activa
-- Sistema de autenticacion completo (registro e inicio de sesion)
-- Sesiones PHP que persisten el usuario en todas las paginas
-- Carrusel de restaurantes con efecto coverflow usando Swiper.js
-- Pagina individual por restaurante con menu navegable
-- Carrito de compras funcional
-- Sistema de pagos y seguimiento de pedidos
-- Cierre de sesion con redireccion automatica
+### 👤 Área del Cliente
+- **Experiencia Fluida:** Pantalla de carga animada con logo usando GSAP 3.
+- **Navegación Dinámica:** Navbar flotante con sesión de usuario activa y carrusel de restaurantes con efecto coverflow usando Swiper.js.
+- **Autenticación Completa:** Sistema de registro e inicio de sesión con persistencia mediante sesiones PHP nativas.
+- **Módulo de Compras:** Carrito de compras funcional, sistema de pagos integrado y confirmación automatizada de la orden.
+- **Seguimiento:** Módulo de tracking para verificar el progreso del pedido.
+
+### 💼 Panel Administrativo (`admin_dashboard.php`)
+- **Control de Acceso:** Restricción estricta por roles de usuario corporativos (`$_SESSION['tipo'] === 'empresa'`).
+- **CRUD de Productos:** Interfaz para crear, actualizar y eliminar platos del menú de manera dinámica sobre la tabla `mis_productos`.
+- **Monitoreo de Órdenes en Tiempo Real:** Panel de control asíncrono que procesa las tablas `orden` y `pedidos_registrados`.
+- **Actualización en Caliente (AJAX Fetch):** Selectores visuales interactivos que modifican los estados de preparación y pago de los pedidos instantáneamente sin necesidad de recargar la página.
 
 ---
 
-## Tecnologias utilizadas
+## Tecnologías utilizadas
 
-| Tecnologia | Uso |
+| Tecnología | Uso |
 |---|---|
-| HTML5 | Estructura de las paginas |
-| CSS3 | Estilos y diseno visual |
-| PHP | Backend, sesiones y logica de negocio |
-| MySQL | Base de datos |
-| JavaScript | Interactividad |
-| GSAP 3 | Animaciones |
-| Swiper.js 9 | Carrusel de restaurantes |
-| Font Awesome 6 | Iconos |
-| XAMPP | Servidor local (Apache + MySQL) |
+| **HTML5 & CSS3** | Estructura semántica, diseño responsive y estilos visuales personalizados. |
+| **PHP 8** | Backend modular, gestión de sesiones, validaciones de seguridad y lógica del CRUD. |
+| **MySQL** | Base de datos relacional para persistencia de usuarios, platos y órdenes. |
+| **JavaScript (ES6+)** | Consumo de endpoints asíncronos mediante `Fetch API` y manipulación del DOM en tiempo real. |
+| **GSAP 3** | Animaciones de carga y transiciones de interfaz. |
+| **Swiper.js 9** | Componente del carrusel interactivo de restaurantes. |
+| **Font Awesome 6** | Paquete de iconografía del sitio. |
+| **XAMPP** | Entorno de desarrollo local (Servidor Apache y servidor de Base de Datos MySQL). |
 
 ---
-
-## Estructura del proyecto
-
-```
-Eatstech/
-├── assets/
-│   ├── css/
-│   │   ├── style.css
-│   │   ├── style1.css
-│   │   ├── estilo2.css
-│   │   └── estilo3.css
-│   ├── images/
-│   └── js/
-│       ├── main.js
-│       ├── script.js
-│       └── script2.js
-├── config/
-│   ├── con_db.php
-│   ├── Configuracion.php
-│   └── conx.php
-├── database/
-│   ├── carrito.sql
-│   ├── carrito2.sql
-│   ├── carrito3.sql
-│   ├── comida.sql
-│   ├── pagos.sql
-│   ├── registro.sql
-│   └── restaurante.sql
-├── modules/
-│   ├── carrito/
-│   │   ├── AccionCarta.php
-│   │   └── carritodecompras.php
-│   ├── menu/
-│   │   ├── La-carta.php
-│   │   └── VerCarta.php
-│   ├── pagos/
-│   │   ├── OrdenExito.php
-│   │   ├── Pagos.php
-│   │   └── procesar_pago.php
-│   └── usuarios/
-│       ├── iniciodesesion.php
-│       ├── login.php
-│       ├── logout.php
-│       ├── registrar.php
-│       └── reset_password.html
-├── pages/
-│   ├── index.php
-│   ├── casarolla.php
-│   ├── formulariodepago.html
-│   ├── RealizarPago.html
-│   └── tracking.html
-├── favicon.svg
-├── style-guide.md
-└── README.md
-```
 
 ## Requisitos previos
 
-### Hardware minimo
-
-| Componente | Minimo |
-|---|---|
-| Procesador | Intel Core i3 o AMD equivalente |
-| Memoria RAM | 4 GB |
-| Almacenamiento | 500 MB libres |
-| Sistema operativo | Windows 10, macOS 10.14, o Linux Ubuntu 20.04 |
-| Conexion a internet | Requerida para cargar fuentes y librerias externas |
+### Hardware mínimo
+- **Procesador:** Intel Core i3 o AMD equivalente
+- **Memoria RAM:** 4 GB
+- **Almacenamiento:** 500 MB libres
+- **Sistema Operativo:** Windows 10, macOS 10.14, o Linux Ubuntu 20.04
+- **Conexión a internet:** Requerida para la carga de CDNs externos (Fuentes y librerías)
 
 ### Hardware recomendado
+- **Procesador:** Intel Core i5 o superior
+- **Memoria RAM:** 8 GB o más
+- **Almacenamiento:** 1 GB libre
+- **Sistema Operativo:** Windows 11, macOS 12 o Linux Ubuntu 22.04
 
-| Componente | Recomendado |
-|---|---|
-| Procesador | Intel Core i5 o superior |
-| Memoria RAM | 8 GB o mas |
-| Almacenamiento | 1 GB libres |
-| Sistema operativo | Windows 11, macOS 12 o Linux Ubuntu 22.04 |
+---
 
-## Instalacion
+## Instalación
 
-1. Descarga o clona el repositorio:
+1. **Descargar o clona el repositorio:**
+   ```bash
+   git clone [https://github.com/usuario/Eatstech.git](https://github.com/usuario/Eatstech.git)
 
-   git clone https://github.com/usuario/Eatstech.git
+```
 
-O descarga el ZIP y extrae la carpeta.
+*O extrae el archivo ZIP directamente en tu ordenador.*
 
-2. Copia la carpeta del proyecto dentro de htdocs de XAMPP:
+2. **Montar en el servidor local:**
+Mueve o copia la carpeta completa del proyecto dentro del directorio de despliegue local de XAMPP:
+```html
+C:/xampp/htdocs/Eatstech/
 
-   C:/xampp/htdocs/Eatstech/
+```
 
-## Ejecucion local
 
-1. Abre XAMPP y activa los modulos Apache y MySQL.
-2. Importa la base de datos (ver seccion Base de datos).
-3. Abre el navegador y entra a:
 
-   http://localhost/Eatstech/pages/index.php
+---
+
+## Ejecución local
+
+1. Abre el panel de control de XAMPP y activa los módulos de **Apache** y **MySQL**.
+2. Importa la base de datos (ver sección correspondiente abajo).
+3. Abre tu navegador web de preferencia e ingresa a la siguiente URL:
+```html
+http://localhost/Eatstech/pages/index.php
+
+```
+
+
+
+---
 
 ## Base de datos
 
-1. Abre phpMyAdmin en:
-
-   http://localhost/phpmyadmin
-
-2. Importa los archivos SQL en este orden desde la carpeta database/:
-
-registro.sql
-restaurante.sql
-comida.sql
-carrito.sql
-carrito2.sql
-carrito3.sql
-pagos.sql
+1. Dirígete al gestor de bases de datos web en `http://localhost/phpmyadmin`.
+2. Crea una base de datos llamada `registro` (o el nombre que prefieras para tu entorno).
+3. Selecciona la base de datos e importa los archivos estructurados que se encuentran dentro de la carpeta `database/` en el siguiente **orden estricto**:
+1. `registro.sql`
+2. `restaurante.sql`
+3. `comida.sql`
+4. `carrito.sql`
+5. `carrito2.sql`
+6. `carrito3.sql`
+7. `pagos.sql`
 
 
-3. Verifica que la conexion en config/con_db.php coincida con tu configuracion local:
 
-- php   $conex = mysqli_connect("localhost", "root", "", "registro");
+### Estructura de Control de Estados actualizados:
 
-## Variables de entorno
-- Este proyecto no requiere variables de entorno. La configuracion de la base de datos se maneja directamente en config/con_db.php.
+Ambas tablas críticas de control operativo manejan un formato de texto unificado para evitar colapsos en las peticiones AJAX:
+
+* **`pedidos_registrados`**: Cuenta con la columna `estado` (`VARCHAR(50)`) para registrar de forma legible el progreso de entrega.
+* **`orden`**: Cuenta con la columna `status` (`VARCHAR(50)`) configurada con el valor por defecto `'En Espera'`.
+
+---
+
+## Variables de entorno y Configuración
+
+El proyecto no requiere archivos `.env` externos. La configuración de la conexión global a la base de datos se centraliza en el archivo:
+
+* Ruta del archivo: `config/configuracion.php`
+
+### Código base de conexión local:
+
+```php
+<?php
+// Configuración de conexión orientada a objetos ($db)
+$db = new mysqli("localhost", "root", "", "registro");
+
+if ($db->connect_error) {
+    die("Error de conexión: " . $db->connect_error);
+}
+?>
+
+```
+
+---
 
 ## Usuario de prueba
-- El sistema no tiene un usuario de prueba predefinido. Para probar el sistema:
 
-1. Ve a: http://localhost/Eatstech/modules/usuarios/iniciodesesion.php
-2. Registrate con cualquier correo y contraseña.
-3. sesion con las mismas credenciales.
+El sistema no cuenta con un usuario quemado en código por motivos de seguridad, permitiendo el auto-registro libre. Para realizar pruebas del flujo completo:
 
-
-## Despliegue
-- El proyecto esta disenado para correr en un servidor local con XAMPP. Para desplegarlo en produccion se recomienda:
-
-- Hosting con soporte PHP 8 y MySQL (por ejemplo: Hostinger, InfinityFree, o 000webhost)
-- Subir los archivos via FTP o panel de control del hosting
-- Crear la base de datos en el panel del hosting e importar los archivos SQL
-- Actualizar las rutas en config/con_db.php con los datos del servidor de produccion
-- Implementar HTTPS para proteger los datos de los usuarios
-
-## Flujo de usuario
-
-1. El usuario entra a index.php y ve la pantalla de carga animada.
-2. El navbar muestra los links de navegacion y el boton de login.
-3. El usuario puede registrarse o iniciar sesion desde iniciodesesion.php.
-4. Tras autenticarse, el navbar muestra su nombre y la opcion de cerrar sesion.
-5. Desde el carrusel selecciona un restaurante (por ejemplo Cassarola).
-6. Dentro del restaurante puede navegar por el menu en La-carta.php.
-7. Agrega productos al carrito desde AccionCarta.php.
-8. Revisa su carrito en carritodecompras.php.
-9. Procede al pago en Pagos.php y confirma en procesar_pago.php.
-10. Recibe confirmacion del pedido en OrdenExito.php.
-11. Puede hacer seguimiento del pedido en tracking.html.
+1. Dirígete a la pestaña de inicio de sesión: `http://localhost/Eatstech/modules/usuarios/iniciodesesion.php`.
+2. Haz clic en "Regístrate", rellena los datos de tu nueva cuenta y haz clic en crear.
+3. Inicia sesión con las credenciales que acabas de registrar.
+4. **Nota para Rol Administrador:** Si deseas acceder al panel administrativo en `admin/admin_dashboard.php`, ingresa a phpMyAdmin, busca el usuario registrado en la tabla correspondientes y cambia el campo `tipo` de `'cliente'` a `'empresa'`.
 
 ---
 
-## Restaurantes disponibles
+## Despliegue y Datos a cambiar en Producción
 
-| Restaurante | Estado |
-|---|---|
-| Cassarola | Disponible |
-| Fogon Antioqueno | Disponible |
-| Toskana | Proximamente |
+El proyecto está diseñado para trabajar inicialmente en un entorno local con XAMPP. Para migrar el aplicativo a un entorno de producción (Hosting real como Hostinger, InfinityFree, etc.), se deben realizar las siguientes modificaciones:
+
+### 1. Actualización de Credenciales en el Archivo de Conexión:
+
+Se debe editar el archivo `config/configuracion.php` cambiando los parámetros locales por los suministrados por tu proveedor de hosting:
+
+```php
+// Cambiar en entorno de producción:
+$db = new mysqli("HOST_DEL_HOSTING", "USUARIO_BD_HOSTING", "CONTRASEÑA_BD", "NOMBRE_BD_HOSTING");
+
+```
+
+### 2. Parámetros de Servidor Recomendados:
+
+* Servidor web con soporte para **PHP 8.0** o superior.
+* Motor de bases de datos **MySQL 5.7** o **MariaDB 10.4**.
+* Configuración de certificado **HTTPS** activo para proteger el envío de datos en formularios.
 
 ---
 
-## Notas de seguridad
+## Evidencias del sistema funcionando
 
-- El proyecto usa consultas SQL directas. Se recomienda implementar mysqli_prepare() antes de subir a produccion para evitar inyeccion SQL.
-- Las contrasenas se guardan en texto plano. Se recomienda usar password_hash() y password_verify() en produccion.
-- El proyecto esta disenado para correr en localhost con XAMPP.
+### 📱 Vista del Cliente (Carrito y Menú)
 
----
+Interfaz optimizada donde los usuarios seleccionan los restaurantes en Mosquera, navegan por la carta y consolidan sus productos directamente en el carrito de compras.
 
-## Autores
+### 💼 Vista del Administrador (Monitoreo de Órdenes)
 
-Samuel Pedrozo Baena 
-Juan David Fernandez Peréz
-Cristopher Stuard Romero Monsalve 
-Desarrollado como proyecto final de curso.
-EatsTech - Plataforma de restaurantes, Mosquera, Cundinamarca.
+Panel de control centralizado (`admin_dashboard.php`) con sistema de pestañas funcionales para interactuar dinámicamente con el inventario de platos y modificar los estados de preparación o pago asíncronamente mediante peticiones controladas.
 
 ---
 
 ## Licencia
 
-Este proyecto es de uso educativo y no tiene fines comerciales.
+Este proyecto es de carácter estrictamente educativo y de código abierto para la comunidad estudiantil. No posee fines comerciales.
+
+```
+
+```
