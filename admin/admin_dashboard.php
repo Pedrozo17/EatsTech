@@ -41,24 +41,23 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
     --primary-mint: #9FD5D1;
     --davys-grey: #6f675d;
     
-    /* CONTROL DE CONTRASTE ESTRICTO (Para que todo se lea perfectamente) */
-    --text-main: #2a241d;          /* Café oscuro casi negro para encabezados, títulos y textos fuertes */
-    --text-body: #3b3128;          /* Café intermedio para el contenido general de las celdas */
-    --text-muted: #5a4f44;         /* Café oscuro atenuado para correos y descripciones (ANTES INVISIBLES) */
-    --dark-navbar: #2a241d;        /* Fondo del Navbar premium */
-    --pure-white: #ffffff;         /* Blanco real para contrastes sobre botones oscuros */
+    /* CONTROL DE CONTRASTE ESTRICTO */
+    --text-main: #2a241d;          
+    --text-body: #3b3128;          
+    --text-muted: #5a4f44;         
+    --dark-navbar: #2a241d;        
+    --pure-white: #ffffff;         
     
     /* Color dinámico desde la BD mapeado a tu color principal */
-    --amarillo: <?php echo $color_restaurante; ?>; 
-    --amarillo-hover: #b88258;     /* Tono café acento más oscuro para Hovers */
+    --amarillo: <?php echo isset($color_restaurante) ? $color_restaurante : '#cf9465'; ?>; 
+    --amarillo-hover: #b88258;     
     
-    /* Variables de estructura basadas en tus tonos Vintage */
-    --bg-main: #f7f2e8;            /* Fondo general de la aplicación */
-    --bg-card: #efe6d3;            /* Fondo de los contenedores y tablas */
-    --bg-input: #e4d7be;           /* Fondo de encabezados de tablas (th) e inputs */
+    --bg-main: #f7f2e8;            
+    --bg-card: #efe6d3;            
+    --bg-input: #e4d7be;           
     
     --danger: #d9534f;
-    --success: #1e8449;            /* Un verde un poco más oscuro para que resalte sobre el fondo crema */
+    --success: #1e8449;            
 }
 
 body {
@@ -132,9 +131,9 @@ body {
     flex: 1;
     text-align: center;
     padding: 12px;
-    color: var(--text-body); /* Forzamos a que no sea gris claro */
+    color: var(--text-body); 
     text-decoration: none;
-    font-weight: 800;        /* Más grueso para que resalte en las pestañas */
+    font-weight: 800;        
     font-size: 14px;
     border-radius: 10px;
     transition: all 0.3s ease;
@@ -147,11 +146,11 @@ body {
 
 .submenu-admin a.active {
     background-color: var(--amarillo);
-    color: #cf9465; 
+    color: var(--pure-white); 
     box-shadow: 0 4px 15px rgba(207, 148, 101, 0.25);
 }
 
-/* --- CONTENEDORES DE LAS TABLAS (PANEL BOX) --- */
+/* --- CONTENEDORES DE LAS TABLAS --- */
 .panel-box {
     background-color: var(--bg-card);
     border-radius: 20px;
@@ -176,7 +175,7 @@ body {
 
 .btn-action-top {
     background: var(--amarillo);
-    color: #cf9465;
+    color: var(--pure-white);
     padding: 10px 20px;
     border-radius: 20px;
     text-decoration: none;
@@ -205,75 +204,77 @@ table {
 
 th { 
     background-color: var(--bg-input); 
-    color: var(--text-main);  /* Forzado a café oscuro puro */
+    color: var(--text-main);  
     padding: 15px; 
-    border-bottom: 2px solid var(--text-main); /* Línea divisoria más fuerte */
-    font-weight: 800;         /* Súper legibilidad */
+    border-bottom: 2px solid var(--text-main); 
+    font-weight: 800;         
     text-transform: uppercase;
     font-size: 12px;
     letter-spacing: 0.5px;
 }
 
 td { 
-    padding: 18px 15px;       /* Un poco más de espacio para respirar */
+    padding: 18px 15px;       
     border-bottom: 1px solid var(--bg-input); 
     color: var(--text-body); 
-    vertical-align: top;      /* Alinea los textos arriba en filas grandes */
-}
-
-/* Clases específicas para textos secundarios dentro de la tabla */
-td small, 
-td .text-muted, 
-td span[style*="color: gray"], 
-td span[style*="color: #6c757d"] {
-    color: var(--text-muted) !important; /* Rescata los correos y textos pequeños */
-    font-weight: 500;
+    vertical-align: middle;      
 }
 
 tr:hover td { 
-    background-color: rgba(207, 148, 101, 0.08); /* Resalta más la fila activa */
+    background-color: rgba(207, 148, 101, 0.05); 
 }
 
-tr td strong {
-    color: var(--text-main);
+/* --- BOTONES DE ACCIÓN (CRUD PRODUCTOS NUEVOS) --- */
+.actions-cell {
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
 
-/* --- BADGES Y BOTONES DE ACCIÓN --- */
-.badge { 
-    padding: 6px 12px; 
-    border-radius: 8px; 
-    font-size: 12px; 
-    font-weight: bold; 
+.btn-edit-premium {
     display: inline-block;
-}
-
-.badge-pending { 
-    background: rgba(207, 148, 101, 0.2); 
-    color: #a05c2c; 
-    border: 1px solid #a05c2c; 
-}
-
-.badge-success { 
-    background: rgba(30, 132, 73, 0.15); 
-    color: var(--success); 
-    border: 1px solid var(--success); 
-}
-
-.btn-delete {
-    color: var(--danger);
-    text-decoration: none;
-    border: 1px solid var(--danger);
-    padding: 5px 10px;
+    color: var(--pure-white);
+    background-color: var(--text-main);
+    border: 1px solid var(--text-main);
+    padding: 6px 14px;
     border-radius: 8px;
     font-size: 12px;
     font-weight: bold;
-    transition: all 0.2s;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
 }
 
-.btn-delete:hover { 
-    background: var(--danger); 
-    color: var(--pure-white); 
+.btn-edit-premium:hover {
+    background-color: var(--amarillo);
+    border-color: var(--amarillo);
 }
+
+/* --- SELECTORES DE ESTADO EN TIEMPO REAL --- */
+.status-select-container {
+    position: relative;
+    display: inline-block;
+}
+
+.status-select {
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid var(--davys-grey);
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+/* Colores visuales automáticos según el estado seleccionado */
+.status-select[data-status="Pagado"], .status-select[data-status="3"] { color: var(--success); border-color: var(--success); background: rgba(30, 132, 73, 0.08); }
+.status-select[data-status="Pendiente"], .status-select[data-status="1"] { color: #a05c2c; border-color: #a05c2c; background: rgba(207, 148, 101, 0.08); }
+.status-select[data-status="En Cocina"] { color: #3498db; border-color: #3498db; background: rgba(52, 152, 219, 0.08); }
+.status-select[data-status="En Camino"], .status-select[data-status="2"] { color: #e67e22; border-color: #e67e22; background: rgba(230, 126, 34, 0.08); }
+.status-select[data-status="Cancelado"] { color: var(--danger); border-color: var(--danger); background: rgba(217, 83, 79, 0.08); }
 
 @media (max-width: 767px) {
     .submenu-admin { flex-direction: column; }
@@ -297,7 +298,6 @@ tr td strong {
         </div>
 
         <?php if ($seccion === 'pedidos'): 
-            // Cambiado a la estructura de tu variable $db
             $res = $db->query("SELECT * FROM pedidos_registrados ORDER BY id DESC");
         ?>
         <div class="panel-box">
@@ -319,20 +319,30 @@ tr td strong {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while($row = $res->fetch_assoc()): ?>
+                        <?php while($row = $res->fetch_assoc()): 
+                            $estado_actual = isset($row['estado']) ? $row['estado'] : 'Pagado';
+                        ?>
                         <tr>
                             <td>#<?php echo $row['id']; ?></td>
                             <td><strong><?php echo htmlspecialchars($row['nombre_cliente']); ?></strong><br><small style="color: #888;"><?php echo htmlspecialchars($row['correo_cliente']); ?></small></td>
                             <td><?php echo htmlspecialchars($row['telefono']); ?></td>
                             <td><?php echo htmlspecialchars($row['direccion']); ?></td>
-                            <td style="font-size: 13px; color: #3b3128; max-width: 300px; white-space: pre-line;">
-                                <?php echo htmlspecialchars($row['resumen_productos']); ?>
-                            </td>
+                            <td style="font-size: 13px; color: #3b3128; max-width: 300px; white-space: pre-line;"><?php echo htmlspecialchars($row['resumen_productos']); ?></td>
                             <td style="color: var(--amarillo); font-weight: bold; font-size: 15px;">
                                 $<?php echo number_format($row['total_pagar'], 0, ',', '.'); ?> COP
                             </td>
                             <td><?php echo $row['fecha_registro']; ?></td>
-                            <td><span class="badge badge-success">Pagado</span></td>
+                            <td>
+                                <div class="status-select-container">
+                                    <select class="status-select" data-id="<?php echo $row['id']; ?>" data-tabla="pedidos_registrados" onchange="cambiarEstadoFila(this)">
+                                        <option value="Pendiente" <?php echo ($estado_actual == 'Pendiente') ? 'selected' : ''; ?>>⏳ Pendiente</option>
+                                        <option value="En Cocina" <?php echo ($estado_actual == 'En Cocina') ? 'selected' : ''; ?>>🍳 En Cocina</option>
+                                        <option value="En Camino" <?php echo ($estado_actual == 'En Camino') ? 'selected' : ''; ?>>🛵 En Camino</option>
+                                        <option value="Pagado" <?php echo ($estado_actual == 'Pagado') ? 'selected' : ''; ?>>✅ Pagado</option>
+                                        <option value="Cancelado" <?php echo ($estado_actual == 'Cancelado') ? 'selected' : ''; ?>>❌ Cancelado</option>
+                                    </select>
+                                </div>
+                            </td>
                         </tr>
                         <?php endwhile; ?>
                     </tbody>
@@ -370,8 +380,10 @@ tr td strong {
                                 $<?php echo number_format($row['price'], 0, ',', '.'); ?> COP
                             </td>
                             <td>
-                                <a href="form_producto.php?id=<?php echo $row['id']; ?>" style="color:var(--amarillo); margin-right: 15px; text-decoration:none; font-size:13px; font-weight:bold;">[Editar]</a>
-                                <a href="crud_operaciones.php?action=delete_prod&id=<?php echo $row['id']; ?>" class="btn-delete" onclick="return confirm('¿Quitar este plato del menú?');">Eliminar</a>
+                                <div class="actions-cell">
+                                    <a href="form_producto.php?id=<?php echo $row['id']; ?>" class="btn-edit-premium">Editar</a>
+                                    <a href="crud_operaciones.php?action=delete_prod&id=<?php echo $row['id']; ?>" class="btn-delete" onclick="return confirm('¿Quitar este plato del menú?');">Eliminar</a>
+                                </div>
                             </td>
                         </tr>
                         <?php endwhile; ?>
@@ -382,7 +394,6 @@ tr td strong {
         <?php endif; ?>
 
         <?php if ($seccion === 'ordenes'): 
-            // Consulta usando tu variable $db organizada por las más recientes
             $res = $db->query("SELECT * FROM orden ORDER BY id DESC");
         ?>
         <div class="panel-box">
@@ -406,23 +417,27 @@ tr td strong {
                         <tr>
                             <td>#<?php echo $row['id']; ?></td>
                             <td>
-                                <span style="background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 5px; font-family: monospace;">
+                                <span style="background: rgba(0,0,0,0.05); padding: 4px 8px; border-radius: 5px; font-family: monospace;">
                                     User ID: <?php echo $row['customer_id']; ?>
                                 </span>
                             </td>
                             <td style="color: var(--amarillo); font-weight: bold; font-size: 15px;">
                                 $<?php echo number_format($row['total_price'], 0, ',', '.'); ?> COP
                             </td>
-                            <td style="text-transform: capitalize; color: #aaa;">
+                            <td style="text-transform: capitalize; color: #5a4f44;">
                                 💳 <?php echo htmlspecialchars($row['metodo_pago']); ?>
                             </td>
                             <td><?php echo $row['created']; ?></td>
                             <td>
-                                <?php if($row['status'] == 1): ?>
-                                    <span class="badge badge-pending">⏳ En Cocina / Activa</span>
-                                <?php else: ?>
-                                    <span class="badge badge-success">✅ Finalizada</span>
-                                <?php endif; ?>
+                                <div class="status-select-container">
+                                    <select class="status-select" data-id="<?php echo $row['id']; ?>" data-tabla="orden" onchange="cambiarEstadoFila(this)">
+                                        <option value="Pendiente" <?php echo ($row['status'] == 'Pendiente') ? 'selected' : ''; ?>>⏳ Pendiente</option>
+                                        <option value="En Cocina" <?php echo ($row['status'] == 'En Cocina') ? 'selected' : ''; ?>>🍳 En Cocina</option>
+                                        <option value="En Camino" <?php echo ($row['status'] == 'En Camino') ? 'selected' : ''; ?>>🛵 En Camino</option>
+                                        <option value="Pagado" <?php echo ($row['status'] == 'Pagado') ? 'selected' : ''; ?>>✅ Pagado</option>
+                                        <option value="Cancelado" <?php echo ($row['status'] == 'Cancelado') ? 'selected' : ''; ?>>❌ Cancelado</option>
+                                    </select>
+                                </div>
                             </td>
                         </tr>
                         <?php endwhile; ?>
@@ -433,5 +448,47 @@ tr td strong {
         <?php endif; ?>
 
     </div>
+
+    <script>
+    function cambiarEstadoFila(selectElement) {
+    const id = selectElement.getAttribute('data-id');
+    const tabla = selectElement.getAttribute('data-tabla');
+    const nuevoEstado = selectElement.value;
+    
+    selectElement.setAttribute('data-status', nuevoEstado);
+
+    const formData = new FormData();
+    formData.append('action', 'update_status'); // <--- LE DECIMOS AL CRUD QUÉ HACER
+    formData.append('id', id);
+    formData.append('tabla', tabla);
+    formData.append('estado', nuevoEstado);
+
+    // Apuntamos directo a tu archivo de operaciones centralizado
+    fetch('crud_operaciones.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            selectElement.style.borderColor = "var(--success)";
+            setTimeout(() => { selectElement.style.borderColor = "var(--davys-grey)"; }, 600);
+        } else {
+            alert('❌ Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('⚙️ Hubo un problema al conectar con el servidor.');
+    });
+    }
+
+    // Inicializar los colores de los selectores al cargar la página
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('.status-select').forEach(select => {
+            select.setAttribute('data-status', select.value);
+        });
+    });
+    </script>
 </body>
 </html>
