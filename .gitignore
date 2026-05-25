@@ -1,7 +1,6 @@
 # Ignorar archivo de configuración local con credenciales reales
 .env
-../config/con_db.php
-../config/Configuracion.php
+/config
 
 # Ignorar respaldos de base de datos locales
 database/*.sql
