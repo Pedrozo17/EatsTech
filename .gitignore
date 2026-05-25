@@ -1,6 +1,6 @@
 # Ignorar archivo de configuración local con credenciales reales
 .env
-/config
+config/
 
 # Ignorar respaldos de base de datos locales
 database/*.sql
