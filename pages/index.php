@@ -70,7 +70,7 @@
                         </p>
                     </div>
                     <div class="product-img">
-                        <img src="/Eatstech/assets/images/logo_empresa.png" alt="">
+                        <img src="../assets/images/logo_empresa.png" alt="">
                     </div>
                 </div>
                 <a href="./casarolla.php" class="btn-1">entrar</a>
