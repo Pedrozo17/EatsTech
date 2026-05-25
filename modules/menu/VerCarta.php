@@ -14,7 +14,7 @@ $cart = new Cart;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="\Eatstech\assets\css\style3.css">
+    <link rel="stylesheet" href="../../assets/css/style3.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
     <script>
@@ -37,16 +37,16 @@ $cart = new Cart;
 <body>
 
     <header class="site-header">
-        <a href="/Eatstech/pages/casarolla.php" class="header-logo">
+        <a href="../../pages/casarolla.php" class="header-logo">
             <img src="../../assets/images/logo_empresa-removebg-preview.png" alt="Camaron Express">
             <span>Camaron Express</span>
         </a>
 
         <ul class="header-nav">
-            <li><a href="/Eatstech/pages/casarolla.php">Inicio</a></li>
-            <li><a href="/Eatstech/modules/carrito/carritodecompras.php">Menú</a></li>
-            <li><a href="/Eatstech/modules/menu/VerCarta.php" class="active">Mi Carrito</a></li>
-            <li><a href="/Eatstech/modules/pagos/Pagos.php">Pagar</a></li>
+            <li><a href="../../pages/casarolla.php">Inicio</a></li>
+            <li><a href="../../modules/carrito/carritodecompras.php">Menú</a></li>
+            <li><a href="../../modules/menu/VerCarta.php" class="active">Mi Carrito</a></li>
+            <li><a href="../../modules/pagos/Pagos.php">Pagar</a></li>
         </ul>
     </header>
 
@@ -119,7 +119,7 @@ $cart = new Cart;
                 <tfoot>
                     <tr>
                         <td>
-                            <a href="/Eatstech/modules/carrito/carritodecompras.php" class="btn-back">
+                            <a href="../carrito/carritodecompras.php" class="btn-back">
                                 <i class="fa-solid fa-chevron-left"></i> Volver al menú
                             </a>
                         </td>
@@ -129,7 +129,7 @@ $cart = new Cart;
                                 Total: <span class="total-amount">$<?php echo number_format($cart->total(), 0, ',', '.'); ?> COP</span>
                             </td>
                             <td>
-                                <a href="/Eatstech/modules/pagos/Pagos.php" class="btn-pay">
+                                <a href="../pagos/Pagos.php" class="btn-pay">
                                     Pagar <i class="fa-solid fa-chevron-right"></i>
                                 </a>
                             </td>

@@ -37,18 +37,18 @@
       <span class="topbar-label">Restaurantes</span>
       <div class="topbar-links">
 
-        <a href="/Eatstech/pages/casarolla.php" class="topbar-item active" title="Camaron Express">
-          <img src="\Eatstech\assets\images\logo_empresa.png" alt="Camaron Express">
+        <a href="./casarolla.php" class="topbar-item active" title="Camaron Express">
+          <img src="..\assets\images\logo_empresa.png" alt="Camaron Express">
           <span>Camaron Express</span>
         </a>
 
-        <a href="/Eatstech/pages/fogon.php" class="topbar-item proximamente" title="Fogón Antioqueño">
-          <img src="\Eatstech\assets\images\fogon antioqueño.jpg" alt="Fogón Antioqueño">
+        <a href="/pages/fogon.php" class="topbar-item proximamente" title="Fogón Antioqueño">
+          <img src="..\assets\images\fogon antioqueño.jpg" alt="Fogón Antioqueño">
           <span>Fogón</span>
         </a>
 
         <a href="#" class="topbar-item proximamente" title="Toskana - Próximamente">
-          <img src="\Eatstech\assets\images\la toskana.jpg" alt="Toskana">
+          <img src="..\assets\images\la toskana.jpg" alt="Toskana">
           <span>Toskana</span>
         </a>
 
@@ -61,7 +61,7 @@
     <div class="container">
 
       <a href="#" class="logo" >
-        <img src="\Eatstech\assets\images\logo_empresa-removebg-preview.png" alt="EATSTECH - Home">
+        <img src="..\assets\images\logo_empresa-removebg-preview.png" alt="EATSTECH - Home">
       </a>
 
       <nav class="navbar" data-navbar>
@@ -71,7 +71,7 @@
         </button>
 
         <a href="#" class="logo">
-          <img src="\Eatstech\assets\images\logo_empresa-removebg-preview.png" alt="EATSTECH - Home">
+          <img src="..\assets\images\logo_empresa-removebg-preview.png" alt="EATSTECH - Home">
         </a>
 
         <ul class="navbar-list">
@@ -134,7 +134,7 @@
       </nav>
 
       <!-- Botón sesión -->
-      <a href="/Eatstech/modules/usuarios/iniciodesesion.php?redirect=casarolla" class="btn btn-secondary">
+      <a href="../modules/usuarios/iniciodesesion.php?redirect=casarolla" class="btn btn-secondary">
         <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
           <span class="text text-1">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
           <span class="text text-2" aria-hidden="true">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
@@ -145,7 +145,7 @@
       </a>
 
       <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
-        <a href="/Eatstech/modules/usuarios/logout.php?from=/Eatstech/pages/casarolla.php" class="btn btn-secondary">
+        <a href="../modules/usuarios/logout.php?from=./casarolla.php" class="btn btn-secondary">
           <span class="text text-1">Cerrar sesión</span>
           <span class="text text-2" aria-hidden="true">Cerrar sesión</span>
         </a>
@@ -172,7 +172,7 @@
 
           <li class="slider-item active" data-hero-slider-item>
             <div class="slider-bg">
-              <img src="\Eatstech\assets\images\foto-slider.png" width="1880" height="950" alt="" class="img-cover">
+              <img src="..\assets\images\foto-slider.png" width="1880" height="950" alt="" class="img-cover">
             </div>
             <p class="label-2 section-subtitle slider-reveal">Camaron Express</p>
             <h1 class="display-1 hero-title slider-reveal">
@@ -189,7 +189,7 @@
 
           <li class="slider-item" data-hero-slider-item>
             <div class="slider-bg">
-              <img src="\Eatstech\assets\images\foto-slider2.png" width="1880" height="950" alt="" class="img-cover">
+              <img src="..\assets\images\foto-slider2.png" width="1880" height="950" alt="" class="img-cover">
             </div>
             <p class="label-2 section-subtitle slider-reveal">Sabor de la Costa</p>
             <h1 class="display-1 hero-title slider-reveal">
@@ -206,7 +206,7 @@
 
           <li class="slider-item" data-hero-slider-item>
             <div class="slider-bg">
-              <img src="\Eatstech\assets\images\foto-slider4.png" width="1880" height="950" alt="" class="img-cover">
+              <img src="..\assets\images\foto-slider4.png" width="1880" height="950" alt="" class="img-cover">
             </div>
             <p class="label-2 section-subtitle slider-reveal">Mosquera, Cundinamarca</p>
             <h1 class="display-1 hero-title slider-reveal">
@@ -253,7 +253,7 @@
               <div class="service-card">
                 <a href="#menu" class="has-before hover:shine">
                   <figure class="card-banner img-holder" style="--width: 285; --height: 336;">
-                    <img src="\Eatstech\assets\images\coctel intermedio.png" width="285" height="336" loading="lazy"
+                    <img src="..\assets\images\coctel intermedio.png" width="285" height="336" loading="lazy"
                       alt="Cocteles" class="img-cover">
                   </figure>
                 </a>
@@ -267,7 +267,7 @@
               <div class="service-card">
                 <a href="#menu" class="has-before hover:shine">
                   <figure class="card-banner img-holder" style="--width: 285; --height: 336;">
-                    <img src="\Eatstech\assets\images\Sánguche de camaron.png" width="285" height="336" loading="lazy"
+                    <img src="..\assets\images\Sánguche de camaron.png" width="285" height="336" loading="lazy"
                       alt="Entradas" class="img-cover">
                   </figure>
                 </a>
@@ -281,7 +281,7 @@
               <div class="service-card">
                 <a href="#menu" class="has-before hover:shine">
                   <figure class="card-banner img-holder" style="--width: 285; --height: 336;">
-                    <img src="\Eatstech\assets\images\Camaclitos.png" width="285" height="336" loading="lazy"
+                    <img src="..\assets\images\Camaclitos.png" width="285" height="336" loading="lazy"
                       alt="Bebidas" class="img-cover">
                   </figure>
                 </a>
@@ -331,10 +331,10 @@
           </div>
 
           <figure class="about-banner">
-            <img src="\Eatstech\assets\images\foto-complemento.png" width="570" height="570" loading="lazy"
+            <img src="..\assets\images\foto-complemento.png" width="570" height="570" loading="lazy"
               alt="about banner" class="w-100" data-parallax-item data-parallax-speed="1">
             <div class="abs-img abs-img-1 has-before" data-parallax-item data-parallax-speed="1.75">
-              <img src="\Eatstech\assets\images\foto-complemento2.png" width="285" height="285" loading="lazy"
+              <img src="..\assets\images\foto-complemento2.png" width="285" height="285" loading="lazy"
                 alt="" class="w-100">
             </div>
 
@@ -350,7 +350,7 @@
       <section class="special-dish text-center" aria-labelledby="dish-label">
 
         <div class="special-dish-banner">
-          <img src="\Eatstech\assets\images\Camarones — Los Camarítos.png" width="940" height="900" loading="lazy"
+          <img src="..\assets\images\Camarones — Los Camarítos.png" width="940" height="900" loading="lazy"
             alt="Camarones" class="img-cover">
         </div>
 
@@ -370,7 +370,7 @@
               <span class="span body-1">Desde $24.000</span>
             </div>
 
-            <a href="\Eatstech\modules\carrito\carritodecompras.php" class="btn btn-primary">
+            <a href="..\modules\carrito\carritodecompras.php" class="btn btn-primary">
               <span class="text text-1">Ver catálogo completo</span>
               <span class="text text-2" aria-hidden="true">Ver catálogo completo</span>
             </a>
@@ -395,7 +395,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="\Eatstech\assets\images\Camarones — Los Camarítos.png"
+                  <img src="..\assets\images\Camarones — Los Camarítos.png"
                     alt="Coctel de Camarón" class="img-menu">
                 </figure>
                 <div>
@@ -414,7 +414,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="\Eatstech\assets\images\Sánguche de camaron.png" 
+                  <img src="..\assets\images\Sánguche de camaron.png" 
                     alt="Coctel Armenio" class="img-menu">
                 </figure>
                 <div>
@@ -433,7 +433,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="\Eatstech\assets\images\Cardumen de Camarón 12oz.png"
+                  <img src="..\assets\images\Cardumen de Camarón 12oz.png"
                     alt="Coctel Costa Caribe" class="img-menu">
                 </figure>
                 <div>
@@ -451,7 +451,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="\Eatstech\assets\images\Camaclitos.png" 
+                  <img src="..\assets\images\Camaclitos.png" 
                     alt="Porción Especial" class="img-menu">
                 </figure>
                 <div>
@@ -470,7 +470,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="\Eatstech\assets\images\coctel intermedio.png" 
+                  <img src="..\assets\images\coctel intermedio.png" 
                     alt="Coctel Light" class="img-menu">
                 </figure>
                 <div>
@@ -488,7 +488,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="\Eatstech\assets\images\Coctel tradicional 7oz.png" 
+                  <img src="..\assets\images\Coctel tradicional 7oz.png" 
                     alt="Combo Familiar" class="img-menu">
                 </figure>
                 <div>
@@ -510,7 +510,7 @@
             <span class="span">viernes a domingo 2pm–9pm</span>
           </p>
 
-          <a href="\Eatstech\modules\carrito\carritodecompras.php" class="btn btn-primary">
+          <a href="..\modules\carrito\carritodecompras.php" class="btn btn-primary">
               <span class="text text-1">Ver menú</span>
               <span class="text text-2" aria-hidden="true">Ver menú</span>
           </a>

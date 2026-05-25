@@ -3,13 +3,13 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 include("../../config/con_db.php");
 
 $paginas = [
-    'casarolla' => '/Eatstech/pages/casarolla.php',
-    'index'     => '/Eatstech/pages/index.php'
+    'casarolla' => '../pages/casarolla.php',
+    'index'     => '../pages/index.php'
 ];
 
 $redirect = isset($_GET['redirect']) && isset($paginas[$_GET['redirect']]) 
     ? $paginas[$_GET['redirect']] 
-    : '/Eatstech/pages/index.php';
+    : '../pages/index.php';
 
 $redirect_param = isset($_GET['redirect']) ? $_GET['redirect'] : '';
 
@@ -28,7 +28,7 @@ if (isset($_POST['login'])) {
             
             // SEGURIDAD CRÍTICA: Validar si el rol de la BD coincide con el selector del formulario
             if ($usuario['tipo'] !== $tipo_usuario) {
-                header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?error=rol_incorrecto&redirect=" . $redirect_param);
+                header("Location: ../usuarios/iniciodesesion.php?error=rol_incorrecto&redirect=" . $redirect_param);
                 exit();
             }
 
@@ -51,7 +51,7 @@ if (isset($_POST['login'])) {
                                    : 'admin';
         
                 // Redirección al Dashboard del restaurante seleccionado
-                header("Location: /Eatstech/" . $carpeta_destino . "/admin_dashboard.php");
+                header("Location: ../" . $carpeta_destino . "/admin_dashboard.php");
                 exit();
 
             } else {
@@ -63,12 +63,12 @@ if (isset($_POST['login'])) {
 
         } else {
             // Contraseña incorrecta
-            header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?error=1&redirect=" . $redirect_param);
+            header("Location: ../usuarios/iniciodesesion.php?error=1&redirect=" . $redirect_param);
             exit();
         }
     } else {
         // Correo no existe
-        header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?error=no_existe&redirect=" . $redirect_param);
+        header("Location: ../usuarios/iniciodesesion.php?error=no_existe&redirect=" . $redirect_param);
         exit();
     }
 }

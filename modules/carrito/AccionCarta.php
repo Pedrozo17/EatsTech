@@ -26,7 +26,7 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
         );
         
         $insertItem = $cart->insert($itemData);
-        $redirectLoc = $insertItem ? '../carrito/carritodecompras.php' : '/Eatstech/pages/index.php';
+        $redirectLoc = $insertItem ? '../carrito/carritodecompras.php' : '../../pages/index.php';
         header("Location: ".$redirectLoc);
         exit();
         
@@ -48,7 +48,7 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
         
         // 1. Verificamos si el usuario realmente está logueado según tu sesión
         if(empty($_SESSION['logueado']) || empty($_SESSION['correo'])){
-            header("Location: /Eatstech/pages/index.php"); 
+            header("Location: ../../pages/index.php"); 
             exit();
         }
 
@@ -130,7 +130,7 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
                 // =========================================================================
 
                 $cart->destroy(); // Vaciamos el carrito
-                header("Location: /Eatstech/modules/pagos/OrdenExito.php?id=" . $orderID);
+                header("Location: ../pagos/OrdenExito.php?id=" . $orderID);
                 exit();
             } else {
                 header("Location: ../pagos/Pagos.php?error=articulos");
@@ -141,11 +141,11 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
             exit();
         }
     } else {
-        header("Location: /Eatstech/pages/index.php");
+        header("Location: ../../pages/index.php");
         exit();
     }
 } else {
-    header("Location: /Eatstech/pages/index.php");
+    header("Location: ../../pages/index.php");
     exit();
 }
 ?>

@@ -8,7 +8,7 @@ if (empty($_SESSION['reset_permitido'])) { header("Location: OlvideClave.php"); 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nueva Contraseña - Camaron Express</title>
-    <link rel="stylesheet" href="\Eatstech\assets\css\style2.css">
+    <link rel="stylesheet" href="../assets/css/style2.css">
     
     <style>
         /* Variables Corporativas de EatsTech */
@@ -203,7 +203,7 @@ if (empty($_SESSION['reset_permitido'])) { header("Location: OlvideClave.php"); 
             </form>
 
             <div class="recovery-footer">
-                <a href="\Eatstech\modules\usuarios\iniciodesesion.php" class="back-link">← Cancelar y volver</a>
+                <a href="..\modules\usuarios\iniciodesesion.php" class="back-link">← Cancelar y volver</a>
             </div>
         </div>
     </div>

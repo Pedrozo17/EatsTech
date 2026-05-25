@@ -104,7 +104,7 @@ include '../../config/Configuracion.php'; // Tu conexión oficial $db
                 session_start();
                 
                 // Redirigimos al Login principal con éxito
-                header("Location: \Eatstech\modules\usuarios\iniciodesesion.php?reset=exito"); 
+                header("Location: ../usuarios/iniciodesesion.php?reset=exito"); 
                 exit();
             }
         }

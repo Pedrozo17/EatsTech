@@ -21,14 +21,14 @@ if (isset($_POST['register'])) {
         $tipo_usuario = mysqli_real_escape_string($conex, $_POST['tipo_usuario']); 
 
         if ($contraseña !== $confirmar_contraseña) {
-            header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?error=password");
+            header("Location: ../usuarios/iniciodesesion.php?error=password");
             exit();
         } else {
             $buscarCorreo = "SELECT id FROM datos WHERE correo = '$correo'";
             $resultadoCorreo = mysqli_query($conex, $buscarCorreo);
 
             if (mysqli_num_rows($resultadoCorreo) > 0) {
-                header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?error=duplicado");
+                header("Location: ../usuarios/iniciodesesion.php?error=duplicado");
                 exit();
             } else {
                 $contraseña_encrypted = password_hash($contraseña, PASSWORD_DEFAULT);
@@ -58,7 +58,7 @@ if (isset($_POST['register'])) {
                         mysqli_query($conex, $consulta_restaurante);
 
                         // Redirección al login con aviso para seleccionar empresa
-                        header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?registro=exito");
+                        header("Location: ../usuarios/iniciodesesion.php?registro=exito");
                         exit();
 
                     } else {
@@ -72,12 +72,12 @@ if (isset($_POST['register'])) {
                         $_SESSION['tipo'] = $tipo_usuario; 
 
                         // Mandamos directo al index público a comprar
-                        header("Location: /Eatstech/pages/index.php");
+                        header("Location: ../pages/index.php");
                         exit();
                     }
                     
                 } else {
-                    header("Location: /Eatstech/modules/usuarios/iniciodesesion.php?error=db");
+                    header("Location: ../usuarios/iniciodesesion.php?error=db");
                     exit();
                 }
             }

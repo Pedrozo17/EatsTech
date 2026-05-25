@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 include '../../config/Configuracion.php';
 
 if (!isset($_REQUEST['id'])) {
-    header("Location: /Eatstech/pages/casarolla.php");
+    header("Location: ../../pages/casarolla.php");
     exit();
 }
 
@@ -19,7 +19,7 @@ $queryOrder = $db->query("SELECT * FROM orden WHERE id = $orderId");
 $order = $queryOrder->fetch_assoc();
 
 if (!$order) {
-    header("Location: /Eatstech/pages/casarolla.php");
+    header("Location: ../../pages/casarolla.php");
     exit();
 }
 
@@ -60,15 +60,15 @@ $metodoLabel = isset($metodosLabel[$metodo]) ? $metodosLabel[$metodo] : 'No espe
 
     <!-- HEADER -->
     <header class="site-header">
-        <a href="/Eatstech/pages/casarolla.php" class="header-logo">
+        <a href="../../pages/casarolla.php" class="header-logo">
             <img src="../../assets/images/logo_empresa-removebg-preview.png" alt="Camaron Express">
             <span>Camaron Express</span>
         </a>
         <ul class="header-nav">
-            <li><a href="/Eatstech/pages/casarolla.php">Inicio</a></li>
-            <li><a href="/Eatstech/modules/carrito/carritodecompras.php">Menú</a></li>
-            <li><a href="/Eatstech/modules/menu/VerCarta.php">Mi Carrito</a></li>
-            <li><a href="/Eatstech/modules/pagos/Pagos.php">Pagar</a></li>
+            <li><a href="../../pages/casarolla.php">Inicio</a></li>
+            <li><a href="../../modules/carrito/carritodecompras.php">Menú</a></li>
+            <li><a href="../../modules/menu/VerCarta.php">Mi Carrito</a></li>
+            <li><a href="../../modules/pagos/Pagos.php">Pagar</a></li>
         </ul>
     </header>
 
@@ -158,7 +158,7 @@ $metodoLabel = isset($metodosLabel[$metodo]) ? $metodosLabel[$metodo] : 'No espe
                     ?>" target="_blank" class="btn-wa">
                         <i class="fa-brands fa-whatsapp"></i> Enviar comprobante
                     </a>
-                    <a href="/Eatstech/pages/casarolla.php" class="btn-home">
+                    <a href="../../pages/casarolla.php" class="btn-home">
                         <i class="fa-solid fa-house"></i> Volver al inicio
                     </a>
                 </div>

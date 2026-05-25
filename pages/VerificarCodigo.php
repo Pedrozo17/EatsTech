@@ -8,7 +8,7 @@ if (empty($_SESSION['reset_correo'])) { header("Location: OlvideClave.php"); exi
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verificar Código - Camaron Express</title>
-    <link rel="stylesheet" href="\Eatstech\assets\css\style2.css">
+    <link rel="stylesheet" href="../assets/css/style2.css">
     
     <style>
         /* Variables Corporativas de EatsTech */
@@ -227,7 +227,7 @@ if (empty($_SESSION['reset_correo'])) { header("Location: OlvideClave.php"); exi
             </form>
 
             <div class="recovery-footer">
-                <a href="\Eatstech\pages\OlvideClave.php" class="back-link">← Solicitar un nuevo código</a>
+                <a href="../pages/OlvideClave.php" class="back-link">← Solicitar un nuevo código</a>
             </div>
         </div>
     </div>

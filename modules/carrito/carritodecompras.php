@@ -15,25 +15,25 @@ $cart_count = $cart->total_items();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="\Eatstech\assets\css\style2.css">
+    <link rel="stylesheet" href="../../assets/css/style2.css">
 </head>
 
 <body>
 
     <header class="site-header">
-        <a href="/Eatstech/pages/casarolla.php" class="header-logo">
+        <a href="../../pages/casarolla.php" class="header-logo">
             <img src="../../assets/images/logo_empresa-removebg-preview.png" alt="Camaron Express">
             <span>Camaron Express</span>
         </a>
 
         <ul class="header-nav">
-            <li><a href="/Eatstech/pages/casarolla.php">Inicio</a></li>
-            <li><a href="/Eatstech/modules/carrito/carritodecompras.php" class="active">Menú</a></li>
-            <li><a href="/Eatstech/modules/menu/VerCarta.php">Mi Carrito</a></li>
-            <li><a href="/Eatstech/modules/pagos/Pagos.php">Pagar</a></li>
+            <li><a href="../../pages/casarolla.php">Inicio</a></li>
+            <li><a href="../carrito/carritodecompras.php" class="active">Menú</a></li>
+            <li><a href="../menu/VerCarta.php">Mi Carrito</a></li>
+            <li><a href="../pagos/Pagos.php">Pagar</a></li>
         </ul>
 
-        <a href="/Eatstech/modules/menu/VerCarta.php" class="cart-icon-btn" title="Ver carrito">
+        <a href="../menu/VerCarta.php" class="cart-icon-btn" title="Ver carrito">
             <i class="fa-solid fa-cart-shopping"></i>
             <?php if ($cart_count > 0): ?>
                 <span class="cart-badge"><?php echo $cart_count; ?></span>

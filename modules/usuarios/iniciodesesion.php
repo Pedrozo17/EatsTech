@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/Eatstech\assets\css\estilo2.css">
-    <script defer src="/Eatstech\assets\js\main.js"></script>
+    <link rel="stylesheet" href="../../assets/css/estilo2.css">
+    <script defer src="../../assets/js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <title>Document</title>
 </head>
 <body>
 
     <div class="loading-page">
-        <img id="svg" src="/Eatstech\assets\images\logo.png" alt="Logo">
+        <img id="svg" src="../../assets/images/logo.png" alt="Logo">
         <div class="name-container">
             <div class="logo-name">EATSTECH</div>
         </div>
@@ -19,7 +19,7 @@
 
     <nav class="navbar">
         <div class="nav-container">
-            <img src="\Eatstech\assets\images\logo.png" alt="Logo" class="nav-logo">
+            <img src="../../assets/images/logo.png" alt="Logo" class="nav-logo">
             
             <button class="menu-toggle" id="mobile-menu-btn" aria-label="Abrir menú">
                 <span class="bar"></span>
@@ -35,7 +35,7 @@
                     <li><a href="#">Contáctanos</a></li>
                 </ul>
                 <div class="nav-buttons">
-                        <a href="\Eatstech\pages\index.php" class="btn-login">Volver</a>
+                        <a href="../../pages/index.php" class="btn-login">Volver</a>
                 </div>
             </div>
         </div>
@@ -74,7 +74,7 @@
     endif; 
     ?>
 
-    <form method="post" action="/Eatstech/modules/usuarios/registrar.php?redirect=<?php echo isset($_GET['redirect']) ? $_GET['redirect'] : ''; ?>">
+    <form method="post" action="./registrar.php?redirect=<?php echo isset($_GET['redirect']) ? $_GET['redirect'] : ''; ?>">
         <div class="role-selector">
     <label class="role-option">
         <input type="radio" name="tipo_usuario" value="persona" checked onclick="toggleRegistroEmpresa(false)">
@@ -119,7 +119,7 @@ function toggleRegistroEmpresa(show) {
 <div>
     <div class="container__form container--signin">
         <h2 class="form__title">Sign In</h2>
-        <form method="post" action="/Eatstech/modules/usuarios/login.php?redirect=<?php echo isset($_GET['redirect']) ? $_GET['redirect'] : ''; ?>">
+        <form method="post" action="./login.php?redirect=<?php echo isset($_GET['redirect']) ? $_GET['redirect'] : ''; ?>">
             
             <div class="role-selector">
                 <label class="role-option">
@@ -145,7 +145,7 @@ function toggleRegistroEmpresa(show) {
             </div>
 
             <input type="submit" name="login">
-            <a href="/Eatstech/pages/OlvideClave.php" class="forgot-link">¿Olvidaste tu contraseña?</a>
+            <a href="../../pages/OlvideClave.php" class="forgot-link">¿Olvidaste tu contraseña?</a>
             
             <?php if (isset($_GET['error']) && $_GET['error'] == 'no_existe'): ?>
             <div style="background: rgba(231, 76, 60, 0.15); border: 1px solid #e74c3c; color: #ff6b6b; padding: 10px; margin-top: 15px; margin-bottom: 15px; border-radius: 6px; text-align: center; font-size: 13px; font-family: sans-serif; font-weight: bold; width: 100%; box-sizing: border-box;">

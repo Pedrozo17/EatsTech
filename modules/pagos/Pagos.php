@@ -49,7 +49,7 @@ $waNumber = "573248933841";
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="\Eatstech\assets\css\style4.css">
+    <link rel="stylesheet" href="../../assets/css/style4.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 
@@ -57,15 +57,15 @@ $waNumber = "573248933841";
 
     <!-- HEADER -->
     <header class="site-header">
-        <a href="/Eatstech/pages/casarolla.php" class="header-logo">
+        <a href="../../pages/casarolla.php" class="header-logo">
             <img src="../../assets/images/logo_empresa-removebg-preview.png" alt="Camaron Express">
             <span>Camaron Express</span>
         </a>
         <ul class="header-nav">
-            <li><a href="/Eatstech/pages/casarolla.php">Inicio</a></li>
-            <li><a href="/Eatstech/modules/carrito/carritodecompras.php">Menú</a></li>
-            <li><a href="/Eatstech/modules/menu/VerCarta.php">Mi Carrito</a></li>
-            <li><a href="/Eatstech/modules/pagos/Pagos.php" class="active">Pagar</a></li>
+            <li><a href="../../pages/casarolla.php">Inicio</a></li>
+            <li><a href="../carrito/carritodecompras.php">Menú</a></li>
+            <li><a href="../menu/VerCarta.php">Mi Carrito</a></li>
+            <li><a href="./Pagos.php" class="active">Pagar</a></li>
         </ul>
     </header>
 
@@ -398,7 +398,7 @@ $waNumber = "573248933841";
 
             // 2. Redirigir al backend que registra la orden y luego a OrdenExito
             //    AccionCarta?action=placeOrder ya genera el id de orden
-            window.location.href = "/Eatstech/modules/carrito/AccionCarta.php?action=placeOrder&metodo="
+            window.location.href = "../carrito/AccionCarta.php?action=placeOrder&metodo="
                                   + encodeURIComponent(selectedMethod);
         }
     </script>

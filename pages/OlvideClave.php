@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar Contraseña - Camaron Express</title>
-    <link rel="stylesheet" href="\Eatstech\assets\css\style2.css">
+    <link rel="stylesheet" href="../assets/css/style2.css">
     
     <style>
         /* Variables Corporativas de EatsTech */
@@ -226,7 +226,7 @@
             </form>
 
             <div class="recovery-footer">
-                <a href="\Eatstech\modules\usuarios\iniciodesesion.php" class="back-link">← Volver al inicio de sesión</a>
+                <a href="../modules/usuarios/iniciodesesion.php" class="back-link">← Volver al inicio de sesión</a>
             </div>
         </div>
     </div>
