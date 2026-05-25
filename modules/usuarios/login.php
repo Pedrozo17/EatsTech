@@ -3,23 +3,22 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 include("../../config/con_db.php");
 
 $paginas = [
-    'casarolla' => '../pages/casarolla.php',
-    'index'     => '../pages/index.php'
+    'casarolla' => '../../pages/casarolla.php',
+    'index'     => '../../pages/index.php'
 ];
 
 $redirect = isset($_GET['redirect']) && isset($paginas[$_GET['redirect']]) 
     ? $paginas[$_GET['redirect']] 
-    : '../pages/index.php';
+    : '../../pages/index.php';
 
 $redirect_param = isset($_GET['redirect']) ? $_GET['redirect'] : '';
 
 if (isset($_POST['login'])) {
-    $correo = mysqli_real_escape_string($conex, trim($_POST['correo']));
+    $correo = mysqli_real_escape_string($db, trim($_POST['correo']));
     $contraseña = trim($_POST['contraseña']);
     $tipo_usuario = $_POST['tipo_usuario']; // Captura 'persona' o 'empresa'
-    
     $consulta = "SELECT * FROM datos WHERE correo='$correo'";
-    $resultado = mysqli_query($conex, $consulta);
+    $resultado = mysqli_query($db, $consulta);
     
     if ($resultado && mysqli_num_rows($resultado) > 0) {
         $usuario = mysqli_fetch_assoc($resultado);

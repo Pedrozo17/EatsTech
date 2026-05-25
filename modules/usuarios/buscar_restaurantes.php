@@ -3,7 +3,7 @@
 include("../../config/con_db.php"); 
 
 // 2. Usamos mysqli_real_escape_string con la variable $conex (tu conexión de con_db)
-$correo = isset($_GET['correo']) ? mysqli_real_escape_string($conex, trim($_GET['correo'])) : '';
+$correo = isset($_GET['correo']) ? mysqli_real_escape_string($db, trim($_GET['correo'])) : '';
 $restaurantes = [];
 
 if (!empty($correo)) {
@@ -14,7 +14,7 @@ if (!empty($correo)) {
               WHERE d.correo = '$correo'";
               
     // 3. Cambiamos la ejecución al estilo por procedimientos que usa tu con_db.php
-    $res = mysqli_query($conex, $query);
+    $res = mysqli_query($db, $query);
     
     if ($res) {
         while ($row = mysqli_fetch_assoc($res)) {
