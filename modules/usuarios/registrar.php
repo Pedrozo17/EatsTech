@@ -11,21 +11,21 @@ if (isset($_POST['register'])) {
         strlen($_POST['contraseña']) >= 1 && 
         strlen($_POST['confirmar_contraseña']) >= 1) {
 
-        $nombre = mysqli_real_escape_string($conex, trim($_POST['nombre']));
-        $correo = mysqli_real_escape_string($conex, trim($_POST['correo']));
-        $cedula = mysqli_real_escape_string($conex, trim($_POST['cedula']));
-        $telefono = mysqli_real_escape_string($conex, trim($_POST['telefono'])); 
-        $direccion = mysqli_real_escape_string($conex, trim($_POST['direccion'])); 
+        $nombre = mysqli_real_escape_string($db, trim($_POST['nombre']));
+        $correo = mysqli_real_escape_string($db, trim($_POST['correo']));
+        $cedula = mysqli_real_escape_string($db, trim($_POST['cedula']));
+        $telefono = mysqli_real_escape_string($db, trim($_POST['telefono'])); 
+        $direccion = mysqli_real_escape_string($db, trim($_POST['direccion'])); 
         $contraseña = trim($_POST['contraseña']);
         $confirmar_contraseña = trim($_POST['confirmar_contraseña']);
-        $tipo_usuario = mysqli_real_escape_string($conex, $_POST['tipo_usuario']); 
+        $tipo_usuario = mysqli_real_escape_string($db, $_POST['tipo_usuario']); 
 
         if ($contraseña !== $confirmar_contraseña) {
             header("Location: ../usuarios/iniciodesesion.php?error=password");
             exit();
         } else {
             $buscarCorreo = "SELECT id FROM datos WHERE correo = '$correo'";
-            $resultadoCorreo = mysqli_query($conex, $buscarCorreo);
+            $resultadoCorreo = mysqli_query($db, $buscarCorreo);
 
             if (mysqli_num_rows($resultadoCorreo) > 0) {
                 header("Location: ../usuarios/iniciodesesion.php?error=duplicado");
@@ -37,17 +37,17 @@ if (isset($_POST['register'])) {
                 $consulta = "INSERT INTO datos(nombre, correo, contraseña, cedula, telefono, direccion, tipo) 
                              VALUES ('$nombre','$correo','$contraseña_encrypted','$cedula','$telefono','$direccion', '$tipo_usuario')";
                 
-                $resultado = mysqli_query($conex, $consulta);
+                $resultado = mysqli_query($db, $consulta);
 
                 if ($resultado) {
-                    $nuevo_usuario_id = mysqli_insert_id($conex);
+                    $nuevo_usuario_id = mysqli_insert_id($db);
 
                     // ==========================================================================
                     // EVALUACIÓN DE FLUJO SEGÚN EL ROL
                     // ==========================================================================
                     if ($tipo_usuario === 'empresa') {
                         // Flujo Empresa: Registramos restaurante base y mandamos al login para que lo seleccione
-                        $nombre_restaurante = mysqli_real_escape_string($conex, trim($_POST['nombre_restaurante']));
+                        $nombre_restaurante = mysqli_real_escape_string($db, trim($_POST['nombre_restaurante']));
                         
                         $slug_carpeta = 'admin';      
                         $color_principal = '#cf9465'; 
@@ -55,7 +55,7 @@ if (isset($_POST['register'])) {
                         $consulta_restaurante = "INSERT INTO restaurantes (usuario_id, nombre_restaurante, slug_carpeta, color_principal) 
                                                  VALUES ('$nuevo_usuario_id', '$nombre_restaurante', '$slug_carpeta', '$color_principal')";
                         
-                        mysqli_query($conex, $consulta_restaurante);
+                        mysqli_query($db, $consulta_restaurante);
 
                         // Redirección al login con aviso para seleccionar empresa
                         header("Location: ../usuarios/iniciodesesion.php?registro=exito");
@@ -72,7 +72,7 @@ if (isset($_POST['register'])) {
                         $_SESSION['tipo'] = $tipo_usuario; 
 
                         // Mandamos directo al index público a comprar
-                        header("Location: ../pages/index.php");
+                        header("Location: ../../pages/index.php");
                         exit();
                     }
                     

@@ -8,10 +8,10 @@ if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'empresa') {
 }
 
 // CORRECCIÓN DE RUTA DE CONEXIÓN (Igual que en tu frontend)
-$ruta_conexion = "../config/configuracion.php"; 
+$ruta_conexion = "../config/Configuracion.php"; 
 if (!file_exists($ruta_conexion)) {
     // Si no existe ahí, probamos un nivel más arriba por si acaso
-    $ruta_conexion = "../../config/configuracion.php";
+    $ruta_conexion = "../config/Configuracion.php";
     if (!file_exists($ruta_conexion)) {
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(['success' => false, 'message' => 'No se encontró el archivo de conexión en el servidor.']);

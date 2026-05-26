@@ -15,7 +15,7 @@ include '../../config/Configuracion.php'; // Tu conexión oficial $db
         $telefonoIngresado = preg_replace('/[^0-9]/', '', $_POST['telefono']);
         
         // 🟢 DOBLE CANDADO: La consulta busca que coincidan obligatoriamente el CORREO Y el TELEFONO
-        $checkUser = $db->query("SELECT id, telefono FROM registro.datos WHERE correo = '$correo' AND telefono = '$telefonoIngresado'");
+        $checkUser = $db->query("SELECT id, telefono FROM datos WHERE correo = '$correo' AND telefono = '$telefonoIngresado'");
         
         if($checkUser && $checkUser->num_rows > 0){
             $userRow = $checkUser->fetch_assoc();
@@ -31,7 +31,7 @@ include '../../config/Configuracion.php'; // Tu conexión oficial $db
             $expira = date("Y-m-d H:i:s", strtotime('+15 minutes'));
             
             // Guardamos el código seguro ligado al correo verificado
-            $update = $db->query("UPDATE registro.datos SET codigo_reset = '$codigo', codigo_expira = '$expira' WHERE correo = '$correo'");
+            $update = $db->query("UPDATE datos SET codigo_reset = '$codigo', codigo_expira = '$expira' WHERE correo = '$correo'");
             
             if($update){
                 $_SESSION['reset_correo'] = $correo; 
@@ -64,7 +64,7 @@ include '../../config/Configuracion.php'; // Tu conexión oficial $db
         $fechaActual = date("Y-m-d H:i:s");
         
         // Consultamos el código guardado y la expiración
-        $query = $db->query("SELECT codigo_reset, codigo_expira FROM registro.datos WHERE correo = '$correo'");
+        $query = $db->query("SELECT codigo_reset, codigo_expira FROM datos WHERE correo = '$correo'");
         $row = $query->fetch_assoc();
         
         if($row['codigo_reset'] == $codigoUser){
@@ -93,7 +93,7 @@ include '../../config/Configuracion.php'; // Tu conexión oficial $db
             $claveEncriptada = password_hash($nuevaClave, PASSWORD_DEFAULT);
             
             // Guardamos la contraseña ya encriptada en la base de datos
-            $updateClave = $db->query("UPDATE registro.datos SET contraseña = '$claveEncriptada', codigo_reset = NULL, codigo_expira = NULL WHERE correo = '$correo'");
+            $updateClave = $db->query("UPDATE datos SET contraseña = '$claveEncriptada', codigo_reset = NULL, codigo_expira = NULL WHERE correo = '$correo'");
             
             if($updateClave){
                 // Limpiamos y destruimos la sesión de recuperación para no dejar rastros

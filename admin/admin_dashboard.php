@@ -8,7 +8,7 @@ if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'empresa') {
 }
 
 // 1. Apuntamos al nombre exacto de tu archivo
-$ruta_conexion = "../config/configuracion.php"; 
+$ruta_conexion = "../config/Configuracion.php"; 
 
 if (!file_exists($ruta_conexion)) {
     die("❌ ERROR CRÍTICO: No se encontró el archivo en: " . realpath($ruta_conexion));

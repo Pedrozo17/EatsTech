@@ -50,7 +50,7 @@ if (isset($_POST['login'])) {
                                    : 'admin';
         
                 // Redirección al Dashboard del restaurante seleccionado
-                header("Location: ../" . $carpeta_destino . "/admin_dashboard.php");
+                header("Location: ../../" . $carpeta_destino . "/admin_dashboard.php");
                 exit();
 
             } else {

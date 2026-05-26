@@ -62,7 +62,8 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
         $correoSession   = $db->real_escape_string($_SESSION['correo']);
         
         // Buscamos el ID del usuario en la base de datos 'registro'
-        $buscarCliente = $db->query("SELECT id FROM registro.datos WHERE correo = '$correoSession'");
+        $correoSeguro = $db->real_escape_string($correoSession);
+        $buscarCliente = $db->query("SELECT id FROM datos WHERE correo = '$correoSeguro'");
         
         if($buscarCliente && $buscarCliente->num_rows > 0){
             $clienteRow = $buscarCliente->fetch_assoc();
