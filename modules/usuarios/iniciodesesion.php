@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../../assets/css/estilo2.css">
     <script defer src="../../assets/js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="../assets/images/logo.png">
     <title>Document</title>
 </head>
 <body>

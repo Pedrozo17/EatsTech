@@ -15,6 +15,7 @@ $cart_count = $cart->total_items();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="../../assets/images/logo_empresa-removebg-preview.png" type="image/x-icon">
     <link rel="stylesheet" href="../../assets/css/style2.css">
 </head>
 
@@ -60,7 +61,7 @@ $cart_count = $cart->total_items();
                             // 🟢 AQUÍ ESTÁ EL TRUCO: Concatenamos la ruta física de la carpeta assets
                             $ruta_completa = "../../assets/images/" . $row['imagen'];
                         ?>
-                            <img src="<?php echo htmlspecialchars($ruta_completa); ?>"
+                            <img src="<?php echo htmlspecialchars($ruta_completa); ?>" loading="lazy"
                                  alt="<?php echo htmlspecialchars($row['name']); ?>">
                         <?php else: ?>
                             <div class="no-image-placeholder">

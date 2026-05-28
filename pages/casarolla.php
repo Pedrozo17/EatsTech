@@ -9,7 +9,7 @@
   <title>Camaron Express | EATSTECH</title>
   <meta name="title" content="Camaron Express | EATSTECH">
 
-  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="shortcut icon" href="../assets/images/logo_empresa-removebg-preview.png" type="image/svg+xml">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -392,7 +392,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="..\assets\images\Camarones — Los Camarítos.webp"
+                  <img src="..\assets\images\Camarones — Los Camarítos.webp" loading="lazy"
                     alt="Coctel de Camarón" class="img-menu">
                 </figure>
                 <div>
@@ -411,7 +411,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="..\assets\images\Sánguche de camaron.webp" 
+                  <img src="..\assets\images\Sánguche de camaron.webp" loading="lazy"
                     alt="Coctel Armenio" class="img-menu">
                 </figure>
                 <div>
@@ -430,7 +430,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="..\assets\images\Cardumen de Camarón 12oz.webp"
+                  <img src="..\assets\images\Cardumen de Camarón 12oz.webp" loading="lazy"
                     alt="Coctel Costa Caribe" class="img-menu">
                 </figure>
                 <div>
@@ -448,7 +448,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="..\assets\images\Camaclitos.webp" 
+                  <img src="..\assets\images\Camaclitos.webp" loading="lazy"
                     alt="Porción Especial" class="img-menu">
                 </figure>
                 <div>
@@ -467,7 +467,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="..\assets\images\coctel intermedio.webp" 
+                  <img src="..\assets\images\coctel intermedio.webp" loading="lazy"
                     alt="Coctel Light" class="img-menu">
                 </figure>
                 <div>
@@ -485,7 +485,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="..\assets\images\Coctel tradicional 7oz.webp" 
+                  <img src="..\assets\images\Coctel tradicional 7oz.webp" loading="lazy"
                     alt="Combo Familiar" class="img-menu">
                 </figure>
                 <div>
