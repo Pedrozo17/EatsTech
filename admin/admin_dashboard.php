@@ -30,6 +30,7 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Control - EatsTech</title>
+    <link rel="shortcut icon" href="../../assets/images/logo_empresa-removebg-preview.png" type="image/x-icon">
     <style>
 
     :root {
@@ -285,7 +286,7 @@ tr:hover td {
 <body>
 
     <nav class="navbar">
-        <img src="../assets/images/logo.png" alt="Logo" class="nav-logo">
+        <img src="../assets/images/logo_empresa-removebg-preview.png" alt="Logo" class="nav-logo">
         <a href="../modules/usuarios/iniciodesesion.php" class="btn-logout">Cerrar Sesión</a>
     </nav>
 

@@ -337,7 +337,7 @@
 
           </figure>
 
-          <img src="../assets/images/shape-3.webp" width="197" height="194" loading="lazy" alt="" class="shape">
+          <img src="../assets/images/shape-3.png" width="197" height="194" loading="lazy" alt="" class="shape">
 
         </div>
       </section>
@@ -375,7 +375,7 @@
           </div>
         </div>
 
-        <img src="../assets/images/shape-4.webp" width="179" height="359" loading="lazy" alt="" class="shape shape-1">
+        <img src="../assets/images/shape-3.png" width="179" height="359" loading="lazy" alt="" class="shape shape-1">
 
       </section>
 
@@ -605,11 +605,10 @@
 
               <textarea name="mensaje" placeholder="Mensaje o pedido especial" autocomplete="off" class="input-field"></textarea>
 
-              <button type="submit" class="btn btn-secondary">
-                <span class="text text-1">Reservar una mesa</span>
-                <span class="text text-2" aria-hidden="true">Reservar una mesa</span>
+              <button type="reset" class="btn btn-secondary">
+                <span class="text text-1 proximamente">Aun no disponible</span>
+                <span class="text text-2 proximamente" aria-hidden="true">Aun no disponible</span>
               </button>
-
             </form>
 
             <div class="form-right text-center">
@@ -713,8 +712,8 @@
             </li>
           </ul>
 
-          <img src="../assets/images/shape-7.webp" width="208" height="178" loading="lazy" alt="shape" class="shape shape-1">
-          <img src="../assets/images/shape-8.webp" width="120" height="115" loading="lazy" alt="shape" class="shape shape-2">
+          <img src="../assets/images/shape-3.png" width="208" height="178" loading="lazy" alt="shape" class="shape shape-1">
+          <img src="../assets/images/shape-3.png" width="120" height="115" loading="lazy" alt="shape" class="shape shape-2">
 
         </div>
       </section>
