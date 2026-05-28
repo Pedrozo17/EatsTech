@@ -38,7 +38,7 @@ $cart = new Cart;
 
     <header class="site-header">
         <a href="../../pages/casarolla.php" class="header-logo">
-            <img src="../../assets/images/logo_empresa-removebg-preview.webp" alt="Camaron Express">
+            <img src="../../assets/images/logo_empresa-removebg-preview.png" alt="Camaron Express">
             <span>Camaron Express</span>
         </a>
 

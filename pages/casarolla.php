@@ -58,7 +58,7 @@
     <div class="container">
 
       <a href="#" class="logo" >
-        <img src="..\assets\images\logo_empresa-removebg-preview.webp" alt="EATSTECH - Home">
+        <img src="..\assets\images\logo_empresa-removebg-preview.png" alt="EATSTECH - Home">
       </a>
 
       <nav class="navbar" data-navbar>
@@ -68,7 +68,7 @@
         </button>
 
         <a href="#" class="logo">
-          <img src="..\assets\images\logo_empresa-removebg-preview.webp" alt="EATSTECH - Home">
+          <img src="..\assets\images\logo_empresa-removebg-preview.png" alt="EATSTECH - Home">
         </a>
 
         <ul class="navbar-list">
@@ -228,7 +228,7 @@
         </button>
 
         <a href="#menu" class="hero-btn has-after">
-          <img src="../assets/images/hero-icon.webp" width="48" height="48" alt="menu icon">
+          <img src="../assets/images/hero-icon.png" width="48" height="48" alt="menu icon">
           <span class="label-2 text-center span">Ver el menú</span>
         </a>
       </section>
@@ -290,8 +290,8 @@
             </li>
           </ul>
 
-          <img src="../assets/images/shape-1.webp" width="246" height="412" loading="lazy" alt="shape" class="shape shape-1 move-anim">
-          <img src="../assets/images/shape-2.webp" width="343" height="345" loading="lazy" alt="shape" class="shape shape-2 move-anim">
+          <img src="../assets/images/shape-1.png" width="246" height="412" loading="lazy" alt="shape" class="shape shape-1 move-anim">
+          <img src="../assets/images/shape-2.png" width="343" height="345" loading="lazy" alt="shape" class="shape shape-2 move-anim">
 
         </div>
       </section>
@@ -512,8 +512,8 @@
               <span class="text text-2" aria-hidden="true">Ver menú</span>
           </a>
 
-          <img src="../assets/images/shape-5.webp" width="921" height="1036" loading="lazy" alt="shape" class="shape shape-2 move-anim">
-          <img src="../assets/images/shape-6.webp" width="343" height="345" loading="lazy" alt="shape" class="shape shape-3 move-anim">
+          <img src="../assets/images/shape-5.png" width="921" height="1036" loading="lazy" alt="shape" class="shape shape-2 move-anim">
+          <img src="../assets/images/shape-6.png" width="343" height="345" loading="lazy" alt="shape" class="shape shape-3 move-anim">
 
         </div>
       </section>
@@ -678,7 +678,7 @@
             <li class="feature-item">
               <div class="feature-card">
                 <div class="card-icon">
-                  <img src="../assets/images/features-icon-1.webp" width="100" height="80" loading="lazy" alt="icon">
+                  <img src="../assets/images/features-icon-1.png" width="100" height="80" loading="lazy" alt="icon">
                 </div>
                 <h3 class="title-2 card-title">Recetas de la Costa</h3>
                 <p class="label-1 card-text">Cada coctel está basado en recetas tradicionales de la costa colombiana.</p>
@@ -687,7 +687,7 @@
             <li class="feature-item">
               <div class="feature-card">
                 <div class="card-icon">
-                  <img src="../assets/images/features-icon-2.webp" width="100" height="80" loading="lazy" alt="icon">
+                  <img src="../assets/images/features-icon-2.png" width="100" height="80" loading="lazy" alt="icon">
                 </div>
                 <h3 class="title-2 card-title">Innovación constante</h3>
                 <p class="label-1 card-text">Incorporamos nuevas recetas de Armenia y otras regiones del país.</p>
@@ -696,7 +696,7 @@
             <li class="feature-item">
               <div class="feature-card">
                 <div class="card-icon">
-                  <img src="../assets/images/features-icon-3.webp" width="100" height="80" loading="lazy" alt="icon">
+                  <img src="../assets/images/features-icon-3.png" width="100" height="80" loading="lazy" alt="icon">
                 </div>
                 <h3 class="title-2 card-title">Producto fresco</h3>
                 <p class="label-1 card-text">Usamos camarón fresco para garantizar el mejor sabor en cada porción.</p>
@@ -705,7 +705,7 @@
             <li class="feature-item">
               <div class="feature-card">
                 <div class="card-icon">
-                  <img src="../assets/images/features-icon-4.webp" width="100" height="80" loading="lazy" alt="icon">
+                  <img src="../assets/images/features-icon-4.png" width="100" height="80" loading="lazy" alt="icon">
                 </div>
                 <h3 class="title-2 card-title">Sabor local</h3>
                 <p class="label-1 card-text">Un negocio nacido en Mosquera para la comunidad de la sabana.</p>
