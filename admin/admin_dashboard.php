@@ -285,7 +285,7 @@ tr:hover td {
 <body>
 
     <nav class="navbar">
-        <img src="../assets/images/logo.png" alt="Logo" class="nav-logo">
+        <img src="../assets/images/logo.webp" alt="Logo" class="nav-logo">
         <a href="../modules/usuarios/iniciodesesion.php" class="btn-logout">Cerrar Sesión</a>
     </nav>
 

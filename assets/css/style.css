@@ -1111,7 +1111,7 @@ body.nav-active { overflow: hidden; }
 
 .about .abs-img-2::before {
   inset: 0;
-  background-image: url('../images/badge-2-bg.png');
+  background-image: url('../images/badge-2-bg.webp');
   background-repeat: no-repeat;
   background-size: contain;
   animation: rotate360 15s linear infinite;
@@ -1451,7 +1451,7 @@ textarea.input-field {
   position: relative;
   padding: 50px 40px;
   background: #f7efe2;;
-  background: url("../images/footer-form-bg.png");
+  background: url("../images/footer-form-bg.webp");
   background-position: center top;
   background-repeat: repeat;
 }

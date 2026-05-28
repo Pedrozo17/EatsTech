@@ -17,9 +17,6 @@
 
   <link rel="stylesheet" href="../assets/css/style.css">
 
-  <link rel="preload" as="image" href="../assets/images/hero-slider-1.jpg">
-  <link rel="preload" as="image" href="../assets/images/hero-slider-2.jpg">
-  <link rel="preload" as="image" href="../assets/images/hero-slider-3.jpg">
 
   
 </head>
@@ -38,17 +35,17 @@
       <div class="topbar-links">
 
         <a href="./casarolla.php" class="topbar-item active" title="Camaron Express">
-          <img src="..\assets\images\logo_empresa.png" alt="Camaron Express">
+          <img src="..\assets\images\logo_empresa.webp" alt="Camaron Express">
           <span>Camaron Express</span>
         </a>
 
         <a href="/pages/fogon.php" class="topbar-item proximamente" title="Fogón Antioqueño">
-          <img src="..\assets\images\fogon antioqueño.jpg" alt="Fogón Antioqueño">
+          <img src="..\assets\images\fogon antioqueño.webp" alt="Fogón Antioqueño">
           <span>Fogón</span>
         </a>
 
         <a href="#" class="topbar-item proximamente" title="Toskana - Próximamente">
-          <img src="..\assets\images\la toskana.jpg" alt="Toskana">
+          <img src="..\assets\images\la toskana.webp" alt="Toskana">
           <span>Toskana</span>
         </a>
 
@@ -61,7 +58,7 @@
     <div class="container">
 
       <a href="#" class="logo" >
-        <img src="..\assets\images\logo_empresa-removebg-preview.png" alt="EATSTECH - Home">
+        <img src="..\assets\images\logo_empresa-removebg-preview.webp" alt="EATSTECH - Home">
       </a>
 
       <nav class="navbar" data-navbar>
@@ -71,7 +68,7 @@
         </button>
 
         <a href="#" class="logo">
-          <img src="..\assets\images\logo_empresa-removebg-preview.png" alt="EATSTECH - Home">
+          <img src="..\assets\images\logo_empresa-removebg-preview.webp" alt="EATSTECH - Home">
         </a>
 
         <ul class="navbar-list">
@@ -172,7 +169,7 @@
 
           <li class="slider-item active" data-hero-slider-item>
             <div class="slider-bg">
-              <img src="..\assets\images\foto-slider.png" width="1880" height="950" alt="" class="img-cover">
+              <img src="..\assets\images\foto-slider.webp" width="1880" height="950" alt="" class="img-cover">
             </div>
             <p class="label-2 section-subtitle slider-reveal">Camaron Express</p>
             <h1 class="display-1 hero-title slider-reveal">
@@ -189,7 +186,7 @@
 
           <li class="slider-item" data-hero-slider-item>
             <div class="slider-bg">
-              <img src="..\assets\images\foto-slider2.png" width="1880" height="950" alt="" class="img-cover">
+              <img src="..\assets\images\foto-slider2.webp" width="1880" height="950" alt="" class="img-cover">
             </div>
             <p class="label-2 section-subtitle slider-reveal">Sabor de la Costa</p>
             <h1 class="display-1 hero-title slider-reveal">
@@ -206,7 +203,7 @@
 
           <li class="slider-item" data-hero-slider-item>
             <div class="slider-bg">
-              <img src="..\assets\images\foto-slider4.png" width="1880" height="950" alt="" class="img-cover">
+              <img src="..\assets\images\foto-slider4.webp" width="1880" height="950" alt="" class="img-cover">
             </div>
             <p class="label-2 section-subtitle slider-reveal">Mosquera, Cundinamarca</p>
             <h1 class="display-1 hero-title slider-reveal">
@@ -231,7 +228,7 @@
         </button>
 
         <a href="#menu" class="hero-btn has-after">
-          <img src="../assets/images/hero-icon.png" width="48" height="48" alt="menu icon">
+          <img src="../assets/images/hero-icon.webp" width="48" height="48" alt="menu icon">
           <span class="label-2 text-center span">Ver el menú</span>
         </a>
       </section>
@@ -253,7 +250,7 @@
               <div class="service-card">
                 <a href="#menu" class="has-before hover:shine">
                   <figure class="card-banner img-holder" style="--width: 285; --height: 336;">
-                    <img src="..\assets\images\coctel intermedio.png" width="285" height="336" loading="lazy"
+                    <img src="..\assets\images\coctel intermedio.webp" width="285" height="336" loading="lazy"
                       alt="Cocteles" class="img-cover">
                   </figure>
                 </a>
@@ -267,7 +264,7 @@
               <div class="service-card">
                 <a href="#menu" class="has-before hover:shine">
                   <figure class="card-banner img-holder" style="--width: 285; --height: 336;">
-                    <img src="..\assets\images\Sánguche de camaron.png" width="285" height="336" loading="lazy"
+                    <img src="..\assets\images\Sánguche de camaron.webp" width="285" height="336" loading="lazy"
                       alt="Entradas" class="img-cover">
                   </figure>
                 </a>
@@ -281,7 +278,7 @@
               <div class="service-card">
                 <a href="#menu" class="has-before hover:shine">
                   <figure class="card-banner img-holder" style="--width: 285; --height: 336;">
-                    <img src="..\assets\images\Camaclitos.png" width="285" height="336" loading="lazy"
+                    <img src="..\assets\images\Camaclitos.webp" width="285" height="336" loading="lazy"
                       alt="Bebidas" class="img-cover">
                   </figure>
                 </a>
@@ -293,8 +290,8 @@
             </li>
           </ul>
 
-          <img src="../assets/images/shape-1.png" width="246" height="412" loading="lazy" alt="shape" class="shape shape-1 move-anim">
-          <img src="../assets/images/shape-2.png" width="343" height="345" loading="lazy" alt="shape" class="shape shape-2 move-anim">
+          <img src="../assets/images/shape-1.webp" width="246" height="412" loading="lazy" alt="shape" class="shape shape-1 move-anim">
+          <img src="../assets/images/shape-2.webp" width="343" height="345" loading="lazy" alt="shape" class="shape shape-2 move-anim">
 
         </div>
       </section>
@@ -331,16 +328,16 @@
           </div>
 
           <figure class="about-banner">
-            <img src="..\assets\images\foto-complemento.png" width="570" height="570" loading="lazy"
+            <img src="..\assets\images\foto-complemento.webp" width="570" height="570" loading="lazy"
               alt="about banner" class="w-100" data-parallax-item data-parallax-speed="1">
             <div class="abs-img abs-img-1 has-before" data-parallax-item data-parallax-speed="1.75">
-              <img src="..\assets\images\foto-complemento2.png" width="285" height="285" loading="lazy"
+              <img src="..\assets\images\foto-complemento2.webp" width="285" height="285" loading="lazy"
                 alt="" class="w-100">
             </div>
 
           </figure>
 
-          <img src="../assets/images/shape-3.png" width="197" height="194" loading="lazy" alt="" class="shape">
+          <img src="../assets/images/shape-3.webp" width="197" height="194" loading="lazy" alt="" class="shape">
 
         </div>
       </section>
@@ -350,7 +347,7 @@
       <section class="special-dish text-center" aria-labelledby="dish-label">
 
         <div class="special-dish-banner">
-          <img src="..\assets\images\Camarones — Los Camarítos.png" width="940" height="900" loading="lazy"
+          <img src="..\assets\images\Camarones — Los Camarítos.webp" width="940" height="900" loading="lazy"
             alt="Camarones" class="img-cover">
         </div>
 
@@ -378,7 +375,7 @@
           </div>
         </div>
 
-        <img src="../assets/images/shape-4.png" width="179" height="359" loading="lazy" alt="" class="shape shape-1">
+        <img src="../assets/images/shape-4.webp" width="179" height="359" loading="lazy" alt="" class="shape shape-1">
 
       </section>
 
@@ -395,7 +392,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="..\assets\images\Camarones — Los Camarítos.png"
+                  <img src="..\assets\images\Camarones — Los Camarítos.webp"
                     alt="Coctel de Camarón" class="img-menu">
                 </figure>
                 <div>
@@ -414,7 +411,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="..\assets\images\Sánguche de camaron.png" 
+                  <img src="..\assets\images\Sánguche de camaron.webp" 
                     alt="Coctel Armenio" class="img-menu">
                 </figure>
                 <div>
@@ -433,7 +430,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="..\assets\images\Cardumen de Camarón 12oz.png"
+                  <img src="..\assets\images\Cardumen de Camarón 12oz.webp"
                     alt="Coctel Costa Caribe" class="img-menu">
                 </figure>
                 <div>
@@ -451,7 +448,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="..\assets\images\Camaclitos.png" 
+                  <img src="..\assets\images\Camaclitos.webp" 
                     alt="Porción Especial" class="img-menu">
                 </figure>
                 <div>
@@ -470,7 +467,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="..\assets\images\coctel intermedio.png" 
+                  <img src="..\assets\images\coctel intermedio.webp" 
                     alt="Coctel Light" class="img-menu">
                 </figure>
                 <div>
@@ -488,7 +485,7 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="..\assets\images\Coctel tradicional 7oz.png" 
+                  <img src="..\assets\images\Coctel tradicional 7oz.webp" 
                     alt="Combo Familiar" class="img-menu">
                 </figure>
                 <div>
@@ -515,8 +512,8 @@
               <span class="text text-2" aria-hidden="true">Ver menú</span>
           </a>
 
-          <img src="../assets/images/shape-5.png" width="921" height="1036" loading="lazy" alt="shape" class="shape shape-2 move-anim">
-          <img src="../assets/images/shape-6.png" width="343" height="345" loading="lazy" alt="shape" class="shape shape-3 move-anim">
+          <img src="../assets/images/shape-5.webp" width="921" height="1036" loading="lazy" alt="shape" class="shape shape-2 move-anim">
+          <img src="../assets/images/shape-6.webp" width="343" height="345" loading="lazy" alt="shape" class="shape shape-3 move-anim">
 
         </div>
       </section>
@@ -524,7 +521,7 @@
 
       <!-- TESTIMONIALS -->
       <section class="section testi text-center has-bg-image"
-        style="background-image: url('../assets/images/foto-slider2.png')" aria-label="testimonials">
+        style="background-image: url('../assets/images/foto-slider2.webp')" aria-label="testimonials">
         <div class="container">
 
           <div class="quote">"</div>
@@ -542,7 +539,7 @@
           </div>
 
           <div class="profile">
-            <img src="../assets/images/testi.jpg" width="100" height="100" loading="lazy"
+            <img src="../assets/images/testi.webp" width="100" height="100" loading="lazy"
               alt="Cliente satisfecho" class="img">
             <p class="label-2 profile-name">Cliente satisfecho</p>
           </div>
@@ -681,7 +678,7 @@
             <li class="feature-item">
               <div class="feature-card">
                 <div class="card-icon">
-                  <img src="../assets/images/features-icon-1.png" width="100" height="80" loading="lazy" alt="icon">
+                  <img src="../assets/images/features-icon-1.webp" width="100" height="80" loading="lazy" alt="icon">
                 </div>
                 <h3 class="title-2 card-title">Recetas de la Costa</h3>
                 <p class="label-1 card-text">Cada coctel está basado en recetas tradicionales de la costa colombiana.</p>
@@ -690,7 +687,7 @@
             <li class="feature-item">
               <div class="feature-card">
                 <div class="card-icon">
-                  <img src="../assets/images/features-icon-2.png" width="100" height="80" loading="lazy" alt="icon">
+                  <img src="../assets/images/features-icon-2.webp" width="100" height="80" loading="lazy" alt="icon">
                 </div>
                 <h3 class="title-2 card-title">Innovación constante</h3>
                 <p class="label-1 card-text">Incorporamos nuevas recetas de Armenia y otras regiones del país.</p>
@@ -699,7 +696,7 @@
             <li class="feature-item">
               <div class="feature-card">
                 <div class="card-icon">
-                  <img src="../assets/images/features-icon-3.png" width="100" height="80" loading="lazy" alt="icon">
+                  <img src="../assets/images/features-icon-3.webp" width="100" height="80" loading="lazy" alt="icon">
                 </div>
                 <h3 class="title-2 card-title">Producto fresco</h3>
                 <p class="label-1 card-text">Usamos camarón fresco para garantizar el mejor sabor en cada porción.</p>
@@ -708,7 +705,7 @@
             <li class="feature-item">
               <div class="feature-card">
                 <div class="card-icon">
-                  <img src="../assets/images/features-icon-4.png" width="100" height="80" loading="lazy" alt="icon">
+                  <img src="../assets/images/features-icon-4.webp" width="100" height="80" loading="lazy" alt="icon">
                 </div>
                 <h3 class="title-2 card-title">Sabor local</h3>
                 <p class="label-1 card-text">Un negocio nacido en Mosquera para la comunidad de la sabana.</p>
@@ -716,8 +713,8 @@
             </li>
           </ul>
 
-          <img src="../assets/images/shape-7.png" width="208" height="178" loading="lazy" alt="shape" class="shape shape-1">
-          <img src="../assets/images/shape-8.png" width="120" height="115" loading="lazy" alt="shape" class="shape shape-2">
+          <img src="../assets/images/shape-7.webp" width="208" height="178" loading="lazy" alt="shape" class="shape shape-1">
+          <img src="../assets/images/shape-8.webp" width="120" height="115" loading="lazy" alt="shape" class="shape shape-2">
 
         </div>
       </section>

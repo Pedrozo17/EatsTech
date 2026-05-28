@@ -38,7 +38,7 @@ $cart = new Cart;
 
     <header class="site-header">
         <a href="../../pages/casarolla.php" class="header-logo">
-            <img src="../../assets/images/logo_empresa-removebg-preview.png" alt="Camaron Express">
+            <img src="../../assets/images/logo_empresa-removebg-preview.webp" alt="Camaron Express">
             <span>Camaron Express</span>
         </a>
 
@@ -74,7 +74,7 @@ $cart = new Cart;
                             
                             // 🔴 DEFINIMOS LA RUTA DE LA IMAGEN EN LA CARPETA ASSETS
                             // Si por algún motivo el plato no tiene foto, pondrá una por defecto
-                            $imgName = !empty($item['image']) ? $item['image'] : 'default.png';
+                            $imgName = !empty($item['image']) ? $item['image'] : 'default.webp';
                             $ruta_imagen = "../../assets/images/" . $imgName;
                         ?>
                             <tr>

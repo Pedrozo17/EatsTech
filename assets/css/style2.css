@@ -123,7 +123,7 @@ body {
 /* ── HERO BANNER ── */
 .menu-hero {
     background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3)),
-        url('../../assets/images/foto-slider.png') center/cover no-repeat;
+        url('../../assets/images/foto-slider.webp') center/cover no-repeat;
     height: 220px;
     display: flex;
     flex-direction: column;
