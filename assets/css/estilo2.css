@@ -202,7 +202,7 @@ body {
 
 .overlay {
     background-color: #1a1a1a;
-    background: url("../../assets/images/logo.webp");
+    background: url("../../assets/images/logo.png");
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;

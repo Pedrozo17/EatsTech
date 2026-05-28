@@ -11,13 +11,13 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <link rel="stylesheet" href="../assets/css/style1.css">
-    <link rel="icon" type="image/x-icon" href="../assets/images/logo.webp">
+    <link rel="icon" type="image/x-icon" href="../assets/images/logo.png">
 </head>
 
 <body>
 
     <div class="loading-page">
-        <img id="svg" src="../assets/images/logo.webp" alt="Logo">
+        <img id="svg" src="../assets/images/logo.png" alt="Logo">
         <div class="name-container">
             <div class="logo-name">EATSTECH</div>
         </div>
@@ -25,7 +25,7 @@
 
     <nav class="navbar">
         <div class="nav-container">
-            <img src="../assets/images/logo.webp" alt="Logo" class="nav-logo">
+            <img src="../assets/images/logo.png" alt="Logo" class="nav-logo">
             
             <button class="menu-toggle" id="mobile-menu-btn" aria-label="Abrir menú">
                 <span class="bar"></span>
@@ -59,7 +59,7 @@
             <div class="swiper-slide">
                 <div class="icons">
                     <i class="fa-solid fa-circle-arrow-left"></i>
-                    <img src="../assets/images/logo_producto(1).webp" alt="">
+                    <img src="../assets/images/logo_producto(1).png" alt="">
                     <i class="fa-regular fa-heart"></i>
                 </div>
                 <div class="product-content">
@@ -80,7 +80,7 @@
             <div class="swiper-slide">
                 <div class="icons">
                     <i class="fa-solid fa-circle-arrow-left"></i>
-                    <img src="../assets/images/logo_producto(1).webp" alt="">
+                    <img src="../assets/images/logo_producto(1).png" alt="">
                     <i class="fa-regular fa-heart"></i>
                 </div>
                 <div class="product-content">
@@ -103,7 +103,7 @@
             <div class="swiper-slide">
                 <div class="icons">
                     <i class="fa-solid fa-circle-arrow-left"></i>
-                    <img src="../assets/images/logo_producto(1).webp" alt="">
+                    <img src="../assets/images/logo_producto(1).png" alt="">
                     <i class="fa-regular fa-heart"></i>
                 </div>
                 <div class="product-content">

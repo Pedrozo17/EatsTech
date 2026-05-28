@@ -11,7 +11,7 @@
 <body>
 
     <div class="loading-page">
-        <img id="svg" src="../../assets/images/logo.webp" alt="Logo">
+        <img id="svg" src="../../assets/images/logo.png" alt="Logo">
         <div class="name-container">
             <div class="logo-name">EATSTECH</div>
         </div>
@@ -19,7 +19,7 @@
 
     <nav class="navbar">
         <div class="nav-container">
-            <img src="../../assets/images/logo.webp" alt="Logo" class="nav-logo">
+            <img src="../../assets/images/logo.png" alt="Logo" class="nav-logo">
             
             <button class="menu-toggle" id="mobile-menu-btn" aria-label="Abrir menú">
                 <span class="bar"></span>
