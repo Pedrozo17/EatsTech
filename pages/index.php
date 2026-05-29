@@ -12,10 +12,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <link rel="stylesheet" href="../assets/css/style1.css">
     <link rel="icon" type="image/x-icon" href="../assets/images/logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
+    
 
+<!-- 1. PANTALLA DE CARGA (LOADING) -->
     <div class="loading-page">
         <img id="svg" src="../assets/images/logo.png" alt="Logo">
         <div class="name-container">
@@ -23,6 +26,7 @@
         </div>
     </div>
 
+    <!-- 2. BARRA DE NAVEGACIÓN (NAVBAR) -->
     <nav class="navbar">
         <div class="nav-container">
             <img src="../assets/images/logo.png" alt="Logo" class="nav-logo">
@@ -36,9 +40,9 @@
             <div class="nav-collapse" id="navbar-collapse-target">
                 <ul class="nav-links">
                     <li><a href="#">Home</a></li>
-                    <li><a href="#">Servicios</a></li>
-                    <li><a href="#">Sobre Nosotros</a></li>
-                    <li><a href="#">Contáctanos</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#sobre-nosotros">Sobre Nosotros</a></li>
+                    <li><a href="#contactanos">Contáctanos</a></li>
                 </ul>
                 <div class="nav-buttons">
                     <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
@@ -54,77 +58,178 @@
         </div>
     </nav>
 
-    <div class="swiper mySwiper">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide">
-                <div class="icons">
-                    <i class="fa-solid fa-circle-arrow-left"></i>
-                    <img src="../assets/images/logo_producto(1).png" alt="">
-                    <i class="fa-regular fa-heart"></i>
-                </div>
-                <div class="product-content">
-                    <div class="product-txt">
-                        <h3>CAMARON EXPRESS</h3>
-                        <p>
-                            Somos un espacio enfocado en los cocteles de camarón, basándonos en recetas tradicionales así como innovaciones
-                            constantes traída de otros departamentos y de la costa colombiana
-                        </p>
+    <!-- 3. CONTENEDOR PRINCIPAL FIJO (SWIPER DE RESTAURANTES) -->
+    <main class="seccion-principal">
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                
+                <!-- 1. CAMARÓN EXPRESS (ACTIVO) -->
+                <div class="swiper-slide">
+                    <div class="icons">
+                        <i class="fa-solid fa-circle-arrow-left"></i>
+                        <img src="../assets/images/logo_producto(1).png" alt="">
+                        <i class="fa-regular fa-heart"></i>
                     </div>
-                    <div class="product-img">
-                        <img src="../assets/images/logo_empresa.webp" alt="">
+                    <div class="product-content">
+                        <div class="product-txt">
+                            <h3>CAMARON EXPRESS</h3>
+                            <p>
+                                Somos un espacio enfocado en los cocteles de camarón, basándonos en recetas tradicionales así como innovaciones
+                                constantes traída de otros departamentos y de la costa colombiana
+                            </p>
+                        </div>
+                        <div class="product-img">
+                            <img src="../assets/images/logo_empresa.webp" alt="">
+                        </div>
                     </div>
+                    <!-- Mantiene su enlace directo hacia la página del restaurante -->
+                    <a href="./casarolla.php" class="btn-1 btn-entrar-restaurante">entrar</a>
                 </div>
-                <a href="./casarolla.php" class="btn-1">entrar</a>
-            </div>
 
-            <div class="swiper-slide">
-                <div class="icons">
-                    <i class="fa-solid fa-circle-arrow-left"></i>
-                    <img src="../assets/images/logo_producto(1).png" alt="">
-                    <i class="fa-regular fa-heart"></i>
-                </div>
-                <div class="product-content">
-                    <div class="product-txt">
-                        <h3>FOGON ANTIOQUEÑO</h3>
-                        <p>
-                            La mejor comida paisa con una excelente atención estamos ubicados frente al acueducto, a una
-                            cuadra del comando de la policía . en mosquera , cundinamarca.
-                        </p>
+                <!-- 2. FOGÓN ANTIOQUEÑO (PRÓXIMAMENTE) -->
+                <div class="swiper-slide">
+                    <div class="icons">
+                        <i class="fa-solid fa-circle-arrow-left"></i>
+                        <img src="../assets/images/logo_producto(1).png" alt="">
+                        <i class="fa-regular fa-heart"></i>
                     </div>
-                    <div class="product-img">
-                        <img src="data:image/jpeg;base64,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"
-                            alt="">
+                    <div class="product-content">
+                        <div class="product-txt">
+                            <h3>FOGON ANTIOQUEÑO</h3>
+                            <p>
+                                La mejor comida paisa con una excelente atención estamos ubicados frente al acueducto, a una
+                                cuadra del comando de la policía en mosquera, cundinamarca.
+                            </p>
+                        </div>
+                        <div class="product-img">
+                            <img src="../assets/images/fogon antioqueño.webp" alt="Fogón Antioqueño">
+                        </div>
+                    </div>
+                    <a href="#" class="btn-1 btn-proximamente">Proximamente</a>
+                </div>
 
+                <!-- 3. TOSKANA (PRÓXIMAMENTE) -->
+                <div class="swiper-slide">
+                    <div class="icons">
+                        <i class="fa-solid fa-circle-arrow-left"></i>
+                        <img src="../assets/images/logo_producto(1).png" alt="">
+                        <i class="fa-regular fa-heart"></i>
                     </div>
+                    <div class="product-content">
+                        <div class="product-txt">
+                            <h3>TOSKANA</h3>
+                            <p>
+                                Nos enorgullece ofrecer una experiencia culinaria única que combina la auténtica cocina de
+                                autor con la comida tradicional colombiana. Mezclando matices, trends y sabores llegando
+                                al punto de nuestra identidad propia.
+                            </p>
+                        </div>
+                        <div class="product-img">
+                            <img src="../assets/images/la toskana.webp" alt="Toskana">
+                        </div>
+                    </div>
+                    <a href="#" class="btn-1 btn-proximamente">proximamente</a>
                 </div>
-                <a href="./index.html" class="btn-1">Proximamente</a>
-            </div>
 
-            <div class="swiper-slide">
-                <div class="icons">
-                    <i class="fa-solid fa-circle-arrow-left"></i>
-                    <img src="../assets/images/logo_producto(1).png" alt="">
-                    <i class="fa-regular fa-heart"></i>
-                </div>
-                <div class="product-content">
-                    <div class="product-txt">
-                        <h3>TOSKANA</h3>
-                        <p>
-                            nos enorgullece ofrecer una experiencia culinaria única que combina la auténtica cocina de
-                            autor con la comida tradicional colombiana. Mezclando matices, trends y sabores llegando
-                            al punto de nuestra identidad propia.
-                        </p>
-                    </div>
-                    <div class="product-img">
-                        <img
-                            src="data:image/jpeg;base64,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">
-
-                    </div>
-                </div>
-                <a href="./index.html" class="btn-1">proximamente</a>
             </div>
         </div>
-    </div>
+    </main>
+
+<div id="contenido-restaurante" class="contenido-oculto">
+    
+    <section id="servicios" class="seccion-info">
+        <div class="info-container">
+            <h2 class="titulo-seccion">Nuestros <span>Servicios</span></h2>
+            <p class="subtitulo-seccion">Descubre todo lo que EatsTech y nuestros restaurantes aliados tienen preparado para ti.</p>
+            
+            <div class="grid-servicios">
+                <div class="tarjeta-servicio">
+                    <div class="icono-servicio"><i class="fa-solid fa-utensils"></i></div>
+                    <h3>Reservas en Línea</h3>
+                    <p>Asegura tu mesa en los mejores restaurantes de la región de forma rápida, sin filas ni esperas.</p>
+                </div>
+                
+                <div class="tarjeta-servicio">
+                    <div class="icono-servicio"><i class="fa-solid fa-motorcycle"></i></div>
+                    <h3>Domicilios Express</h3>
+                    <p>Disfruta de tus platos favoritos directo en la comodidad de tu casa con repartidores asignados.</p>
+                </div>
+                
+                <div class="tarjeta-servicio">
+                    <div class="icono-servicio"><i class="fa-solid fa-qrcode"></i></div>
+                    <h3>Menú Digital QR</h3>
+                    <p>Escanea, revisa los ingredientes en tiempo real y pide directamente desde tu dispositivo móvil.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre-nosotros" class="seccion-info bg-alterno">
+        <div class="info-container sobre-nosotros-flex">
+            <div class="sobre-nosotros-txt">
+                <h2 class="titulo-seccion">Sobre <span>Nosotros</span></h2>
+                <p class="parrafo-destacado">EatsTech nace como una solución tecnológica innovadora pensada para conectar la pasión culinaria con la comodidad digital.</p>
+                <p>Somos un ecosistema enfocado en potenciar la visibilidad de los restaurantes locales en Mosquera y Cundinamarca, permitiendo a los usuarios explorar la gastronomía tradicional y moderna a través de una experiencia interactiva fluida y de alta calidad.</p>
+                <div class="metricas">
+                    <div class="metrica-item"><span>3+</span><p>Restaurantes</p></div>
+                    <div class="metrica-item"><span>100%</span><p>Garantía UX</p></div>
+                </div>
+            </div>
+            <div class="sobre-nosotros-img">
+                <img src="../assets/images/logo_empresa.webp" alt="EatsTech Plataforma">
+            </div>
+        </div>
+    </section>
+
+    <section id="contactanos" class="seccion-info">
+        <div class="info-container">
+            <h2 class="titulo-seccion">¿Tienes dudas? <span>Contáctanos</span></h2>
+            <p class="subtitulo-seccion">Estamos aquí para ayudarte a integrar tu restaurante o resolver cualquier inconveniente técnico.</p>
+            
+            <div class="contacto-wrapper">
+                <div class="contacto-info">
+                    <div class="contacto-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div>
+                            <h4>Ubicación</h4>
+                            <p>Mosquera, Cundinamarca - Centro de Biotecnología Agropecuaria CBA</p>
+                        </div>
+                    </div>
+                    <div class="contacto-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div>
+                            <h4>Correo Electrónico</h4>
+                            <p>soporte@eatstech.com</p>
+                        </div>
+                    </div>
+                    <div class="contacto-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <div>
+                            <h4>Teléfono / WhatsApp</h4>
+                            <p>+57 300 123 4567</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="contacto-form" onsubmit="event.preventDefault();">
+                    <div class="form-grupo">
+                        <input type="text" placeholder="Tu Nombre completo" required>
+                    </div>
+                    <div class="form-grupo">
+                        <input type="email" placeholder="Tu Correo Electrónico" required>
+                    </div>
+                    <div class="form-grupo">
+                        <textarea placeholder="Escribe tu mensaje aquí..." rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-enviar-formulario">Enviar Mensaje</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+</div>
+    
+</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"> </script>
@@ -181,9 +286,102 @@
                     document.querySelector(".loading-page").style.display = "none";
                     document.querySelector(".swiper").style.visibility = "visible";
                     document.body.classList.remove("loading");
+
+                    document.body.classList.add("bloquear-scroll");
                 }
             }
         );
+
+document.addEventListener("DOMContentLoaded", function () {
+    const contenedorTexto = document.getElementById('contenido-restaurante');
+    const enlacesMenu = document.querySelectorAll('.nav-links a');
+
+    // Función para activar las secciones inferiores cuando se usa el menú
+    function habilitarSecciones() {
+        document.body.classList.remove("bloquear-scroll");
+        if (contenedorTexto) {
+            contenedorTexto.style.display = 'block';
+            contenedorTexto.style.opacity = '1';
+        }
+    }
+
+    // Función para restaurar el estado inicial (Solo Swiper bloqueado)
+    function restaurarEstadoInicial() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // Esperamos a que termine la animación de subida antes de volver a bloquear y ocultar
+        setTimeout(() => {
+            document.body.classList.add("bloquear-scroll");
+            if (contenedorTexto) {
+                contenedorTexto.style.display = 'none';
+                contenedorTexto.style.opacity = '0';
+            }
+        }, 500); // 500ms es el tiempo ideal para que el scroll termine de subir de forma fluida
+    }
+
+    // Control de los enlaces del menú de navegación (Home, Servicios, etc.)
+    enlacesMenu.forEach(enlace => {
+        enlace.addEventListener('click', function (event) {
+            const targetId = this.getAttribute('href');
+
+            // 🏠 SI LE DAN CLICK A HOME (href="#")
+            if (targetId === '#') {
+                event.preventDefault();
+                restaurarEstadoInicial();
+                return;
+            }
+
+            // 📜 SI LE DAN CLICK A OTRO ENLACE DE SECCIÓN (#servicios, #sobre-nosotros, etc.)
+            if (targetId.startsWith('#')) {
+                event.preventDefault(); // Evitamos el salto brusco nativo
+                
+                // 1. Desbloqueamos el body y hacemos aparecer el contenedor de texto
+                habilitarSecciones(); 
+
+                // 2. Buscamos la sección exacta a la que dio clic
+                const seccionDestino = document.querySelector(targetId);
+                if (seccionDestino) {
+                    // Delay corto para que el navegador asimile que el bloque ahora es 'display: block'
+                    setTimeout(() => {
+                        seccionDestino.scrollIntoView({ behavior: 'smooth' });
+                    }, 50);
+                }
+            }
+        });
+    });
+});
+
+    document.addEventListener("DOMContentLoaded", function () {
+    // Seleccionamos todos los botones que tengan la clase de próximamente
+    const botonesProximamente = document.querySelectorAll('.btn-proximamente');
+
+    botonesProximamente.forEach(boton => {
+        boton.addEventListener('click', function (event) {
+            // Evita que el enlace '#' intente recargar o mover la pantalla hacia arriba
+            event.preventDefault(); 
+
+            // Lanzamos la alerta estilizada
+            Swal.fire({
+                title: '¡Muy pronto!',
+                text: 'Aún no tenemos este restaurante disponible.',
+                icon: 'info',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#FFB900', // Puedes cambiarlo por el color corporativo de tu app
+                background: '#323232',
+                color: '#FFFFFF',
+                customClass: {
+                    popup: 'borde-redondeado-personalizado'
+                },
+                showClass: {
+                    popup: 'animate__animated animate__fadeInUp animate__faster'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutDown animate__faster'
+                }
+            });
+        });
+    });
+});
     </script>
 </body>
 </html>

@@ -142,7 +142,7 @@
       </a>
 
       <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
-        <a href="../modules/usuarios/logout.php?from=./casarolla.php" class="btn btn-secondary">
+        <a href="../modules/usuarios/logout.php?from=../../pages/casarolla.php" class="btn btn-secondary">
           <span class="text text-1">Cerrar sesión</span>
           <span class="text text-2" aria-hidden="true">Cerrar sesión</span>
         </a>

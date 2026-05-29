@@ -190,6 +190,284 @@ body.loading {
     text-decoration: none;
     margin-top: 50px;
 }
+
+/* ==========================================================================
+   ESTILOS PREMIUM PARA SECCIONES INFERIORES DE EATSTECH
+   ========================================================================== */
+
+/* Contenedor general oculto */
+.contenido-oculto {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+    background-color: #1a1a1a; /* Fondo oscuro base */
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif; /* Asegurar fuente limpia */
+}
+
+/* Estilos de Sección base */
+.seccion-info {
+    padding: 100px 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.bg-alterno {
+    background-color: #121212; /* Variación sutil de fondo oscuro */
+}
+
+.info-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Títulos y Subtítulos */
+.titulo-seccion {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.titulo-seccion span {
+    color: #FFB900; /* El hermoso amarillo corporativo */
+}
+
+.subtitulo-seccion {
+    text-align: center;
+    color: #aaaaaa;
+    max-width: 600px;
+    margin: 0 auto 60px auto;
+    font-size: 1.1rem;
+}
+
+/* GRID DE SERVICIOS */
+.grid-servicios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.tarjeta-servicio {
+    background-color: #242424;
+    padding: 40px 30px;
+    border-radius: 20px; /* Bordes redondeados integrados con tu estilo */
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tarjeta-servicio:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(255, 185, 0, 0.1);
+    border-color: rgba(255, 185, 0, 0.3);
+}
+
+.icono-servicio {
+    font-size: 2.5rem;
+    color: #FFB900;
+    margin-bottom: 20px;
+}
+
+.tarjeta-servicio h3 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.tarjeta-servicio p {
+    color: #bbbbbb;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* SOBRE NOSOTROS FLEX */
+.sobre-nosotros-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+    flex-wrap: wrap;
+}
+
+.sobre-nosotros-txt {
+    flex: 1;
+    min-width: 300px;
+}
+
+.sobre-nosotros-txt .titulo-seccion {
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.parrafo-destacado {
+    font-size: 1.2rem;
+    color: #FFB900;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.sobre-nosotros-txt p {
+    color: #cccccc;
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+.metricas {
+    display: flex;
+    gap: 40px;
+    margin-top: 35px;
+}
+
+.metrica-item span {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #FFB900;
+    display: block;
+}
+
+.metrica-item p {
+    color: #aaaaaa;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.sobre-nosotros-img {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    justify-content: center;
+}
+
+.sobre-nosotros-img img {
+    max-width: 80%;
+    border-radius: 30px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    background-color: #242424;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* SECCIÓN CONTACTO */
+.contacto-wrapper {
+    display: flex;
+    gap: 50px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.contacto-info {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+}
+
+.contacto-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.contacto-item i {
+    font-size: 1.8rem;
+    color: #FFB900;
+    background-color: #242424;
+    padding: 15px;
+    border-radius: 15px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contacto-item h4 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.contacto-item p {
+    margin: 0;
+    color: #aaaaaa;
+    font-size: 0.95rem;
+}
+
+/* FORMULARIO DE CONTACTO */
+.contacto-form {
+    flex: 1.2;
+    min-width: 300px;
+    background-color: #242424;
+    padding: 40px;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.form-grupo {
+    margin-bottom: 20px;
+}
+
+.form-grupo input,
+.form-grupo textarea {
+    width: 100%;
+    padding: 15px 20px;
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-grupo input:focus,
+.form-grupo textarea:focus {
+    outline: none;
+    border-color: #FFB900;
+    box-shadow: 0 0 10px rgba(255, 185, 0, 0.2);
+}
+
+.btn-enviar-formulario {
+    width: 100%;
+    padding: 15px;
+    background-color: #FFB900;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-enviar-formulario:hover {
+    background-color: #e0a300;
+    transform: translateY(-2px);
+}
+
+/* RESPONSIVE DESIGN (Para celulares) */
+@media (max-width: 768px) {
+    .seccion-info {
+        padding: 60px 15px;
+    }
+    .titulo-seccion {
+        font-size: 2rem;
+    }
+    .sobre-nosotros-txt .titulo-seccion {
+        text-align: center;
+    }
+    .contacto-form {
+        padding: 25px;
+    }
+}
 /* ==========================================================================
    RESPONSIVE NAVBAR (MÓVILES Y TABLETS)
    ========================================================================== */
