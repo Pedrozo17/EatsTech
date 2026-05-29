@@ -1,4 +1,3 @@
-
 // ==========================================================================
 // CONTROL DE FORMULARIOS DINÁMICOS (SELECTOR DE ROLES)
 // ==========================================================================
@@ -17,23 +16,6 @@ function toggleRegistroEmpresa(show) {
         }
     });
 }
-
-const inputCedula = document.getElementById('registro-cedula');
-    const inputTelefono = document.getElementById('registro-telefono');
-
-    if (inputCedula) {
-        inputCedula.addEventListener('input', function() {
-            // Reemplaza cualquier carácter que NO sea un número por un vacío ''
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
-    }
-
-    if (inputTelefono) {
-        inputTelefono.addEventListener('input', function() {
-            // Reemplaza cualquier carácter que NO sea un número por un vacío ''
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
-    }
 
 function toggleRestauranteSelector(show) {
     const container = document.getElementById('restaurante-select-container');
@@ -75,11 +57,27 @@ function toggleRestauranteSelector(show) {
 }
 
 // ==========================================================================
-// EVENTOS AUTOMÁTICOS Y COMPORTAMIENTO UX
+// EVENTOS AUTOMÁTICOS Y COMPORTAMIENTO UX (SE DISPARA AL CARGAR EL DOM)
 // ==========================================================================
 document.addEventListener("DOMContentLoaded", function() {
     
-    // 1. Escuchar cambios en los inputs de correo en tiempo real (Para empresas)
+    // 1. VALIDACIÓN EN TIEMPO REAL: SÓLO NÚMEROS EN CÉDULA Y TELÉFONO
+    const inputCedula = document.getElementById('registro-cedula');
+    const inputTelefono = document.getElementById('registro-telefono');
+
+    if (inputCedula) {
+        inputCedula.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    }
+
+    if (inputTelefono) {
+        inputTelefono.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    }
+    
+    // 2. Escuchar cambios en los inputs de correo en tiempo real (Para empresas)
     document.querySelectorAll('input[name="correo"]').forEach(input => {
         input.addEventListener('input', function() {
             const formulario = this.closest('form');
@@ -108,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // 2. Control del Menú Hamburguesa
+    // 3. Control del Menú Hamburguesa
     const menuBtn = document.getElementById("mobile-menu-btn");
     const navCollapse = document.getElementById("navbar-collapse-target");
     if (menuBtn && navCollapse) {
@@ -118,10 +116,10 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // 3. Manejo de Paneles Deslizantes (Sign In / Sign Up)
+    // 4. Manejo de Paneles Deslizantes (Sign In / Sign Up)
     const signUpButton = document.getElementById('signUp');
     const signInButton = document.getElementById('signIn');
-    const container = document.getElementById('container-wrapper'); // Se asignó id al contenedor común
+    const container = document.getElementById('container-wrapper');
 
     if (signUpButton && signInButton && container) {
         signUpButton.addEventListener('click', () => {
@@ -132,26 +130,89 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // 4. Animación UX al fallar Login por cuenta inexistente o redirección forzada
+    // 5. CAPTURA DE ERRORES DE LOGIN CON SWEETALERT2
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('error') === 'no_existe' && container) {
-        container.classList.add("right-panel-active");
-    }
+    const errorParam = urlParams.get('error');
 
-    // 5. Integración SweetAlert2 para Alerta de Autenticación en Pasarela de Pagos
-    if (urlParams.get('error') === 'auth') {
-        Swal.fire({
-            title: '¡Paso necesario!',
-            text: 'Inicia sesión para poder procesar tu pedido y proceder con el pago.',
-            icon: 'info',
-            confirmButtonText: 'Entendido',
-            confirmButtonColor: '#FFB900',
-            background: '#242424',
-            color: '#FFFFFF',
-            customClass: { popup: 'borde-redondeado-personalizado' }
-        });
+    if (errorParam) {
+        // 🔒 CASO 1: Contraseña incorrecta (?error=1)
+        if (errorParam === '1') {
+            Swal.fire({
+                title: 'Contraseña Incorrecta',
+                text: 'La contraseña que ingresaste no coincide con nuestros registros. Inténtalo de nuevo.',
+                icon: 'error',
+                confirmButtonText: 'Corregir',
+                confirmButtonColor: '#FFB900',
+                background: '#242424',
+                color: '#FFFFFF',
+                customClass: { popup: 'borde-redondeado-personalizado' }
+            });
+        }
+        
+        // 🔍 CASO 2: El correo no existe en la Base de Datos (?error=no_existe)
+        else if (errorParam === 'no_existe') {
+            Swal.fire({
+                title: 'Usuario no encontrado',
+                text: 'El correo electrónico ingresado no está registrado en EatsTech. Verifica tu escritura o crea una cuenta nueva.',
+                icon: 'warning',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#FFB900',
+                background: '#242424',
+                color: '#FFFFFF',
+                customClass: { popup: 'borde-redondeado-personalizado' }
+            });
+
+            if (container) {
+                container.classList.add("right-panel-active");
+            }
+        }
+
+                else if (errorParam === 'duplicado') {
+            Swal.fire({
+                title: 'Usuario ya registrado',
+                text: 'El correo electrónico ingresado ya está registrado en EatsTech. Inicia sesión.',
+                icon: 'warning',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#FFB900',
+                background: '#242424',
+                color: '#FFFFFF',
+                customClass: { popup: 'borde-redondeado-personalizado' }
+            });
+
+            if (container) {
+                container.classList.add("right-panel-active");
+            }
+        }
+
+        // 🛡️ CASO 3: El rol no coincide (?error=rol_incorrecto)
+        else if (errorParam === 'rol_incorrecto') {
+            Swal.fire({
+                title: 'Error de Acceso',
+                text: 'El tipo de cuenta seleccionado (Persona/Empresa) no coincide con el perfil de este correo electrónico.',
+                icon: 'error',
+                confirmButtonText: 'Verificar Rol',
+                confirmButtonColor: '#FFB900',
+                background: '#242424',
+                color: '#FFFFFF',
+                customClass: { popup: 'borde-redondeado-personalizado' }
+            });
+        }
+        
+        // 💳 CASO 4: Intento de pago sin iniciar sesión (?error=auth)
+        else if (errorParam === 'auth') {
+            Swal.fire({
+                title: '¡Paso necesario!',
+                text: 'Inicia sesión para poder procesar tu pedido y proceder con el pago.',
+                icon: 'info',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#FFB900',
+                background: '#242424',
+                color: '#FFFFFF',
+                customClass: { popup: 'borde-redondeado-personalizado' }
+            });
+        }
     }
-});
+}); // <-- Llave y paréntesis que cierran correctamente el DOMContentLoaded
 
 // ==========================================================================
 // ANIMACIONES DE CARGA INICIAL (GSAP)

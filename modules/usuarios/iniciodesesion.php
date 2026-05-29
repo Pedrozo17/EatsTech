@@ -88,8 +88,8 @@
                 </div>
                 <input class="input" type="text" name="nombre" placeholder="Nombre completo" required>
                 <input class="input" type="email" name="correo" placeholder="Correo" required>
-                <input class="input" type="tel" name="cedula" placeholder="Número de cédula" maxlength="10" required>
-                <input class="input" type="tel" name="telefono" placeholder="Número de teléfono" maxlength="10" required>
+                <input class="input" type="tel" id="registro-cedula" name="cedula" placeholder="Número de cédula" maxlength="10" required>
+                <input class="input" type="tel" id="registro-telefono" name="telefono" placeholder="Número de teléfono" maxlength="10" required>
                 <input class="input" type="text" name="direccion" placeholder="Dirección de envío" required>
                 <input class="input" type="password" name="contraseña" placeholder="Contraseña" required>
                 <input class="input" type="password" name="confirmar_contraseña" placeholder="Confirmar contraseña" required>
