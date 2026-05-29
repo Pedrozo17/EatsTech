@@ -31,257 +31,7 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Control - EatsTech</title>
     <link rel="shortcut icon" href="../../assets/images/logo_empresa-removebg-preview.png" type="image/x-icon">
-    <style>
-
-    :root {
-    /* ==========================================================================
-       PALETA DE COLORES CORPORATIVOS - CAMARON EXPRESS / EATSTECH VINTAGE
-       ========================================================================== */
-    --primary-brown: #cf9465;
-    --primary-cream: #ECE2C6;
-    --primary-mint: #9FD5D1;
-    --davys-grey: #6f675d;
-    
-    /* CONTROL DE CONTRASTE ESTRICTO */
-    --text-main: #2a241d;          
-    --text-body: #3b3128;          
-    --text-muted: #5a4f44;         
-    --dark-navbar: #2a241d;        
-    --pure-white: #ffffff;         
-    
-    /* Color dinámico desde la BD mapeado a tu color principal */
-    --amarillo: <?php echo isset($color_restaurante) ? $color_restaurante : '#cf9465'; ?>; 
-    --amarillo-hover: #b88258;     
-    
-    --bg-main: #f7f2e8;            
-    --bg-card: #efe6d3;            
-    --bg-input: #e4d7be;           
-    
-    --danger: #d9534f;
-    --success: #1e8449;            
-}
-
-body {
-    background-color: var(--bg-main);
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    color: var(--text-body);
-}
-
-/* --- NAVBAR ESTILO PREMIUM FLOATING --- */
-.navbar {
-    background-color: var(--dark-navbar);
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 1200px;
-    border-radius: 30px;
-    padding: 10px 20px;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 1000;
-    border: 1px solid var(--davys-grey);
-    box-shadow: 0 10px 30px rgba(42, 36, 29, 0.15);
-}
-
-.nav-logo { 
-    height: 40px; 
-}
-
-.btn-logout {
-    background-color: var(--primary-cream);
-    color: var(--dark-navbar);
-    padding: 8px 18px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 13px;
-    transition: all 0.3s ease;
-}
-
-.btn-logout:hover {
-    background-color: var(--amarillo);
-    color: var(--pure-white);
-    box-shadow: 0 4px 12px rgba(207, 148, 101, 0.3);
-}
-
-.dashboard-container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 140px auto 40px auto;
-    padding: 0 20px;
-    box-sizing: border-box;
-}
-
-/* --- SUB-NAVBAR INTERNO (CONTROL DE PESTAÑAS) --- */
-.submenu-admin {
-    display: flex;
-    background-color: var(--bg-card);
-    padding: 8px;
-    border-radius: 15px;
-    margin-bottom: 30px;
-    border: 1px solid var(--bg-input);
-    gap: 10px;
-}
-
-.submenu-admin a {
-    flex: 1;
-    text-align: center;
-    padding: 12px;
-    color: var(--text-body); 
-    text-decoration: none;
-    font-weight: 800;        
-    font-size: 14px;
-    border-radius: 10px;
-    transition: all 0.3s ease;
-}
-
-.submenu-admin a:hover { 
-    color: var(--dark-navbar); 
-    background-color: var(--bg-input); 
-}
-
-.submenu-admin a.active {
-    background-color: var(--amarillo);
-    color: var(--pure-white); 
-    box-shadow: 0 4px 15px rgba(207, 148, 101, 0.25);
-}
-
-/* --- CONTENEDORES DE LAS TABLAS --- */
-.panel-box {
-    background-color: var(--bg-card);
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 10px 30px rgba(42, 36, 29, 0.04);
-    border: 1px solid var(--bg-input);
-}
-
-.panel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.panel-header h2 {
-    color: var(--text-main);
-    font-weight: 800;
-    margin: 0;
-    font-size: 1.6rem;
-}
-
-.btn-action-top {
-    background: var(--amarillo);
-    color: var(--pure-white);
-    padding: 10px 20px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 13px;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(207, 148, 101, 0.2);
-}
-
-.btn-action-top:hover { 
-    background: var(--amarillo-hover); 
-}
-
-/* --- TABLAS RESPONSIVAS --- */
-.table-responsive { 
-    width: 100%; 
-    overflow-x: auto; 
-}
-
-table { 
-    width: 100%; 
-    border-collapse: collapse; 
-    text-align: left; 
-    font-size: 14px; 
-}
-
-th { 
-    background-color: var(--bg-input); 
-    color: var(--text-main);  
-    padding: 15px; 
-    border-bottom: 2px solid var(--text-main); 
-    font-weight: 800;         
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 0.5px;
-}
-
-td { 
-    padding: 18px 15px;       
-    border-bottom: 1px solid var(--bg-input); 
-    color: var(--text-body); 
-    vertical-align: middle;      
-}
-
-tr:hover td { 
-    background-color: rgba(207, 148, 101, 0.05); 
-}
-
-/* --- BOTONES DE ACCIÓN (CRUD PRODUCTOS NUEVOS) --- */
-.actions-cell {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-.btn-edit-premium {
-    display: inline-block;
-    color: var(--pure-white);
-    background-color: var(--text-main);
-    border: 1px solid var(--text-main);
-    padding: 6px 14px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: bold;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: all 0.2s ease;
-}
-
-.btn-edit-premium:hover {
-    background-color: var(--amarillo);
-    border-color: var(--amarillo);
-}
-
-/* --- SELECTORES DE ESTADO EN TIEMPO REAL --- */
-.status-select-container {
-    position: relative;
-    display: inline-block;
-}
-
-.status-select {
-    padding: 6px 10px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: bold;
-    cursor: pointer;
-    border: 1px solid var(--davys-grey);
-    background-color: var(--bg-main);
-    color: var(--text-main);
-    transition: all 0.2s ease;
-    outline: none;
-}
-
-/* Colores visuales automáticos según el estado seleccionado */
-.status-select[data-status="Pagado"], .status-select[data-status="3"] { color: var(--success); border-color: var(--success); background: rgba(30, 132, 73, 0.08); }
-.status-select[data-status="Pendiente"], .status-select[data-status="1"] { color: #a05c2c; border-color: #a05c2c; background: rgba(207, 148, 101, 0.08); }
-.status-select[data-status="En Cocina"] { color: #3498db; border-color: #3498db; background: rgba(52, 152, 219, 0.08); }
-.status-select[data-status="En Camino"], .status-select[data-status="2"] { color: #e67e22; border-color: #e67e22; background: rgba(230, 126, 34, 0.08); }
-.status-select[data-status="Cancelado"] { color: var(--danger); border-color: var(--danger); background: rgba(217, 83, 79, 0.08); }
-
-@media (max-width: 767px) {
-    .submenu-admin { flex-direction: column; }
-    .navbar { width: 95%; }
-}
-    </style>
+    <link rel="stylesheet" href="../assets/css/estiloADM.css">
 </head>
 <body>
 
@@ -450,46 +200,24 @@ tr:hover td {
 
     </div>
 
-    <script>
-    function cambiarEstadoFila(selectElement) {
-    const id = selectElement.getAttribute('data-id');
-    const tabla = selectElement.getAttribute('data-tabla');
-    const nuevoEstado = selectElement.value;
+    <div class="card-qr" style="background: #242424; padding: 25px; border-radius: 12px; text-align: center; border: 1px solid #333; max-width: 300px; margin: 20px auto;">
+        <h3 style="color: #FFFFFF; font-family: sans-serif; font-size: 18px; margin-bottom: 10px;">📋 Tu Menú Digital</h3>
+        <p style="color: #8a8a8a; font-size: 13px; margin-bottom: 20px;">Coloca este código en tus mesas físicas para que los clientes escaneen el menú.</p>
     
-    selectElement.setAttribute('data-status', nuevoEstado);
+    <div id="contenedor-qr" 
+     data-slug="<?php echo (isset($_SESSION['tipo']) && $_SESSION['tipo'] === 'empresa') ? strtolower($_SESSION['nombre']) : 'index'; ?>" 
+     style="display: inline-block; padding: 15px; background: white; border-radius: 8px;">
+    </div>
+    
+    <div style="margin-top: 15px;">
+        <button onclick="window.print();" style="background: #FFB900; color: #141414; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;">
+            🖨️ Imprimir QR
+        </button>
+    </div>
+    </div>
 
-    const formData = new FormData();
-    formData.append('action', 'update_status'); // <--- LE DECIMOS AL CRUD QUÉ HACER
-    formData.append('id', id);
-    formData.append('tabla', tabla);
-    formData.append('estado', nuevoEstado);
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-    // Apuntamos directo a tu archivo de operaciones centralizado
-    fetch('crud_operaciones.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            selectElement.style.borderColor = "var(--success)";
-            setTimeout(() => { selectElement.style.borderColor = "var(--davys-grey)"; }, 600);
-        } else {
-            alert('❌ Error: ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('⚙️ Hubo un problema al conectar con el servidor.');
-    });
-    }
-
-    // Inicializar los colores de los selectores al cargar la página
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll('.status-select').forEach(select => {
-            select.setAttribute('data-status', select.value);
-        });
-    });
-    </script>
+    <script src="../assets/js/admin.js"></script>
 </body>
 </html>
