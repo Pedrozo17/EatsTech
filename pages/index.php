@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <link rel="stylesheet" href="../assets/css/style1.css">
     <link rel="icon" type="image/x-icon" href="../assets/images/logo.png">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -144,9 +143,9 @@
             
             <div class="grid-servicios">
                 <div class="tarjeta-servicio">
-                    <div class="icono-servicio"><i class="fa-solid fa-utensils"></i></div>
-                    <h3>Reservas en Línea</h3>
-                    <p>Asegura tu mesa en los mejores restaurantes de la región de forma rápida, sin filas ni esperas.</p>
+                    <div class="icono-servicio"><i class="fa-solid fa-rocket"></i></div>
+                    <h3>Marketing & Visibilidad Digital</h3>
+                    <p>Impulsamos el alcance de tu negocio. Diseñamos estrategias de posicionamiento SEO local y vitrinas dinámicas premium para que tu menú resalte y atraiga cientos de nuevos clientes en la región y todo a la medida que necesitas.</p>
                 </div>
                 
                 <div class="tarjeta-servicio">
@@ -156,9 +155,9 @@
                 </div>
                 
                 <div class="tarjeta-servicio">
-                    <div class="icono-servicio"><i class="fa-solid fa-qrcode"></i></div>
-                    <h3>Menú Digital QR</h3>
-                    <p>Escanea, revisa los ingredientes en tiempo real y pide directamente desde tu dispositivo móvil.</p>
+                    <div class="icono-servicio"><i class="fa-solid fa-sliders"></i></div>
+                    <h3>Gestión de Menú & Pedidos en Tiempo Real</h3>
+                    <p>Control absoluto desde un solo panel inteligente. Actualiza precios, gestiona el stock disponible y procesa órdenes de cocina al instante sin enredos, minimizando errores y agilizando cada despacho.</p>
                 </div>
             </div>
         </div>
@@ -169,14 +168,14 @@
             <div class="sobre-nosotros-txt">
                 <h2 class="titulo-seccion">Sobre <span>Nosotros</span></h2>
                 <p class="parrafo-destacado">EatsTech nace como una solución tecnológica innovadora pensada para conectar la pasión culinaria con la comodidad digital.</p>
-                <p>Somos un ecosistema enfocado en potenciar la visibilidad de los restaurantes locales en Mosquera y Cundinamarca, permitiendo a los usuarios explorar la gastronomía tradicional y moderna a través de una experiencia interactiva fluida y de alta calidad.</p>
+                <p>Somos un ecosistema enfocado en potenciar la visibilidad de los restaurantes locales en Mosquera, Madrid y Funza, permitiendo a los usuarios explorar la gastronomía tradicional y moderna a través de una experiencia interactiva fluida y de alta calidad.</p>
                 <div class="metricas">
                     <div class="metrica-item"><span>3+</span><p>Restaurantes</p></div>
                     <div class="metrica-item"><span>100%</span><p>Garantía UX</p></div>
                 </div>
             </div>
             <div class="sobre-nosotros-img">
-                <img src="../assets/images/logo_empresa.webp" alt="EatsTech Plataforma">
+                <img src="../assets/images/logo.png" alt="EatsTech Plataforma">
             </div>
         </div>
     </section>
@@ -192,7 +191,7 @@
                         <i class="fa-solid fa-location-dot"></i>
                         <div>
                             <h4>Ubicación</h4>
-                            <p>Mosquera, Cundinamarca - Centro de Biotecnología Agropecuaria CBA</p>
+                            <p>Mosquera, Cundinamarca</p>
                         </div>
                     </div>
                     <div class="contacto-item">
@@ -206,20 +205,20 @@
                         <i class="fa-solid fa-phone"></i>
                         <div>
                             <h4>Teléfono / WhatsApp</h4>
-                            <p>+57 300 123 4567</p>
+                            <p>+57 314 2756300</p>
                         </div>
                     </div>
                 </div>
 
-                <form class="contacto-form" onsubmit="event.preventDefault();">
+                <form class="contacto-form" id="formulario-whatsapp">
                     <div class="form-grupo">
-                        <input type="text" placeholder="Tu Nombre completo" required>
+                        <input type="text" id="whatsapp-nombre" placeholder="Tu Nombre completo" required>
                     </div>
                     <div class="form-grupo">
-                        <input type="email" placeholder="Tu Correo Electrónico" required>
+                        <input type="email" id="whatsapp-correo" placeholder="Tu Correo Electrónico" required>
                     </div>
                     <div class="form-grupo">
-                        <textarea placeholder="Escribe tu mensaje aquí..." rows="4" required></textarea>
+                        <textarea id="whatsapp-mensaje" placeholder="Escribe tu mensaje aquí..." rows="4" required></textarea>
                     </div>
                     <button type="submit" class="btn-enviar-formulario">Enviar Mensaje</button>
                 </form>
@@ -228,160 +227,11 @@
     </section>
     
 </div>
-    
-</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"> </script>
-    <script>
-        var swiper = new Swiper(".mySwiper", {
-            effect: "coverflow",
-            grabCursor: true,
-            centeredSlides: true,
-            slidesPerView: "auto",
-            loop: true,
-            coverFlowEffect: {
-                depth: 500,
-                modifier: 1,
-                slidesShadows: true,
-                rotate: 0,
-                stretch: 0
-            }
-        });
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        // --- CONTROL DEL MENÚ DE HAMBURGUESA ---
-        document.addEventListener("DOMContentLoaded", function() {
-            const menuBtn = document.getElementById("mobile-menu-btn");
-            const navCollapse = document.getElementById("navbar-collapse-target");
-
-            menuBtn.addEventListener("click", function() {
-                navCollapse.classList.toggle("show");
-                menuBtn.classList.toggle("open");
-            });
-        });
-
-        // Animaciones de carga existentes
-        document.body.classList.add("loading");
-
-        gsap.fromTo(
-            ".logo-name",
-            { y: 50, opacity: 0 },
-            { y: 0, opacity: 1, duration: 2, delay: 0.5 }
-        );
-
-        gsap.fromTo(
-            "#svg",
-            { scale: 0.5, opacity: 0 },
-            { scale: 1, opacity: 1, duration: 1.5, ease: "back.out(1.7)" }
-        );
-
-        gsap.fromTo(
-            ".loading-page",
-            { opacity: 1 },
-            {
-                opacity: 0,
-                duration: 1.5,
-                delay: 2.5,
-                onComplete: () => {
-                    document.querySelector(".loading-page").style.display = "none";
-                    document.querySelector(".swiper").style.visibility = "visible";
-                    document.body.classList.remove("loading");
-
-                    document.body.classList.add("bloquear-scroll");
-                }
-            }
-        );
-
-document.addEventListener("DOMContentLoaded", function () {
-    const contenedorTexto = document.getElementById('contenido-restaurante');
-    const enlacesMenu = document.querySelectorAll('.nav-links a');
-
-    // Función para activar las secciones inferiores cuando se usa el menú
-    function habilitarSecciones() {
-        document.body.classList.remove("bloquear-scroll");
-        if (contenedorTexto) {
-            contenedorTexto.style.display = 'block';
-            contenedorTexto.style.opacity = '1';
-        }
-    }
-
-    // Función para restaurar el estado inicial (Solo Swiper bloqueado)
-    function restaurarEstadoInicial() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        
-        // Esperamos a que termine la animación de subida antes de volver a bloquear y ocultar
-        setTimeout(() => {
-            document.body.classList.add("bloquear-scroll");
-            if (contenedorTexto) {
-                contenedorTexto.style.display = 'none';
-                contenedorTexto.style.opacity = '0';
-            }
-        }, 500); // 500ms es el tiempo ideal para que el scroll termine de subir de forma fluida
-    }
-
-    // Control de los enlaces del menú de navegación (Home, Servicios, etc.)
-    enlacesMenu.forEach(enlace => {
-        enlace.addEventListener('click', function (event) {
-            const targetId = this.getAttribute('href');
-
-            // 🏠 SI LE DAN CLICK A HOME (href="#")
-            if (targetId === '#') {
-                event.preventDefault();
-                restaurarEstadoInicial();
-                return;
-            }
-
-            // 📜 SI LE DAN CLICK A OTRO ENLACE DE SECCIÓN (#servicios, #sobre-nosotros, etc.)
-            if (targetId.startsWith('#')) {
-                event.preventDefault(); // Evitamos el salto brusco nativo
-                
-                // 1. Desbloqueamos el body y hacemos aparecer el contenedor de texto
-                habilitarSecciones(); 
-
-                // 2. Buscamos la sección exacta a la que dio clic
-                const seccionDestino = document.querySelector(targetId);
-                if (seccionDestino) {
-                    // Delay corto para que el navegador asimile que el bloque ahora es 'display: block'
-                    setTimeout(() => {
-                        seccionDestino.scrollIntoView({ behavior: 'smooth' });
-                    }, 50);
-                }
-            }
-        });
-    });
-});
-
-    document.addEventListener("DOMContentLoaded", function () {
-    // Seleccionamos todos los botones que tengan la clase de próximamente
-    const botonesProximamente = document.querySelectorAll('.btn-proximamente');
-
-    botonesProximamente.forEach(boton => {
-        boton.addEventListener('click', function (event) {
-            // Evita que el enlace '#' intente recargar o mover la pantalla hacia arriba
-            event.preventDefault(); 
-
-            // Lanzamos la alerta estilizada
-            Swal.fire({
-                title: '¡Muy pronto!',
-                text: 'Aún no tenemos este restaurante disponible.',
-                icon: 'info',
-                confirmButtonText: 'Entendido',
-                confirmButtonColor: '#FFB900', // Puedes cambiarlo por el color corporativo de tu app
-                background: '#323232',
-                color: '#FFFFFF',
-                customClass: {
-                    popup: 'borde-redondeado-personalizado'
-                },
-                showClass: {
-                    popup: 'animate__animated animate__fadeInUp animate__faster'
-                },
-                hideClass: {
-                    popup: 'animate__animated animate__fadeOutDown animate__faster'
-                }
-            });
-        });
-    });
-});
-    </script>
+    <script src="../assets/js/main2.js"></script>
 </body>
 </html>
