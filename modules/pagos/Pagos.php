@@ -3,6 +3,18 @@ include '../../config/Configuracion.php';
 include '../menu/La-carta.php';
 $cart = new Cart;
 
+// Si el usuario NO está logueado
+if (!isset($_SESSION['logueado']) || $_SESSION['logueado'] !== true) {
+    
+    // 1. Guardamos de forma inteligente la URL actual para saber a dónde regresar
+    // $_SERVER['REQUEST_URI'] guarda la ruta exacta con todo y variables (ej: /modules/pagos/confirmar.php)
+    $_SESSION['redireccion_post_login'] = $_SERVER['REQUEST_URI'];
+    
+    // 2. Redireccionamos temporalmente al login, pero pasándole un parámetro por la URL (?error=auth)
+    header("Location: ../usuarios/iniciodesesion.php?error=auth");
+    exit();
+}
+
 if ($cart->total_items() <= 0) {
     header("Location: ../carrito/carritodecompras.php");
     exit();

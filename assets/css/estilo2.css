@@ -368,7 +368,7 @@ form {
 
 /* Estilos de los campos de entrada */
 input[type="text"],
-input[type="correo"],
+input[type="email"],
 input[type="password"] {
     width: 100%;
     padding: 10px;

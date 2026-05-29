@@ -1,5 +1,7 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) { session_start(); }
+if (session_status() === PHP_SESSION_NONE) { 
+    session_start(); 
+}
 include("../../config/con_db.php");
 
 $paginas = [
@@ -17,6 +19,7 @@ if (isset($_POST['login'])) {
     $correo = mysqli_real_escape_string($db, trim($_POST['correo']));
     $contraseña = trim($_POST['contraseña']);
     $tipo_usuario = $_POST['tipo_usuario']; // Captura 'persona' o 'empresa'
+    
     $consulta = "SELECT * FROM datos WHERE correo='$correo'";
     $resultado = mysqli_query($db, $consulta);
     
@@ -41,7 +44,7 @@ if (isset($_POST['login'])) {
             $_SESSION['tipo'] = $usuario['tipo']; 
             
             // =========================================================
-            // REDIRECCIÓN SEGÚN EL ROL
+            // REDIRECCIÓN INTELIGENTE SEGÚN EL ROL Y EL ESTADO DE COMPRA
             // =========================================================
             if ($usuario['tipo'] === 'empresa') {
                 // Capturamos el slug de la carpeta enviado desde el selector dinámico
@@ -54,9 +57,21 @@ if (isset($_POST['login'])) {
                 exit();
 
             } else {
-                // SI ES PERSONA (USUARIO): Lo mandamos a la página que quería visitar (ej: casarolla) o al index
-                header("Location: " . $redirect);
-                exit();
+                // 🔥 SI ES PERSONA (CLIENTE): Verificamos primero si tiene un pago pendiente por procesar
+                if (isset($_SESSION['redireccion_post_login'])) {
+                    $destino_pago = $_SESSION['redireccion_post_login'];
+                    
+                    // Limpiamos la variable para que no se quede estancada en las siguientes sesiones
+                    unset($_SESSION['redireccion_post_login']);
+                    
+                    // Lo redirigimos de inmediato a la pantalla de pago donde fue interrumpido
+                    header("Location: " . $destino_pago);
+                    exit();
+                } else {
+                    // Flujo normal de navegación si no estaba intentando pagar nada
+                    header("Location: " . $redirect);
+                    exit();
+                }
             }
             // =========================================================
 
