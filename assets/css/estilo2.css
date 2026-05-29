@@ -368,6 +368,7 @@ form {
 
 /* Estilos de los campos de entrada */
 input[type="text"],
+input[type="tel"],
 input[type="email"],
 input[type="password"] {
     width: 100%;

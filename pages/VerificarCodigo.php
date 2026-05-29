@@ -9,6 +9,7 @@ if (empty($_SESSION['reset_correo'])) { header("Location: OlvideClave.php"); exi
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verificar Código - Camaron Express</title>
     <link rel="stylesheet" href="../assets/css/style2.css">
+    <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
     
     <style>
         /* Variables Corporativas de EatsTech */

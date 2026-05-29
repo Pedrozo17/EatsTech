@@ -18,6 +18,23 @@ function toggleRegistroEmpresa(show) {
     });
 }
 
+const inputCedula = document.getElementById('registro-cedula');
+    const inputTelefono = document.getElementById('registro-telefono');
+
+    if (inputCedula) {
+        inputCedula.addEventListener('input', function() {
+            // Reemplaza cualquier carácter que NO sea un número por un vacío ''
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    }
+
+    if (inputTelefono) {
+        inputTelefono.addEventListener('input', function() {
+            // Reemplaza cualquier carácter que NO sea un número por un vacío ''
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    }
+
 function toggleRestauranteSelector(show) {
     const container = document.getElementById('restaurante-select-container');
     const select = document.getElementById('restaurante_slug');

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../assets/css/estilo2.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link rel="icon" type="image/x-icon" href="../assets/images/logo.png">
+    <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
     <title>EatsTech - Iniciar Sesión / Registro</title>
 </head>
 <body>
@@ -86,13 +86,13 @@
                 <div id="campos-empresa-container" style="display: none; width: 100%; margin-top: 15px;">
                     <input type="text" name="nombre_restaurante" placeholder="Nombre de tu Restaurante/Negocio">
                 </div>
-                <input class="input" type="text" name="nombre" placeholder="Nombre completo">
-                <input class="input" type="email" name="correo" placeholder="Correo">
-                <input class="input" type="text" name="cedula" placeholder="Número de cédula">
-                <input class="input" type="text" name="telefono" placeholder="Número de teléfono">
-                <input class="input" type="text" name="direccion" placeholder="Dirección de envío">
-                <input class="input" type="password" name="contraseña" placeholder="Contraseña">
-                <input class="input" type="password" name="confirmar_contraseña" placeholder="Confirmar contraseña">
+                <input class="input" type="text" name="nombre" placeholder="Nombre completo" required>
+                <input class="input" type="email" name="correo" placeholder="Correo" required>
+                <input class="input" type="tel" name="cedula" placeholder="Número de cédula" maxlength="10" required>
+                <input class="input" type="tel" name="telefono" placeholder="Número de teléfono" maxlength="10" required>
+                <input class="input" type="text" name="direccion" placeholder="Dirección de envío" required>
+                <input class="input" type="password" name="contraseña" placeholder="Contraseña" required>
+                <input class="input" type="password" name="confirmar_contraseña" placeholder="Confirmar contraseña" required>
                 <input class="btn" type="submit" name="register" value="Registrarse">
             </form>
         </div>
