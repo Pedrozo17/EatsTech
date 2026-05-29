@@ -149,9 +149,9 @@
                 </div>
                 
                 <div class="tarjeta-servicio">
-                    <div class="icono-servicio"><i class="fa-solid fa-motorcycle"></i></div>
-                    <h3>Domicilios Express</h3>
-                    <p>Disfruta de tus platos favoritos directo en la comodidad de tu casa con repartidores asignados.</p>
+                    <div class="icono-servicio"><i class="fa-solid fa-qrcode"></i></div>
+                    <h3>Menú QR e Inteligente</h3>
+                    <p>Moderniza tus mesas físicas: los comensales escanean el código, visualizan el menú en tiempo real y gestionan su carrito de compras al instante.</p>
                 </div>
                 
                 <div class="tarjeta-servicio">
