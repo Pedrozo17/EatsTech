@@ -3,12 +3,12 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
 // SEGURIDAD: Si no es empresa, pa' fuera
 if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'empresa') {
-    header("Location: ../modules/usuarios/iniciodesesion.php");
+    header("Location: ../modules/usuarios/iniciodesesion ");
     exit();
 }
 
 // 1. Apuntamos al nombre exacto de tu archivo
-$ruta_conexion = "../config/Configuracion.php"; 
+$ruta_conexion = "../config/Configuracion "; 
 
 if (!file_exists($ruta_conexion)) {
     die("❌ ERROR CRÍTICO: No se encontró el archivo en: " . realpath($ruta_conexion));
@@ -37,15 +37,15 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
 
     <nav class="navbar">
         <img src="../assets/images/logo_empresa-removebg-preview.png" alt="Logo" class="nav-logo">
-        <a href="../modules/usuarios/logout.php" class="btn-logout">Cerrar Sesión</a>
+        <a href="../modules/usuarios/logout " class="btn-logout">Cerrar Sesión</a>
     </nav>
 
     <div class="dashboard-container">
         
         <div class="submenu-admin">
-            <a href="./admin_dashboard.php?seccion=pedidos" class="<?php echo $seccion === 'pedidos' ? 'active' : ''; ?>">📦 Pedidos Registrados</a>
-            <a href="./admin_dashboard.php?seccion=productos" class="<?php echo $seccion === 'productos' ? 'active' : ''; ?>">🍔 Menú de Productos</a>
-            <a href="./admin_dashboard.php?seccion=ordenes" class="<?php echo $seccion === 'ordenes' ? 'active' : ''; ?>">🛒 Órdenes en Curso</a>
+            <a href="./admin_dashboard ?seccion=pedidos" class="<?php echo $seccion === 'pedidos' ? 'active' : ''; ?>">📦 Pedidos Registrados</a>
+            <a href="./admin_dashboard ?seccion=productos" class="<?php echo $seccion === 'productos' ? 'active' : ''; ?>">🍔 Menú de Productos</a>
+            <a href="./admin_dashboard ?seccion=ordenes" class="<?php echo $seccion === 'ordenes' ? 'active' : ''; ?>">🛒 Órdenes en Curso</a>
         </div>
 
         <?php if ($seccion === 'pedidos'): 
@@ -108,7 +108,7 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
         <div class="panel-box">
             <div class="panel-header">
                 <h2>Gestión del Menú (Platos)</h2>
-                <a href="form_producto.php" class="btn-action-top">➕ Nuevo Producto</a>
+                <a href="form_producto " class="btn-action-top">➕ Nuevo Producto</a>
             </div>
             <div class="table-responsive">
                 <table>
@@ -132,8 +132,8 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
                             </td>
                             <td>
                                 <div class="actions-cell">
-                                    <a href="form_producto.php?id=<?php echo $row['id']; ?>" class="btn-edit-premium">Editar</a>
-                                    <a href="crud_operaciones.php?action=delete_prod&id=<?php echo $row['id']; ?>" class="btn-delete" onclick="return confirm('¿Quitar este plato del menú?');">Eliminar</a>
+                                    <a href="form_producto ?id=<?php echo $row['id']; ?>" class="btn-edit-premium">Editar</a>
+                                    <a href="crud_operaciones ?action=delete_prod&id=<?php echo $row['id']; ?>" class="btn-delete" onclick="return confirm('¿Quitar este plato del menú?');">Eliminar</a>
                                 </div>
                             </td>
                         </tr>

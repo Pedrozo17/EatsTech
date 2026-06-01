@@ -1,8 +1,8 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
-if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'empresa') { header("Location: \Eatstech\modules\usuarios\iniciodesesion.php"); exit(); }
+if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'empresa') { header("Location: \Eatstech\modules\usuarios\iniciodesesion "); exit(); }
 
-include("../config/Configuracion.php");
+include("../config/Configuracion ");
 
 $es_edicion = false;
 $nombre = $descripcion = $precio = "";
@@ -130,7 +130,7 @@ body {
 <body>
     <div class="form-container">
         <h2><?php echo $es_edicion ? '✏️ Editar Plato' : '🍔 Nuevo Plato'; ?></h2>
-        <form action="crud_operaciones.php" method="POST">
+        <form action="crud_operaciones " method="POST">
             <input type="hidden" name="id" value="<?php echo $id; ?>">
             <input type="hidden" name="action" value="<?php echo $es_edicion ? 'update_prod' : 'create_prod'; ?>">
 
@@ -150,7 +150,7 @@ body {
             </div>
 
             <button type="submit" class="btn-save">Guardar Cambios</button>
-            <a href="admin_dashboard.php?seccion=productos" class="back-link">← Cancelar y volver</a>
+            <a href="admin_dashboard ?seccion=productos" class="back-link">← Cancelar y volver</a>
         </form>
     </div>
 </body>

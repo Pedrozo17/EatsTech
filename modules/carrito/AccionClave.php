@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 date_default_timezone_set("America/Bogota");
-include '../../config/Configuracion.php'; // Tu conexión oficial $db
+include '../../config/Configuracion '; // Tu conexión oficial $db
 
     if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])){
     
@@ -43,16 +43,16 @@ include '../../config/Configuracion.php'; // Tu conexión oficial $db
                 // Disparamos el WhatsApp en la pestaña ya autorizada y redirigimos a verificar
                 echo "<script>
                     window.open('$enlaceWhatsapp', 'enlace_whatsapp');
-                    window.location.href = '../../pages/VerificarCodigo.php';
+                    window.location.href = '../../pages/VerificarCodigo ';
                 </script>";
                 exit();
             } else {
-                echo "<script>window.close('enlace_whatsapp'); window.location.href='../../pages/OlvideClave.php?error=db';</script>";
+                echo "<script>window.close('enlace_whatsapp'); window.location.href='../../pages/OlvideClave ?error=db';</script>";
                 exit();
             }
         } else {
             // ❌ SI NO COINCIDEN: Cerramos la pestaña automática y devolvemos el error de datos inválidos
-            echo "<script>window.close('enlace_whatsapp'); window.location.href='../../pages/OlvideClave.php?error=no_coincide';</script>";
+            echo "<script>window.close('enlace_whatsapp'); window.location.href='../../pages/OlvideClave ?error=no_coincide';</script>";
             exit();
         }
     }
@@ -71,14 +71,14 @@ include '../../config/Configuracion.php'; // Tu conexión oficial $db
             // Comprobamos si no ha expirado
             if($fechaActual <= $row['codigo_expira']){
                 $_SESSION['reset_permitido'] = true; // Habilitamos el paso final
-                header("Location: ../../pages/NuevaClave.php");
+                header("Location: ../../pages/NuevaClave ");
                 exit();
             } else {
-                header("Location: ../../pages/VerificarCodigo.php?error=expirado");
+                header("Location: ../../pages/VerificarCodigo ?error=expirado");
                 exit();
             }
         } else {
-            header("Location: ../../pages/VerificarCodigo.php?error=incorrecto");
+            header("Location: ../../pages/VerificarCodigo ?error=incorrecto");
             exit();
         }
     }
@@ -104,13 +104,13 @@ include '../../config/Configuracion.php'; // Tu conexión oficial $db
                 session_start();
                 
                 // Redirigimos al Login principal con éxito
-                header("Location: ../usuarios/iniciodesesion.php?reset=exito"); 
+                header("Location: ../usuarios/iniciodesesion ?reset=exito"); 
                 exit();
             }
         }
     }
 } else {
-    header("Location: ../../pages/OlvideClave.php");
+    header("Location: ../../pages/OlvideClave ");
     exit();
 }
 ?>

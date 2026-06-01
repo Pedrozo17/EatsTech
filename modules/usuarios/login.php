@@ -2,16 +2,16 @@
 if (session_status() === PHP_SESSION_NONE) { 
     session_start(); 
 }
-include("../../config/con_db.php");
+include("../../config/con_db ");
 
 $paginas = [
-    'casarolla' => '../../pages/casarolla.php',
-    'index'     => '../../pages/index.php'
+    'casarolla' => '../../pages/casarolla ',
+    'index'     => '../../pages/index '
 ];
 
 $redirect = isset($_GET['redirect']) && isset($paginas[$_GET['redirect']]) 
     ? $paginas[$_GET['redirect']] 
-    : '../../pages/index.php';
+    : '../../pages/index ';
 
 $redirect_param = isset($_GET['redirect']) ? $_GET['redirect'] : '';
 
@@ -30,7 +30,7 @@ if (isset($_POST['login'])) {
             
             // SEGURIDAD CRÍTICA: Validar si el rol de la BD coincide con el selector del formulario
             if ($usuario['tipo'] !== $tipo_usuario) {
-                header("Location: ../usuarios/iniciodesesion.php?error=rol_incorrecto&redirect=" . $redirect_param);
+                header("Location: ../usuarios/iniciodesesion ?error=rol_incorrecto&redirect=" . $redirect_param);
                 exit();
             }
 
@@ -53,7 +53,7 @@ if (isset($_POST['login'])) {
                                    : 'admin';
         
                 // Redirección al Dashboard del restaurante seleccionado
-                header("Location: ../../" . $carpeta_destino . "/admin_dashboard.php");
+                header("Location: ../../" . $carpeta_destino . "/admin_dashboard ");
                 exit();
 
             } else {
@@ -77,12 +77,12 @@ if (isset($_POST['login'])) {
 
         } else {
             // Contraseña incorrecta
-            header("Location: ../usuarios/iniciodesesion.php?error=1&redirect=" . $redirect_param);
+            header("Location: ../usuarios/iniciodesesion ?error=1&redirect=" . $redirect_param);
             exit();
         }
     } else {
         // Correo no existe
-        header("Location: ../usuarios/iniciodesesion.php?error=no_existe&redirect=" . $redirect_param);
+        header("Location: ../usuarios/iniciodesesion ?error=no_existe&redirect=" . $redirect_param);
         exit();
     }
 }

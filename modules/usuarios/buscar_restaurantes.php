@@ -1,6 +1,6 @@
 <?php
 // 1. Cambiamos al archivo correcto que maneja tus usuarios y restaurantes
-include("../../config/con_db.php"); 
+include("../../config/con_db "); 
 
 // 2. Usamos mysqli_real_escape_string con la variable $conex (tu conexión de con_db)
 $correo = isset($_GET['correo']) ? mysqli_real_escape_string($db, trim($_GET['correo'])) : '';
@@ -13,7 +13,7 @@ if (!empty($correo)) {
               JOIN datos d ON r.usuario_id = d.id 
               WHERE d.correo = '$correo'";
               
-    // 3. Cambiamos la ejecución al estilo por procedimientos que usa tu con_db.php
+    // 3. Cambiamos la ejecución al estilo por procedimientos que usa tu con_db 
     $res = mysqli_query($db, $query);
     
     if ($res) {

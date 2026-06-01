@@ -29,13 +29,13 @@
 
             <div class="nav-collapse" id="navbar-collapse-target">
                 <ul class="nav-links">
-                    <li><a href="../../pages/index.php">Home</a></li>
-                    <li><a href="../../pages/index.php#servicios">Servicios</a></li>
-                    <li><a href="../../pages/index.php#sobre-nosotros">Sobre Nosotros</a></li>
-                    <li><a href="../../pages/index.php#contactanos">Contáctanos</a></li>
+                    <li><a href="../../pages/index ">Home</a></li>
+                    <li><a href="../../pages/index #servicios">Servicios</a></li>
+                    <li><a href="../../pages/index #sobre-nosotros">Sobre Nosotros</a></li>
+                    <li><a href="../../pages/index #contactanos">Contáctanos</a></li>
                 </ul>
                 <div class="nav-buttons">
-                    <a href="../../pages/index.php" class="btn-login">Volver</a>
+                    <a href="../../pages/index " class="btn-login">Volver</a>
                 </div>
             </div>
         </div>
@@ -71,7 +71,7 @@
             endif; 
             ?>
 
-            <form method="post" action="./registrar.php?redirect=<?php echo isset($_GET['redirect']) ? $_GET['redirect'] : ''; ?>">
+            <form method="post" action="./registrar ?redirect=<?php echo isset($_GET['redirect']) ? $_GET['redirect'] : ''; ?>">
                 <div class="role-selector">
                     <label class="role-option">
                         <input type="radio" name="tipo_usuario" value="persona" checked onclick="toggleRegistroEmpresa(false)">
@@ -99,7 +99,7 @@
 
         <div class="container__form container--signin">
             <h2 class="form__title">Sign In</h2>
-            <form method="post" action="./login.php?redirect=<?php echo isset($_GET['redirect']) ? $_GET['redirect'] : ''; ?>">
+            <form method="post" action="./login ?redirect=<?php echo isset($_GET['redirect']) ? $_GET['redirect'] : ''; ?>">
                 
                 <div class="role-selector">
                     <label class="role-option">
@@ -125,7 +125,7 @@
                 </div>
 
                 <input type="submit" name="login" value="Entrar">
-                <a href="../../pages/OlvideClave.php" class="forgot-link">¿Olvidaste tu contraseña?</a>
+                <a href="../../pages/OlvideClave " class="forgot-link">¿Olvidaste tu contraseña?</a>
                 
                 <?php if (isset($_GET['error']) && $_GET['error'] == 'no_existe'): ?>
                     <div style="background: rgba(231, 76, 60, 0.15); border: 1px solid #e74c3c; color: #ff6b6b; padding: 10px; margin-top: 15px; margin-bottom: 15px; border-radius: 6px; text-align: center; font-size: 13px; font-family: sans-serif; font-weight: bold; width: 100%; box-sizing: border-box;">

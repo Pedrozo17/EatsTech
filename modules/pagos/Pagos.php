@@ -1,22 +1,22 @@
 <?php
-include '../../config/Configuracion.php';
-include '../menu/La-carta.php';
+include '../../config/Configuracion ';
+include '../menu/La-carta ';
 $cart = new Cart;
 
 // Si el usuario NO está logueado
 if (!isset($_SESSION['logueado']) || $_SESSION['logueado'] !== true) {
     
     // 1. Guardamos de forma inteligente la URL actual para saber a dónde regresar
-    // $_SERVER['REQUEST_URI'] guarda la ruta exacta con todo y variables (ej: /modules/pagos/confirmar.php)
+    // $_SERVER['REQUEST_URI'] guarda la ruta exacta con todo y variables (ej: /modules/pagos/confirmar )
     $_SESSION['redireccion_post_login'] = $_SERVER['REQUEST_URI'];
     
     // 2. Redireccionamos temporalmente al login, pero pasándole un parámetro por la URL (?error=auth)
-    header("Location: ../usuarios/iniciodesesion.php?error=auth");
+    header("Location: ../usuarios/iniciodesesion ?error=auth");
     exit();
 }
 
 if ($cart->total_items() <= 0) {
-    header("Location: ../carrito/carritodecompras.php");
+    header("Location: ../carrito/carritodecompras ");
     exit();
 }
 
@@ -70,15 +70,15 @@ $waNumber = "573248933841";
 
     <!-- HEADER -->
     <header class="site-header">
-        <a href="../../pages/casarolla.php" class="header-logo">
+        <a href="../../pages/casarolla " class="header-logo">
             <img src="../../assets/images/logo_empresa-removebg-preview.png" alt="Camaron Express">
             <span>Camaron Express</span>
         </a>
         <ul class="header-nav">
-            <li><a href="../../pages/casarolla.php">Inicio</a></li>
-            <li><a href="../carrito/carritodecompras.php">Menú</a></li>
-            <li><a href="../menu/VerCarta.php">Mi Carrito</a></li>
-            <li><a href="./Pagos.php" class="active">Pagar</a></li>
+            <li><a href="../../pages/casarolla ">Inicio</a></li>
+            <li><a href="../carrito/carritodecompras ">Menú</a></li>
+            <li><a href="../menu/VerCarta ">Mi Carrito</a></li>
+            <li><a href="./Pagos " class="active">Pagar</a></li>
         </ul>
     </header>
 
@@ -138,7 +138,7 @@ $waNumber = "573248933841";
                     </table>
 
                     <div class="action-buttons">
-                        <a href="../menu/VerCarta.php" class="btn-back">
+                        <a href="../menu/VerCarta " class="btn-back">
                             <i class="fa-solid fa-chevron-left"></i> Volver
                         </a>
                     </div>
@@ -411,7 +411,7 @@ $waNumber = "573248933841";
 
             // 2. Redirigir al backend que registra la orden y luego a OrdenExito
             //    AccionCarta?action=placeOrder ya genera el id de orden
-            window.location.href = "../carrito/AccionCarta.php?action=placeOrder&metodo="
+            window.location.href = "../carrito/AccionCarta ?action=placeOrder&metodo="
                                   + encodeURIComponent(selectedMethod);
         }
     </script>

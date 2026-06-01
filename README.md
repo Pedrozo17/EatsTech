@@ -23,7 +23,7 @@ EatsTech es una plataforma web de restaurantes que resuelve la falta de visibili
 - **Módulo de Compras:** Carrito de compras funcional, sistema de pagos integrado y confirmación automatizada de la orden.
 - **Seguimiento:** Módulo de tracking para verificar el progreso del pedido.
 
-### 💼 Panel Administrativo (`admin_dashboard.php`)
+### 💼 Panel Administrativo (`admin_dashboard `)
 - **Control de Acceso:** Restricción estricta por roles de usuario corporativos (`$_SESSION['tipo'] === 'empresa'`).
 - **CRUD de Productos:** Interfaz para crear, actualizar y eliminar platos del menú de manera dinámica sobre la tabla `mis_productos`.
 - **Monitoreo de Órdenes en Tiempo Real:** Panel de control asíncrono que procesa las tablas `orden` y `pedidos_registrados`.
@@ -90,7 +90,7 @@ C:/xampp/htdocs/Eatstech/
 2. Importa la base de datos (ver sección correspondiente abajo).
 3. Abre tu navegador web de preferencia e ingresa a la siguiente URL:
 ```html
-http://localhost/Eatstech/pages/index.php
+http://localhost/Eatstech/pages/index 
 
 ```
 
@@ -126,7 +126,7 @@ Ambas tablas críticas de control operativo manejan un formato de texto unificad
 
 El proyecto no requiere archivos `.env` externos. La configuración de la conexión global a la base de datos se centraliza en el archivo:
 
-* Ruta del archivo: `config/configuracion.php`
+* Ruta del archivo: `config/configuracion `
 
 ### Código base de conexión local:
 
@@ -148,10 +148,10 @@ if ($db->connect_error) {
 
 El sistema no cuenta con un usuario quemado en código por motivos de seguridad, permitiendo el auto-registro libre. Para realizar pruebas del flujo completo:
 
-1. Dirígete a la pestaña de inicio de sesión: `http://localhost/Eatstech/modules/usuarios/iniciodesesion.php`.
+1. Dirígete a la pestaña de inicio de sesión: `http://localhost/Eatstech/modules/usuarios/iniciodesesion `.
 2. Haz clic en "Regístrate", rellena los datos de tu nueva cuenta y haz clic en crear.
 3. Inicia sesión con las credenciales que acabas de registrar.
-4. **Nota para Rol Administrador:** Si deseas acceder al panel administrativo en `admin/admin_dashboard.php`, ingresa a phpMyAdmin, busca el usuario registrado en la tabla correspondientes y cambia el campo `tipo` de `'cliente'` a `'empresa'`.
+4. **Nota para Rol Administrador:** Si deseas acceder al panel administrativo en `admin/admin_dashboard `, ingresa a phpMyAdmin, busca el usuario registrado en la tabla correspondientes y cambia el campo `tipo` de `'cliente'` a `'empresa'`.
 
 ---
 
@@ -161,7 +161,7 @@ El proyecto está diseñado para trabajar inicialmente en un entorno local con X
 
 ### 1. Actualización de Credenciales en el Archivo de Conexión:
 
-Se debe editar el archivo `config/configuracion.php` cambiando los parámetros locales por los suministrados por tu proveedor de hosting:
+Se debe editar el archivo `config/configuracion ` cambiando los parámetros locales por los suministrados por tu proveedor de hosting:
 
 ```php
 // Cambiar en entorno de producción:
@@ -185,7 +185,7 @@ Interfaz optimizada donde los usuarios seleccionan los restaurantes en Mosquera,
 
 ### 💼 Vista del Administrador (Monitoreo de Órdenes)
 
-Panel de control centralizado (`admin_dashboard.php`) con sistema de pestañas funcionales para interactuar dinámicamente con el inventario de platos y modificar los estados de preparación o pago asíncronamente mediante peticiones controladas.
+Panel de control centralizado (`admin_dashboard `) con sistema de pestañas funcionales para interactuar dinámicamente con el inventario de platos y modificar los estados de preparación o pago asíncronamente mediante peticiones controladas.
 
 ---
 

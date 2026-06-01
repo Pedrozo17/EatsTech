@@ -3,15 +3,15 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
 // SEGURIDAD: Si no es empresa, pa' fuera
 if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'empresa') { 
-    header("Location: ../modules/usuarios/iniciodesesion.php"); 
+    header("Location: ../modules/usuarios/iniciodesesion "); 
     exit(); 
 }
 
 // CORRECCIÓN DE RUTA DE CONEXIÓN (Igual que en tu frontend)
-$ruta_conexion = "../config/Configuracion.php"; 
+$ruta_conexion = "../config/Configuracion "; 
 if (!file_exists($ruta_conexion)) {
     // Si no existe ahí, probamos un nivel más arriba por si acaso
-    $ruta_conexion = "../config/Configuracion.php";
+    $ruta_conexion = "../config/Configuracion ";
     if (!file_exists($ruta_conexion)) {
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(['success' => false, 'message' => 'No se encontró el archivo de conexión en el servidor.']);
@@ -33,7 +33,7 @@ if ($action === 'create_prod') {
 
     $query = "INSERT INTO mis_productos (name, description, price, status) VALUES ('$nombre', '$desc', $precio, 1)";
     $db->query($query);
-    header("Location: admin_dashboard.php?seccion=productos");
+    header("Location: admin_dashboard ?seccion=productos");
     exit();
 }
 
@@ -48,7 +48,7 @@ if ($action === 'update_prod') {
 
     $query = "UPDATE mis_productos SET name='$nombre', description='$desc', price=$precio WHERE id=$id";
     $db->query($query);
-    header("Location: admin_dashboard.php?seccion=productos");
+    header("Location: admin_dashboard ?seccion=productos");
     exit();
 }
 
@@ -58,7 +58,7 @@ if ($action === 'update_prod') {
 if ($action === 'delete_prod') {
     $id = intval($_GET['id']);
     $db->query("DELETE FROM mis_productos WHERE id = $id");
-    header("Location: admin_dashboard.php?seccion=productos");
+    header("Location: admin_dashboard ?seccion=productos");
     exit();
 }
 // ==========================================================================
@@ -113,6 +113,6 @@ if ($action === 'update_status') {
 }
 
 // Si entran directo al archivo sin acción válida
-header("Location: admin_dashboard.php");
+header("Location: admin_dashboard ");
 exit();
 ?>

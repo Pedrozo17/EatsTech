@@ -1,6 +1,6 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
-include("../../config/con_db.php");
+include("../../config/con_db ");
 
 if (isset($_POST['register'])) {
     if (strlen($_POST['nombre']) >= 1 && 
@@ -21,14 +21,14 @@ if (isset($_POST['register'])) {
         $tipo_usuario = mysqli_real_escape_string($db, $_POST['tipo_usuario']); 
 
         if ($contraseña !== $confirmar_contraseña) {
-            header("Location: ../usuarios/iniciodesesion.php?error=password");
+            header("Location: ../usuarios/iniciodesesion ?error=password");
             exit();
         } else {
             $buscarCorreo = "SELECT id FROM datos WHERE correo = '$correo'";
             $resultadoCorreo = mysqli_query($db, $buscarCorreo);
 
             if (mysqli_num_rows($resultadoCorreo) > 0) {
-                header("Location: ../usuarios/iniciodesesion.php?error=duplicado");
+                header("Location: ../usuarios/iniciodesesion ?error=duplicado");
                 exit();
             } else {
                 $contraseña_encrypted = password_hash($contraseña, PASSWORD_DEFAULT);
@@ -58,7 +58,7 @@ if (isset($_POST['register'])) {
                         mysqli_query($db, $consulta_restaurante);
 
                         // Redirección al login con aviso para seleccionar empresa
-                        header("Location: ../usuarios/iniciodesesion.php?registro=exito");
+                        header("Location: ../usuarios/iniciodesesion ?registro=exito");
                         exit();
 
                     } else {
@@ -72,12 +72,12 @@ if (isset($_POST['register'])) {
                         $_SESSION['tipo'] = $tipo_usuario; 
 
                         // Mandamos directo al index público a comprar
-                        header("Location: ../../pages/index.php");
+                        header("Location: ../../pages/index ");
                         exit();
                     }
                     
                 } else {
-                    header("Location: ../usuarios/iniciodesesion.php?error=db");
+                    header("Location: ../usuarios/iniciodesesion ?error=db");
                     exit();
                 }
             }

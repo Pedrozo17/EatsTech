@@ -1,6 +1,6 @@
 <?php 
 if (session_status() === PHP_SESSION_NONE) { session_start(); } 
-if (empty($_SESSION['reset_correo'])) { header("Location: OlvideClave.php"); exit(); }
+if (empty($_SESSION['reset_correo'])) { header("Location: OlvideClave "); exit(); }
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -217,7 +217,7 @@ if (empty($_SESSION['reset_correo'])) { header("Location: OlvideClave.php"); exi
                 </div>
             <?php endif; ?>
 
-            <form action="../modules/carrito/AccionClave.php" method="POST">
+            <form action="../modules/carrito/AccionClave " method="POST">
                 <input type="hidden" name="action" value="verificar_codigo">
                 
                 <div class="form-group">
@@ -228,7 +228,7 @@ if (empty($_SESSION['reset_correo'])) { header("Location: OlvideClave.php"); exi
             </form>
 
             <div class="recovery-footer">
-                <a href="../pages/OlvideClave.php" class="back-link">← Solicitar un nuevo código</a>
+                <a href="../pages/OlvideClave " class="back-link">← Solicitar un nuevo código</a>
             </div>
         </div>
     </div>

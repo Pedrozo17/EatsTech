@@ -1,6 +1,6 @@
 <?php 
 if (session_status() === PHP_SESSION_NONE) { session_start(); } 
-if (empty($_SESSION['reset_permitido'])) { header("Location: OlvideClave.php"); exit(); }
+if (empty($_SESSION['reset_permitido'])) { header("Location: OlvideClave "); exit(); }
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -192,7 +192,7 @@ if (empty($_SESSION['reset_permitido'])) { header("Location: OlvideClave.php"); 
             <h2>Establecer Nueva Contraseña</h2>
             <p class="subtitle">Ingresa tu nueva clave de seguridad para tu cuenta de EatsTech.</p>
 
-            <form action="../modules/carrito/AccionClave.php" method="POST">
+            <form action="../modules/carrito/AccionClave " method="POST">
                 <input type="hidden" name="action" value="actualizar_clave">
                 
                 <div class="form-group">
@@ -204,7 +204,7 @@ if (empty($_SESSION['reset_permitido'])) { header("Location: OlvideClave.php"); 
             </form>
 
             <div class="recovery-footer">
-                <a href="..\modules\usuarios\iniciodesesion.php" class="back-link">← Cancelar y volver</a>
+                <a href="..\modules\usuarios\iniciodesesion " class="back-link">← Cancelar y volver</a>
             </div>
         </div>
     </div>

@@ -12,7 +12,7 @@
     formData.append('estado', nuevoEstado);
 
     // Apuntamos directo a tu archivo de operaciones centralizado
-    fetch('crud_operaciones.php', {
+    fetch('crud_operaciones ', {
         method: 'POST',
         body: formData
     })
@@ -46,7 +46,7 @@
         const restauranteSlug = contenedorQR.getAttribute("data-slug");
         
         // 2. Construimos la URL limpia usando la dirección actual del servidor (sirve para localhost y Alwaysdata)
-        const urlMenu = `${window.location.protocol}//${window.location.host}/modules/carrito/carritodecompras.php`;
+        const urlMenu = `${window.location.protocol}//${window.location.host}/modules/carrito/carritodecompras `;
 
         // 3. Imprimimos en la consola de desarrollo para verificar que la URL se arme perfecta
         console.log("URL generada para el QR:", urlMenu);

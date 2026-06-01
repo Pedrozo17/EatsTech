@@ -210,7 +210,7 @@
                 </div>
             <?php endif; ?>
 
-            <form action="../modules/carrito/AccionClave.php" method="POST" onsubmit="window.open('', 'enlace_whatsapp');">
+            <form action="../modules/carrito/AccionClave " method="POST" onsubmit="window.open('', 'enlace_whatsapp');">
                 <input type="hidden" name="action" value="solicitar_codigo">
                 
                 <div class="form-group">
@@ -227,7 +227,7 @@
             </form>
 
             <div class="recovery-footer">
-                <a href="../modules/usuarios/iniciodesesion.php" class="back-link">← Volver al inicio de sesión</a>
+                <a href="../modules/usuarios/iniciodesesion " class="back-link">← Volver al inicio de sesión</a>
             </div>
         </div>
     </div>

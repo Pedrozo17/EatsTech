@@ -1,13 +1,13 @@
 <?php
-// Quitamos el session_start de aquí porque 'La-carta.php' ya lo inicia automáticamente
+// Quitamos el session_start de aquí porque 'La-carta ' ya lo inicia automáticamente
 date_default_timezone_set("America/Bogota");
 
 // Iniciamos la clase de la carta
-include '../menu/La-carta.php';
+include '../menu/La-carta ';
 $cart = new Cart;
 
 // Include database configuration file (Conectado a la BD 'carrito')
-include '../../config/Configuracion.php';
+include '../../config/Configuracion ';
 
 if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
     
@@ -26,7 +26,7 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
         );
         
         $insertItem = $cart->insert($itemData);
-        $redirectLoc = $insertItem ? '../carrito/carritodecompras.php' : '../../pages/index.php';
+        $redirectLoc = $insertItem ? '../carrito/carritodecompras ' : '../../pages/index ';
         header("Location: ".$redirectLoc);
         exit();
         
@@ -41,14 +41,14 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
         
     } elseif($_REQUEST['action'] == 'removeCartItem' && !empty($_REQUEST['id'])){
         $deleteItem = $cart->remove($_REQUEST['id']);
-        header("Location: ../menu/VerCarta.php");
+        header("Location: ../menu/VerCarta ");
         exit();
         
     } elseif($_REQUEST['action'] == 'placeOrder' && $cart->total_items() > 0){
         
         // 1. Verificamos si el usuario realmente está logueado según tu sesión
         if(empty($_SESSION['logueado']) || empty($_SESSION['correo'])){
-            header("Location: ../../pages/index.php"); 
+            header("Location: ../../pages/index "); 
             exit();
         }
 
@@ -69,7 +69,7 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
             $clienteRow = $buscarCliente->fetch_assoc();
             $customerID = $clienteRow['id']; 
         } else {
-            header("Location: ../pagos/Pagos.php?error=usuario_no_encontrado");
+            header("Location: ../pagos/Pagos ?error=usuario_no_encontrado");
             exit();
         }
         
@@ -131,22 +131,22 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
                 // =========================================================================
 
                 $cart->destroy(); // Vaciamos el carrito
-                header("Location: ../pagos/OrdenExito.php?id=" . $orderID);
+                header("Location: ../pagos/OrdenExito ?id=" . $orderID);
                 exit();
             } else {
-                header("Location: ../pagos/Pagos.php?error=articulos");
+                header("Location: ../pagos/Pagos ?error=articulos");
                 exit();
             }
         } else {
-            header("Location: ../pagos/Pagos.php?error=orden");
+            header("Location: ../pagos/Pagos ?error=orden");
             exit();
         }
     } else {
-        header("Location: ../../pages/index.php");
+        header("Location: ../../pages/index ");
         exit();
     }
 } else {
-    header("Location: ../../pages/index.php");
+    header("Location: ../../pages/index ");
     exit();
 }
 ?>

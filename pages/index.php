@@ -47,10 +47,10 @@
                     <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
                         <div class="user-logged-wrapper">
                             <span class="nav-user">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
-                            <a href="../modules/usuarios/logout.php" class="btn-login">Cerrar sesión</a>
+                            <a href="../modules/usuarios/logout " class="btn-login">Cerrar sesión</a>
                         </div>
                     <?php else: ?>
-                        <a href="../modules/usuarios/iniciodesesion.php" class="btn-login">Iniciar sesión</a>
+                        <a href="../modules/usuarios/iniciodesesion " class="btn-login">Iniciar sesión</a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                         </div>
                     </div>
                     <!-- Mantiene su enlace directo hacia la página del restaurante -->
-                    <a href="./casarolla.php" class="btn-1 btn-entrar-restaurante">entrar</a>
+                    <a href="./casarolla " class="btn-1 btn-entrar-restaurante">entrar</a>
                 </div>
 
                 <!-- 2. FOGÓN ANTIOQUEÑO (PRÓXIMAMENTE) -->

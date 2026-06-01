@@ -34,12 +34,12 @@
       <span class="topbar-label">Restaurantes</span>
       <div class="topbar-links">
 
-        <a href="./casarolla.php" class="topbar-item active" title="Camaron Express">
+        <a href="./casarolla " class="topbar-item active" title="Camaron Express">
           <img src="..\assets\images\logo_empresa.webp" alt="Camaron Express">
           <span>Camaron Express</span>
         </a>
 
-        <a href="/pages/fogon.php" class="topbar-item proximamente" title="Fogón Antioqueño">
+        <a href="/pages/fogon " class="topbar-item proximamente" title="Fogón Antioqueño">
           <img src="..\assets\images\fogon antioqueño.webp" alt="Fogón Antioqueño">
           <span>Fogón</span>
         </a>
@@ -97,7 +97,7 @@
             </a>
           </li>
           <li class="navbar-item">
-            <a href="./index.php" class="navbar-link hover-underline">
+            <a href="./index " class="navbar-link hover-underline">
               <div class="separator"></div>
               <span class="span">Volver</span>
             </a>
@@ -131,7 +131,7 @@
       </nav>
 
       <!-- Botón sesión -->
-      <a href="../modules/usuarios/iniciodesesion.php?redirect=casarolla" class="btn btn-secondary">
+      <a href="../modules/usuarios/iniciodesesion ?redirect=casarolla" class="btn btn-secondary">
         <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
           <span class="text text-1">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
           <span class="text text-2" aria-hidden="true">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
@@ -142,7 +142,7 @@
       </a>
 
       <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
-        <a href="../modules/usuarios/logout.php?from=../../pages/casarolla.php" class="btn btn-secondary">
+        <a href="../modules/usuarios/logout ?from=../../pages/casarolla " class="btn btn-secondary">
           <span class="text text-1">Cerrar sesión</span>
           <span class="text text-2" aria-hidden="true">Cerrar sesión</span>
         </a>
@@ -367,7 +367,7 @@
               <span class="span body-1">Desde $24.000</span>
             </div>
 
-            <a href="..\modules\carrito\carritodecompras.php" class="btn btn-primary">
+            <a href="..\modules\carrito\carritodecompras " class="btn btn-primary">
               <span class="text text-1">Ver catálogo completo</span>
               <span class="text text-2" aria-hidden="true">Ver catálogo completo</span>
             </a>
@@ -507,7 +507,7 @@
             <span class="span">viernes a domingo 2pm–9pm</span>
           </p>
 
-          <a href="..\modules\carrito\carritodecompras.php" class="btn btn-primary">
+          <a href="..\modules\carrito\carritodecompras " class="btn btn-primary">
               <span class="text text-1">Ver menú</span>
               <span class="text text-2" aria-hidden="true">Ver menú</span>
           </a>
@@ -554,7 +554,7 @@
 
           <div class="form reservation-form bg-black-10">
 
-            <form method="post" action="../config/conx.php" class="form-left">
+            <form method="post" action="../config/conx " class="form-left">
 
               <h2 class="headline-1 text-center">Reservación Online</h2>
 
@@ -644,7 +644,7 @@
 
               <p class="contact-label">Síguenos</p>
               <div class="social-links">
-                <a href="https://www.facebook.com/profile.php?id=camaronexpressdeliverysc"
+                <a href="https://www.facebook.com/profile ?id=camaronexpressdeliverysc"
                    target="_blank" class="social-link">
                   <ion-icon name="logo-facebook"></ion-icon>
                   <span>Camaron Express Delivery SC</span>
