@@ -1,7 +1,12 @@
 # Activar el motor de redirección
 RewriteEngine On
 
-# 1. Ocultar la extensión .php de las URLs
+# 🔒 FORZAR HTTPS COMPATIBLE CON ALWAYSDATA
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# 🔍 Ocultar la extensión .php de las URLs
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.php -f
 RewriteRule ^([^\.]+)$ $1.php [NC,L]
+

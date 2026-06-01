@@ -82,7 +82,7 @@
                         </div>
                     </div>
                     <!-- Mantiene su enlace directo hacia la página del restaurante -->
-                    <a href="./casarolla " class="btn-1 btn-entrar-restaurante">entrar</a>
+                    <a href="./camaron " class="btn-1 btn-entrar-restaurante">entrar</a>
                 </div>
 
                 <!-- 2. FOGÓN ANTIOQUEÑO (PRÓXIMAMENTE) -->

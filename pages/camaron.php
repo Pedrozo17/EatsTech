@@ -34,7 +34,7 @@
       <span class="topbar-label">Restaurantes</span>
       <div class="topbar-links">
 
-        <a href="./casarolla " class="topbar-item active" title="Camaron Express">
+        <a href="./camaron " class="topbar-item active" title="Camaron Express">
           <img src="..\assets\images\logo_empresa.webp" alt="Camaron Express">
           <span>Camaron Express</span>
         </a>
@@ -131,7 +131,7 @@
       </nav>
 
       <!-- Botón sesión -->
-      <a href="../modules/usuarios/iniciodesesion ?redirect=casarolla" class="btn btn-secondary">
+      <a href="../modules/usuarios/iniciodesesion ?redirect=camaron" class="btn btn-secondary">
         <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
           <span class="text text-1">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
           <span class="text text-2" aria-hidden="true">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
@@ -142,7 +142,7 @@
       </a>
 
       <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
-        <a href="../modules/usuarios/logout ?from=../../pages/casarolla " class="btn btn-secondary">
+        <a href="../modules/usuarios/logout ?from=../../pages/camaron " class="btn btn-secondary">
           <span class="text text-1">Cerrar sesión</span>
           <span class="text text-2" aria-hidden="true">Cerrar sesión</span>
         </a>
@@ -264,7 +264,7 @@
               <div class="service-card">
                 <a href="#menu" class="has-before hover:shine">
                   <figure class="card-banner img-holder" style="--width: 285; --height: 336;">
-                    <img src="..\assets\images\Sánguche de camaron.webp" width="285" height="336" loading="lazy"
+                    <img src="..\assets\images\Sánguche decamaron.webp" width="285" height="336" loading="lazy"
                       alt="Entradas" class="img-cover">
                   </figure>
                 </a>
@@ -411,12 +411,12 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="..\assets\images\Sánguche de camaron.webp" loading="lazy"
+                  <img src="..\assets\images\Sánguche decamaron.webp" loading="lazy"
                     alt="Coctel Armenio" class="img-menu">
                 </figure>
                 <div>
                   <div class="title-wrapper">
-                    <h3 class="title-3"><a href="#" class="card-title">Sánguche de camaron</a></h3>
+                    <h3 class="title-3"><a href="#" class="card-title">Sánguche decamaron</a></h3>
                     <span class="badge label-1">Innovación</span>
                     <span class="span title-2">Desde $18.000</span>
                   </div>

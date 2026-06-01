@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 include("../../config/con_db ");
 
 $paginas = [
-    'casarolla' => '../../pages/casarolla ',
+    'camaron' => '../../pages/camaron ',
     'index'     => '../../pages/index '
 ];
 

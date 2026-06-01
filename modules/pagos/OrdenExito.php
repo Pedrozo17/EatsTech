@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 include '../../config/Configuracion ';
 
 if (!isset($_REQUEST['id'])) {
-    header("Location: ../../pages/casarolla ");
+    header("Location: ../../pages/camaron ");
     exit();
 }
 
@@ -19,7 +19,7 @@ $queryOrder = $db->query("SELECT * FROM orden WHERE id = $orderId");
 $order = $queryOrder->fetch_assoc();
 
 if (!$order) {
-    header("Location: ../../pages/casarolla ");
+    header("Location: ../../pages/camaron ");
     exit();
 }
 
@@ -61,12 +61,12 @@ $metodoLabel = isset($metodosLabel[$metodo]) ? $metodosLabel[$metodo] : 'No espe
 
     <!-- HEADER -->
     <header class="site-header">
-        <a href="../../pages/casarolla " class="header-logo">
+        <a href="../../pages/camaron " class="header-logo">
             <img src="../../assets/images/logo_empresa-removebg-preview.png" alt="Camaron Express">
             <span>Camaron Express</span>
         </a>
         <ul class="header-nav">
-            <li><a href="../../pages/casarolla ">Inicio</a></li>
+            <li><a href="../../pages/camaron ">Inicio</a></li>
             <li><a href="../../modules/carrito/carritodecompras ">Menú</a></li>
             <li><a href="../../modules/menu/VerCarta ">Mi Carrito</a></li>
             <li><a href="../../modules/pagos/Pagos ">Pagar</a></li>
@@ -159,7 +159,7 @@ $metodoLabel = isset($metodosLabel[$metodo]) ? $metodosLabel[$metodo] : 'No espe
                     ?>" target="_blank" class="btn-wa">
                         <i class="fa-brands fa-whatsapp"></i> Enviar comprobante
                     </a>
-                    <a href="../../pages/casarolla " class="btn-home">
+                    <a href="../../pages/camaron " class="btn-home">
                         <i class="fa-solid fa-house"></i> Volver al inicio
                     </a>
                 </div>

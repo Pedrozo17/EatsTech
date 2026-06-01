@@ -38,13 +38,13 @@ $cart = new Cart;
 <body>
 
     <header class="site-header">
-        <a href="../../pages/casarolla " class="header-logo">
+        <a href="../../pages/camaron " class="header-logo">
             <img src="../../assets/images/logo_empresa-removebg-preview.png" alt="Camaron Express">
             <span>Camaron Express</span>
         </a>
 
         <ul class="header-nav">
-            <li><a href="../../pages/casarolla ">Inicio</a></li>
+            <li><a href="../../pages/camaron ">Inicio</a></li>
             <li><a href="../../modules/carrito/carritodecompras ">Menú</a></li>
             <li><a href="../../modules/menu/VerCarta " class="active">Mi Carrito</a></li>
             <li><a href="../../modules/pagos/Pagos ">Pagar</a></li>
