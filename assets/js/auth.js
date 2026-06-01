@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // 1. VALIDACIÓN EN TIEMPO REAL: SÓLO NÚMEROS EN CÉDULA Y TELÉFONO
     const inputCedula = document.getElementById('registro-cedula');
     const inputTelefono = document.getElementById('registro-telefono');
+    const inputCodigo = document.getElementById('codigo-verificacion');
 
     if (inputCedula) {
         inputCedula.addEventListener('input', function() {
@@ -75,6 +76,13 @@ document.addEventListener("DOMContentLoaded", function() {
         inputTelefono.addEventListener('input', function() {
             this.value = this.value.replace(/[^0-9]/g, '');
         });
+    }
+    // 🔒 Nueva restricción para el código de recuperación
+    if (inputCodigo) {
+    inputCodigo.addEventListener('input', function() {
+        // Reemplaza cualquier carácter que NO sea un número del 0 al 9 por un vacío al instante
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
     }
     
     // 2. Escuchar cambios en los inputs de correo en tiempo real (Para empresas)

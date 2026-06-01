@@ -221,7 +221,7 @@ if (empty($_SESSION['reset_correo'])) { header("Location: OlvideClave "); exit()
                 <input type="hidden" name="action" value="verificar_codigo">
                 
                 <div class="form-group">
-                    <input type="text" name="codigo" maxlength="6" required placeholder="000000" autocomplete="off" pattern="[0-9]+">
+                    <input type="text" id="codigo-verificacion" name="codigo" maxlength="6" required placeholder="000000" inputmode="numeric" autocomplete="off" pattern="[0-9]+">
                 </div>
 
                 <button type="submit" class="btn-reset">Validar Código</button>
@@ -232,5 +232,8 @@ if (empty($_SESSION['reset_correo'])) { header("Location: OlvideClave "); exit()
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script src="../assets/js/auth.js"></script>
 </body>
 </html>
