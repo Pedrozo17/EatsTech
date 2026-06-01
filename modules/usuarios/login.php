@@ -30,7 +30,7 @@ if (isset($_POST['login'])) {
             
             // SEGURIDAD CRÍTICA: Validar si el rol de la BD coincide con el selector del formulario
             if ($usuario['tipo'] !== $tipo_usuario) {
-                header("Location: ../usuarios/iniciodesesion ?error=rol_incorrecto&redirect=" . $redirect_param);
+                header("Location: ../usuarios/iniciodesesion?error=rol_incorrecto&redirect=" . $redirect_param);
                 exit();
             }
 
@@ -77,12 +77,12 @@ if (isset($_POST['login'])) {
 
         } else {
             // Contraseña incorrecta
-            header("Location: ../usuarios/iniciodesesion ?error=1&redirect=" . $redirect_param);
+            header("Location: ../usuarios/iniciodesesion?error=1&redirect=" . $redirect_param);
             exit();
         }
     } else {
         // Correo no existe
-        header("Location: ../usuarios/iniciodesesion ?error=no_existe&redirect=" . $redirect_param);
+        header("Location: ../usuarios/iniciodesesion?error=no_existe&redirect=" . $redirect_param);
         exit();
     }
 }

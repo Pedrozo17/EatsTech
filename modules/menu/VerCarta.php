@@ -20,7 +20,7 @@ $cart = new Cart;
 
     <script>
         function updateCartItem(obj, id) {
-            $.get("../carrito/AccionCarta ", {
+            $.get("../carrito/AccionCarta", {
                 action: "updateCartItem",
                 id: id,
                 qty: obj.value
@@ -38,16 +38,16 @@ $cart = new Cart;
 <body>
 
     <header class="site-header">
-        <a href="../../pages/camaron " class="header-logo">
+        <a href="../../pages/camaron" class="header-logo">
             <img src="../../assets/images/logo_empresa-removebg-preview.png" alt="Camaron Express">
             <span>Camaron Express</span>
         </a>
 
         <ul class="header-nav">
-            <li><a href="../../pages/camaron ">Inicio</a></li>
-            <li><a href="../../modules/carrito/carritodecompras ">Menú</a></li>
-            <li><a href="../../modules/menu/VerCarta " class="active">Mi Carrito</a></li>
-            <li><a href="../../modules/pagos/Pagos ">Pagar</a></li>
+            <li><a href="../../pages/camaron" class="active">Inicio</a></li>
+            <li><a href="../../modules/carrito/carritodecompras">Menú</a></li>
+            <li><a href="../../modules/menu/VerCarta" class="active">Mi Carrito</a></li>
+            <li><a href="../../modules/pagos/Pagos">Pagar</a></li>
         </ul>
     </header>
 
@@ -97,7 +97,7 @@ $cart = new Cart;
                                 </td>
                                 <td class="price-cell">$<?php echo number_format($item['subtotal'], 0, ',', '.'); ?> COP</td>
                                 <td>
-                                    <a href="../carrito/AccionCarta ?action=removeCartItem&id=<?php echo $item['rowid']; ?>"
+                                    <a href="../carrito/AccionCarta?action=removeCartItem&id=<?php echo $item['rowid']; ?>"
                                        class="btn-delete"
                                        onclick="return confirm('¿Eliminar este producto del carrito?')"
                                        title="Eliminar">
@@ -120,7 +120,7 @@ $cart = new Cart;
                 <tfoot>
                     <tr>
                         <td>
-                            <a href="../carrito/carritodecompras " class="btn-back">
+                            <a href="../carrito/carritodecompras" class="btn-back">
                                 <i class="fa-solid fa-chevron-left"></i> Volver al menú
                             </a>
                         </td>
@@ -130,7 +130,7 @@ $cart = new Cart;
                                 Total: <span class="total-amount">$<?php echo number_format($cart->total(), 0, ',', '.'); ?> COP</span>
                             </td>
                             <td>
-                                <a href="../pagos/Pagos " class="btn-pay">
+                                <a href="../pagos/Pagos" class="btn-pay">
                                     Pagar <i class="fa-solid fa-chevron-right"></i>
                                 </a>
                             </td>

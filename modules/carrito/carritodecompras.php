@@ -22,19 +22,19 @@ $cart_count = $cart->total_items();
 <body>
 
     <header class="site-header">
-        <a href="../../pages/camaron " class="header-logo">
+        <a href="../../pages/camaron" class="header-logo">
             <img src="../../assets/images/logo_empresa-removebg-preview.png" alt="Camaron Express">
             <span>Camaron Express</span>
         </a>
 
         <ul class="header-nav">
-            <li><a href="../../pages/camaron ">Inicio</a></li>
-            <li><a href="../carrito/carritodecompras " class="active">Menú</a></li>
-            <li><a href="../menu/VerCarta ">Mi Carrito</a></li>
-            <li><a href="../pagos/Pagos ">Pagar</a></li>
+            <li><a href="../../pages/camaron" class="active">Inicio</a></li>
+            <li><a href="../carrito/carritodecompras" class="active">Menú</a></li>
+            <li><a href="../menu/VerCarta">Mi Carrito</a></li>
+            <li><a href="../pagos/Pagos">Pagar</a></li>
         </ul>
 
-        <a href="../menu/VerCarta " class="cart-icon-btn" title="Ver carrito">
+        <a href="../menu/VerCarta" class="cart-icon-btn" title="Ver carrito">
             <i class="fa-solid fa-cart-shopping"></i>
             <?php if ($cart_count > 0): ?>
                 <span class="cart-badge"><?php echo $cart_count; ?></span>
@@ -79,7 +79,7 @@ $cart_count = $cart->total_items();
                             <span class="card-price">
                                 $<?php echo number_format($row['price'], 0, ',', '.'); ?> COP
                             </span>
-                            <a href="./AccionCarta ?action=addToCart&id=<?php echo $row['id']; ?>"
+                            <a href="./AccionCarta?action=addToCart&id=<?php echo $row['id']; ?>"
                                class="btn-add-cart">
                                 <i class="fa-solid fa-cart-plus"></i>
                                 Agregar

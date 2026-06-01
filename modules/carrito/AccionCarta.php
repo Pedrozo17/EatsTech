@@ -26,7 +26,7 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
         );
         
         $insertItem = $cart->insert($itemData);
-        $redirectLoc = $insertItem ? '../carrito/carritodecompras ' : '../../pages/index ';
+        $redirectLoc = $insertItem ? '../carrito/carritodecompras' : '../../pages/index';
         header("Location: ".$redirectLoc);
         exit();
         
@@ -69,7 +69,7 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
             $clienteRow = $buscarCliente->fetch_assoc();
             $customerID = $clienteRow['id']; 
         } else {
-            header("Location: ../pagos/Pagos ?error=usuario_no_encontrado");
+            header("Location: ../pagos/Pagos?error=usuario_no_encontrado");
             exit();
         }
         
@@ -131,22 +131,22 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
                 // =========================================================================
 
                 $cart->destroy(); // Vaciamos el carrito
-                header("Location: ../pagos/OrdenExito ?id=" . $orderID);
+                header("Location: ../pagos/OrdenExito?id=" . $orderID);
                 exit();
             } else {
-                header("Location: ../pagos/Pagos ?error=articulos");
+                header("Location: ../pagos/Pagos?error=articulos");
                 exit();
             }
         } else {
-            header("Location: ../pagos/Pagos ?error=orden");
+            header("Location: ../pagos/Pagos?error=orden");
             exit();
         }
     } else {
-        header("Location: ../../pages/index ");
+        header("Location: ../../pages/index");
         exit();
     }
 } else {
-    header("Location: ../../pages/index ");
+    header("Location: ../../pages/index");
     exit();
 }
 ?>

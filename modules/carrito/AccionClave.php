@@ -47,12 +47,12 @@ include '../../config/Configuracion.php'; // Tu conexión oficial $db
                 </script>";
                 exit();
             } else {
-                echo "<script>window.close('enlace_whatsapp'); window.location.href='../../pages/OlvideClave ?error=db';</script>";
+                echo "<script>window.close('enlace_whatsapp'); window.location.href='../../pages/OlvideClave?error=db';</script>";
                 exit();
             }
         } else {
             // ❌ SI NO COINCIDEN: Cerramos la pestaña automática y devolvemos el error de datos inválidos
-            echo "<script>window.close('enlace_whatsapp'); window.location.href='../../pages/OlvideClave ?error=no_coincide';</script>";
+            echo "<script>window.close('enlace_whatsapp'); window.location.href='../../pages/OlvideClave?error=no_coincide';</script>";
             exit();
         }
     }
@@ -71,14 +71,14 @@ include '../../config/Configuracion.php'; // Tu conexión oficial $db
             // Comprobamos si no ha expirado
             if($fechaActual <= $row['codigo_expira']){
                 $_SESSION['reset_permitido'] = true; // Habilitamos el paso final
-                header("Location: ../../pages/NuevaClave ");
+                header("Location: ../../pages/NuevaClave");
                 exit();
             } else {
-                header("Location: ../../pages/VerificarCodigo ?error=expirado");
+                header("Location: ../../pages/VerificarCodigo?error=expirado");
                 exit();
             }
         } else {
-            header("Location: ../../pages/VerificarCodigo ?error=incorrecto");
+            header("Location: ../../pages/VerificarCodigo?error=incorrecto");
             exit();
         }
     }
@@ -104,13 +104,13 @@ include '../../config/Configuracion.php'; // Tu conexión oficial $db
                 session_start();
                 
                 // Redirigimos al Login principal con éxito
-                header("Location: ../usuarios/iniciodesesion ?reset=exito"); 
+                header("Location: ../usuarios/iniciodesesion?reset=exito"); 
                 exit();
             }
         }
     }
 } else {
-    header("Location: ../../pages/OlvideClave ");
+    header("Location: ../../pages/OlvideClave");
     exit();
 }
 ?>
