@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 date_default_timezone_set("America/Bogota");
-include '../../config/Configuracion '; // Tu conexión oficial $db
+include '../../config/Configuracion.php'; // Tu conexión oficial $db
 
     if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])){
     
@@ -18,7 +18,7 @@ include '../../config/Configuracion '; // Tu conexión oficial $db
         $checkUser = $db->query("SELECT id, telefono FROM datos WHERE correo = '$correo' AND telefono = '$telefonoIngresado'");
         
         if($checkUser && $checkUser->num_rows > 0){
-            $userRow = $checkUser->fetch_assoc();
+            $userRow = $checkUser->fetch_assoc();       
             $telefonoCliente = $userRow['telefono']; // Usamos el de la BD verificado
             
             // Si el teléfono no tiene el prefijo de Colombia (57), se lo agregamos para WhatsApp

@@ -2,7 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) { 
     session_start(); 
 }
-include("../../config/con_db ");
+include("../../config/con_db.php");
 
 $paginas = [
     'camaron' => '../../pages/camaron ',

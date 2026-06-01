@@ -1,6 +1,6 @@
 <?php
 
-include './La-carta ';
+include './La-carta.php';
 $cart = new Cart;
 ?>
 <!DOCTYPE html>

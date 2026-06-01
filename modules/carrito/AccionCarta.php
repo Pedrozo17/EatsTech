@@ -3,11 +3,11 @@
 date_default_timezone_set("America/Bogota");
 
 // Iniciamos la clase de la carta
-include '../menu/La-carta ';
+include '../menu/La-carta.php';
 $cart = new Cart;
 
 // Include database configuration file (Conectado a la BD 'carrito')
-include '../../config/Configuracion ';
+include '../../config/Configuracion.php';
 
 if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
     

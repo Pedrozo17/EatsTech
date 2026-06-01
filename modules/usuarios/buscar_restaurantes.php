@@ -1,6 +1,6 @@
 <?php
 // 1. Cambiamos al archivo correcto que maneja tus usuarios y restaurantes
-include("../../config/con_db "); 
+include("../../config/con_db.php"); 
 
 // 2. Usamos mysqli_real_escape_string con la variable $conex (tu conexión de con_db)
 $correo = isset($_GET['correo']) ? mysqli_real_escape_string($db, trim($_GET['correo'])) : '';

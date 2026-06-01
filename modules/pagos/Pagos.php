@@ -1,6 +1,6 @@
 <?php
-include '../../config/Configuracion ';
-include '../menu/La-carta ';
+include '../../config/Configuracion.php';
+include '../menu/La-carta.php';
 $cart = new Cart;
 
 // Si el usuario NO está logueado

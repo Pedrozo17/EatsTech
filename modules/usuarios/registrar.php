@@ -1,6 +1,6 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
-include("../../config/con_db ");
+include("../../config/con_db.php");
 
 if (isset($_POST['register'])) {
     if (strlen($_POST['nombre']) >= 1 && 

@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-include '../../config/Configuracion ';
+include '../../config/Configuracion.php';
 
 if (!isset($_REQUEST['id'])) {
     header("Location: ../../pages/camaron ");

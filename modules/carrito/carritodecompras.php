@@ -1,6 +1,6 @@
 <?php
-include __DIR__ . '/../../config/Configuracion ';
-include __DIR__ . '/../menu/La-carta ';
+include __DIR__ . '/../../config/Configuracion.php';
+include __DIR__ . '/../menu/La-carta.php';
 $cart = new Cart;
 $cart_count = $cart->total_items();
 ?>

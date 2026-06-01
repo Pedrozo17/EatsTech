@@ -2,7 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'empresa') { header("Location: \Eatstech\modules\usuarios\iniciodesesion "); exit(); }
 
-include("../config/Configuracion ");
+include("../config/Configuracion.php");
 
 $es_edicion = false;
 $nombre = $descripcion = $precio = "";

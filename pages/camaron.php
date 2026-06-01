@@ -264,7 +264,7 @@
               <div class="service-card">
                 <a href="#menu" class="has-before hover:shine">
                   <figure class="card-banner img-holder" style="--width: 285; --height: 336;">
-                    <img src="..\assets\images\Sánguche decamaron.webp" width="285" height="336" loading="lazy"
+                    <img src="..\assets\images\Sánguche de camaron.webp" width="285" height="336" loading="lazy"
                       alt="Entradas" class="img-cover">
                   </figure>
                 </a>
@@ -411,12 +411,12 @@
             <li>
               <div class="menu-card hover:card">
                 <figure class="card-banner img-holder" style="--width: 100; --height: 100;">
-                  <img src="..\assets\images\Sánguche decamaron.webp" loading="lazy"
+                  <img src="..\assets\images\Sánguche de camaron.webp" loading="lazy"
                     alt="Coctel Armenio" class="img-menu">
                 </figure>
                 <div>
                   <div class="title-wrapper">
-                    <h3 class="title-3"><a href="#" class="card-title">Sánguche decamaron</a></h3>
+                    <h3 class="title-3"><a href="#" class="card-title">Sánguche de camaron</a></h3>
                     <span class="badge label-1">Innovación</span>
                     <span class="span title-2">Desde $18.000</span>
                   </div>
