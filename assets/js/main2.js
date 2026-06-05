@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (formulario) {
         formulario.addEventListener('submit', function (event) {
             event.preventDefault(); 
+
             const numeroTelefono = "573142756300"; // Tu número aquí
 
             const nombre = document.getElementById('whatsapp-nombre').value.trim();
@@ -116,8 +117,23 @@ document.addEventListener("DOMContentLoaded", function () {
                                  `*✉️ Correo:* ${correo}%0A%0A` +
                                  `*💬 Mensaje:*%0A${mensajeOriginal}`;
 
-            const urlWhatsApp = `https://wa.me/${numeroTelefono}?text=${textoMensaje}`;
-            window.open(urlWhatsApp, '_blank');
+            const urlWhatsApp = `https://api.whatsapp.com/send?phone=${numeroTelefono}&text=${textoMensaje}`;
+            Swal.fire({
+                title: '¡Redireccionando a WhatsApp!',
+                text: 'Serás redirigido para enviar tu mensaje directamente a nuestro asesor.',
+                icon: 'info',
+                confirmButtonText: 'Continuar',
+                confirmButtonColor: '#FFB900',
+                background: '#323232',
+                color: '#FFFFFF'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Abre WhatsApp en pestaña nueva
+                    window.open(urlWhatsApp, '_blank');
+                    // Limpia el formulario por completo
+                    formulario.reset();
+                }
+            });
         });
     }
 });
