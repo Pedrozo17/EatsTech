@@ -212,7 +212,7 @@ body.nav-active { overflow: hidden; }
 .title-2,
 .title-3,
 .title-4 {
-  color: var(--white);
+  color : black;
   font-family: var(--fontFamily-forum);
   font-weight: var(--weight-regular);
   line-height: var(--lineHeight-2);
@@ -244,6 +244,7 @@ body.nav-active { overflow: hidden; }
 }
 
 .body-2 {
+  color: black;
   font-size: var(--fontSize-body-2);
   line-height: var(--lineHeight-4);
 }
@@ -1261,6 +1262,7 @@ body.nav-active { overflow: hidden; }
 \*-----------------------------------*/
 
 .testi {
+  opacity: 1;
   padding-block-end: 340px;
   position: static;
 }
