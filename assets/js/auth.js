@@ -37,7 +37,7 @@ function toggleRestauranteSelector(show) {
 
         select.innerHTML = '<option value="">⏳ Buscando restaurantes...</option>';
 
-        fetch(`buscar_restaurantes ?correo=${encodeURIComponent(correo)}`)
+        fetch(`buscar_restaurantes.php?correo=${encodeURIComponent(correo)}`)
             .then(res => res.json())
             .then(data => {
                 select.innerHTML = '';
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 const correo = this.value.trim();
                 
                 if (select && correo !== '') {
-                    fetch(`buscar_restaurantes ?correo=${encodeURIComponent(correo)}`)
+                    fetch(`buscar_restaurantes.php?correo=${encodeURIComponent(correo)}`)
                         .then(res => res.json())
                         .then(data => {
                             select.innerHTML = '';

@@ -150,7 +150,7 @@ body {
             </div>
 
             <button type="submit" class="btn-save">Guardar Cambios</button>
-            <a href="admin_dashboard ?seccion=productos" class="back-link">← Cancelar y volver</a>
+            <a href="admin_dashboard?seccion=productos" class="back-link">← Cancelar y volver</a>
         </form>
     </div>
 </body>

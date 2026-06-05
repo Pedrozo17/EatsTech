@@ -33,7 +33,7 @@ if ($action === 'create_prod') {
 
     $query = "INSERT INTO mis_productos (name, description, price, status) VALUES ('$nombre', '$desc', $precio, 1)";
     $db->query($query);
-    header("Location: admin_dashboard ?seccion=productos");
+    header("Location: admin_dashboard?seccion=productos");
     exit();
 }
 
@@ -48,7 +48,7 @@ if ($action === 'update_prod') {
 
     $query = "UPDATE mis_productos SET name='$nombre', description='$desc', price=$precio WHERE id=$id";
     $db->query($query);
-    header("Location: admin_dashboard ?seccion=productos");
+    header("Location: admin_dashboard?seccion=productos");
     exit();
 }
 
@@ -58,7 +58,7 @@ if ($action === 'update_prod') {
 if ($action === 'delete_prod') {
     $id = intval($_GET['id']);
     $db->query("DELETE FROM mis_productos WHERE id = $id");
-    header("Location: admin_dashboard ?seccion=productos");
+    header("Location: admin_dashboard?seccion=productos");
     exit();
 }
 // ==========================================================================
@@ -113,6 +113,6 @@ if ($action === 'update_status') {
 }
 
 // Si entran directo al archivo sin acción válida
-header("Location: admin_dashboard ");
+header("Location: admin_dashboard");
 exit();
 ?>
