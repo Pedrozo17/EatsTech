@@ -91,8 +91,8 @@
                 <input class="input" type="tel" id="registro-cedula" name="cedula" placeholder="Número de cédula" maxlength="10" required>
                 <input class="input" type="tel" id="registro-telefono" name="telefono" placeholder="Número de teléfono" maxlength="10" required>
                 <input class="input" type="text" name="direccion" placeholder="Dirección de envío" required>
-                <input class="input" type="password" name="contraseña" placeholder="Contraseña" required>
-                <input class="input" type="password" name="confirmar_contraseña" placeholder="Confirmar contraseña" required>
+                <input class="input" type="password" name="contraseña" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="La contraseña debe tener al menos 8 caracteres, incluir una letra mayúscula, una minúscula y un número." placeholder="Contraseña" required>
+                <input class="input" type="password" name="confirmar_contraseña" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="La contraseña debe tener al menos 8 caracteres, incluir una letra mayúscula, una minúscula y un número." placeholder="Confirmar contraseña" required>
                 <input class="btn" type="submit" name="register" value="Registrarse">
             </form>
         </div>

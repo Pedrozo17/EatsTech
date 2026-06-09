@@ -197,7 +197,7 @@ if (empty($_SESSION['reset_permitido'])) { header("Location: OlvideClave "); exi
                 
                 <div class="form-group">
                     <label>Nueva Contraseña:</label>
-                    <input type="password" name="nueva_clave" minlength="6" required placeholder="Mínimo 6 caracteres">
+                    <input type="password" name="nueva_clave" minlength="6" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="La contraseña debe tener al menos 8 caracteres, incluir una letra mayúscula, una minúscula y un número." required placeholder="Contraseña">
                 </div>
 
                 <button type="submit" class="btn-reset">Guardar Cambios</button>

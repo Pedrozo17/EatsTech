@@ -17,6 +17,7 @@ $cart_count = $cart->total_items();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="shortcut icon" href="../../assets/images/logo_empresa-removebg-preview.png" type="image/x-icon">
     <link rel="stylesheet" href="../../assets/css/style2.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -75,11 +76,13 @@ $cart_count = $cart->total_items();
                         <h3 class="card-name"><?php echo htmlspecialchars($row['name']); ?></h3>
                         <p class="card-description"><?php echo htmlspecialchars($row['description']); ?></p>
 
-                        <div class="card-footer-row">
+                    <div class="card-footer-row">
                             <span class="card-price">
                                 $<?php echo number_format($row['price'], 0, ',', '.'); ?> COP
                             </span>
-                            <a href="./AccionCarta?action=addToCart&id=<?php echo $row['id']; ?>"
+
+                            <a href="#" 
+                               data-id="<?php echo $row['id']; ?>" 
                                class="btn-add-cart">
                                 <i class="fa-solid fa-cart-plus"></i>
                                 Agregar
@@ -105,6 +108,75 @@ $cart_count = $cart->total_items();
            <a href="tel:+573248933841">+57 324 893 3841</a>
         </p>
     </footer>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    // Capturamos todos los botones con la clase especificada
+    document.querySelectorAll('.btn-add-cart').forEach(boton => {
+        boton.addEventListener('click', function(e) {
+            e.preventDefault(); // Evita que la página salte al inicio '#'
+            
+            const productoId = this.getAttribute('data-id');
+            
+            if (!productoId) {
+                console.error("Error: No se encontró el atributo data-id en el botón.");
+                return;
+            }
+            
+            // Creamos los datos estructurados para simular el envío del formulario tradicional
+            const datosFormulario = new URLSearchParams();
+            datosFormulario.append('action', 'addToCart');
+            datosFormulario.append('id', productoId);
+
+            // Enviamos los datos directamente a tu controlador existente mediante POST asíncrono
+            fetch('./AccionCarta.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: datosFormulario.toString()
+            })
+            .then(res => {
+                // Si tu archivo 'AccionCarta.php' redirige o devuelve HTML en vez de JSON, 
+                // con que responda exitoso (status 200) sabemos que procesó la inserción.
+                if (res.ok) {
+                    // Alerta sutil, limpia y estética en la esquina superior derecha
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Producto añadido al carrito',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        background: '#242424',
+                        color: '#FFF',
+                        iconColor: '#FFB900'
+                    });
+
+                    // 🔄 ACTUALIZACIÓN DINÁMICA DEL CONTADOR (Badge)
+                    let cartBadge = document.querySelector('.cart-badge');
+                    let cartIconBtn = document.querySelector('.cart-icon-btn');
+                    
+                    if (cartBadge) {
+                        // Si ya existe el contador, le sumamos 1 de forma visual
+                        let cantidadActual = parseInt(cartBadge.textContent) || 0;
+                        cartBadge.textContent = cantidadActual + 1;
+                    } else if (cartIconBtn) {
+                        // Si no existía (estaba en 0), creamos la etiqueta dinámicamente
+                        const nuevoBadge = document.createElement('span');
+                        nuevoBadge.className = 'cart-badge';
+                        nuevoBadge.textContent = '1';
+                        cartIconBtn.appendChild(nuevoBadge);
+                    }
+                }
+            })
+            .catch(err => {
+                console.error("Error al procesar la petición Fetch:", err);
+            });
+        });
+    });
+});
+    </script>
 
 </body>
 </html>
