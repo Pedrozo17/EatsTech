@@ -1,0 +1,173 @@
+/* Contenedor Principal en Grid */
+.perfil-container {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 30px;
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+}
+
+/* Tarjeta Izquierda: Información del Cliente */
+.perfil-sidebar {
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    border: 1px solid #2d2d2d;
+    height: fit-content;
+    text-align: center;
+}
+
+.avatar-container {
+    margin-bottom: 20px;
+}
+
+.avatar-container i {
+    font-size: 70px;
+    color: #FFB900;
+    background: #2d2d2d;
+    padding: 20px;
+    border-radius: 50%;
+    border: 2px solid #FFB900;
+}
+
+.perfil-sidebar h2 {
+    color: #FFB900;
+    font-size: 22px;
+    margin: 10px 0 5px 0;
+}
+
+.perfil-sidebar .role {
+    color: #aaa;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+    display: block;
+}
+
+.info-group {
+    text-align: left;
+    background: #252525;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    border-left: 4px solid #FFB900;
+}
+
+.info-group label {
+    font-size: 11px;
+    color: #FFB900;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 3px;
+    font-weight: bold;
+}
+
+.info-group span {
+    font-size: 14px;
+    color: #eee;
+    word-break: break-all;
+}
+
+/* Panel Derecho: Pestañas e Historial */
+.perfil-main {
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    border: 1px solid #2d2d2d;
+}
+
+/* Estilo de los Botones de las Pestañas */
+.tabs-container {
+    display: flex;
+    gap: 15px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.tab-btn {
+    background: #2d2d2d;
+    color: #ccc;
+    border: 1px solid #444;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab-btn:hover {
+    background: #3d3d3d;
+    color: #fff;
+}
+
+.tab-btn.active {
+    background: #FFB900;
+    color: #000;
+    border-color: #FFB900;
+}
+
+/* Tablas Premium Modernas */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.custom-table th {
+    background: #2d2d2d;
+    color: #FFB900;
+    padding: 14px 16px;
+    font-weight: 600;
+    font-size: 14px;
+    border-bottom: 2px solid #333;
+}
+
+.custom-table td {
+    padding: 16px;
+    border-bottom: 1px solid #2d2d2d;
+    color: #eee;
+    font-size: 14px;
+}
+
+.custom-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.custom-table tbody tr:hover {
+    background: rgba(255, 185, 0, 0.04);
+}
+
+/* Badges de Estado */
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.badge.success { background: #1b5e20; color: #c8e6c9; }
+.badge.warning { background: #7f5f00; color: #fff9c4; }
+.badge.danger  { background: #b71c1c; color: #ffcdd2; }
+
+/* Responsive por si lo ven desde celular */
+@media (max-width: 900px) {
+    .perfil-container {
+        grid-template-columns: 1fr;
+    }
+}

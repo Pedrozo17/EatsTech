@@ -3,96 +3,58 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// 1. Incluir la configuración de la base de datos
 include __DIR__ . '/../../config/Configuracion.php';
 
-// 1. Validar que el usuario tenga sesión activa
+// 2. Validar que el usuario esté realmente logueado
 if (!isset($_SESSION['logueado']) || $_SESSION['logueado'] !== true) {
     header("Location: ../../pages/index");
     exit;
 }
 
-$user_id = $_SESSION['id_usuario'] ?? 0;
-
-// 2. Verificar que la petición venga por POST
+// 3. Validar que la petición venga por método POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        
-    // Limpiar y capturar las variables del formulario
-    $nombre = mysqli_real_escape_string($db, trim($_POST['nombre'])); // Mantenemos 'name' porque así está en tu <input name="name">
-    $direccion = mysqli_real_escape_string($db, trim($_POST['direccion']));
-    $contrasena_nueva = trim($_POST['contrasena']);
+    $user_id = $_SESSION['id_usuario'] ?? 0;
+    $nombre = trim($_POST['nombre'] ?? '');
+    $direccion = trim($_POST['direccion'] ?? '');
+    $password = trim($_POST['password'] ?? '');
 
-    // 3. Determinar si se actualiza la contraseña o no
-    if (!empty($contrasena_nueva)) {
-        // Si el usuario escribió una nueva contraseña, la encriptamos de forma segura
-        $contrasena_encriptada = password_hash($contrasena_nueva, PASSWORD_DEFAULT);
+    // Validación básica de campos obligatorios
+    if (empty($nombre) || empty($direccion)) {
+        header("Location: Perfil.php?error=campos_vacios");
+        exit;
+    }
+
+    // 4. LÓGICA DE ACTUALIZACIÓN
+    if (!empty($password)) {
+        // SI EL USUARIO ESCRIBIÓ UNA CONTRASEÑA NUEVA:
+        // (Usa password_hash si manejas contraseñas encriptadas, o déjala directa si es texto plano en tu prototipo)
+        // Ejemplo encriptada (Recomendado): $password_segura = password_hash($password, PASSWORD_DEFAULT);
         
-        // Consulta incluyendo la contraseña
-        $sql = "UPDATE datos SET nombre = ?, direccion = ?, contraseña = ? WHERE id = ?";
+        $sql = "UPDATE datos SET nombre = ?, direccion = ?, contrasena = ? WHERE id = ?";
         $stmt = $db->prepare($sql);
-        $stmt->bind_param("sssi", $nombre, $direccion, $contrasena_encriptada, $user_id);
+        $stmt->bind_param("sssi", $nombre, $direccion, $password, $user_id);
     } else {
-        // Si la dejó en blanco, solo actualizamos nombre y dirección sin tocar la contraseña actual
+        // SI EL USUARIO DEJÓ LA CONTRASEÑA EN BLANCO: Solo actualiza Nombre y Dirección
         $sql = "UPDATE datos SET nombre = ?, direccion = ? WHERE id = ?";
         $stmt = $db->prepare($sql);
         $stmt->bind_param("ssi", $nombre, $direccion, $user_id);
     }
 
-    // 4. Ejecutar la actualización y responder con SweetAlert2
+    // 5. EJECUTAR Y ACTUALIZAR VARIABLES DE SESIÓN
     if ($stmt->execute()) {
-        // Actualizamos las variables de sesión para que los cambios se vean reflejados de inmediato en el Header
+        // Actualizamos el nombre en la sesión activa para que el sistema y el LIKE no se rompan
         $_SESSION['nombre'] = $nombre;
-        $_SESSION['direccion'] = $direccion;
-
-        // Mandamos una alerta de éxito y redirigimos de vuelta a Perfil.php
-        echo "
-        <!DOCTYPE html>
-        <html lang='es'>
-        <head>
-            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
-        </head>
-        <body style='background-color: #141414;'>
-            <script>
-                Swal.fire({
-                    icon: 'success',
-                    title: '¡Perfil Actualizado!',
-                    text: 'Tus datos se guardaron correctamente.',
-                    confirmButtonColor: '#FFB900',
-                    background: '#242424',
-                    color: '#FFF'
-                }).then(() => {
-                    window.location.href = 'Perfil.php';
-                });
-            </script>
-        </body>
-        </html>";
-        exit();
+        
+        // Redirecciona con éxito
+        header("Location: Perfil.php?status=success");
+        exit;
     } else {
-        // En caso de algún error inesperado en la base de datos
-        echo "
-        <!DOCTYPE html>
-        <html lang='es'>
-        <head>
-            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
-        </head>
-        <body style='background-color: #141414;'>
-            <script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error al actualizar',
-                    text: 'No se pudieron guardar los cambios, intenta de nuevo.',
-                    confirmButtonColor: '#FFB900',
-                    background: '#242424',
-                    color: '#FFF'
-                }).then(() => {
-                    window.history.back();
-                });
-            </script>
-        </body>
-        </html>";
-        exit();
+        // Redirecciona con error de base de datos
+        header("Location: Perfil.php?error=db_fail");
+        exit;
     }
 } else {
-    // Si intentan entrar al archivo escribiendo la URL directamente, los devolvecos
     header("Location: Perfil.php");
     exit;
 }

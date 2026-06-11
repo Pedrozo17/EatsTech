@@ -68,171 +68,189 @@ $monitoreo_ordenes = $ordenes_query->get_result();
     <meta charset="UTF-8">
     <title>Mi Perfil - Camaron Express</title>
     <link rel="stylesheet" href="../../assets/css/style2.css">
+    <link rel="stylesheet" href="../../assets/css/perfil.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://kit.fontawesome.com/tu-kit.js" crossorigin="anonymous"></script>
     <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
 </head>
 <body style="background-color: #141414; color: #FFF; font-family: 'DM Sans', sans-serif;">
 
-    <div class="perfil-container" style="max-width: 900px; margin: 40px auto; padding: 20px;">
-        <h2><i class="fa-solid fa-user" style="color: #FFB900;"></i> Mi Perfil</h2>
+    <!-- Vincular el nuevo archivo CSS en el head de tu HTML -->
+<link rel="stylesheet" href="../../assets/css/perfil.css">
+<script src="https://kit.fontawesome.com/tu-kit.js" crossorigin="anonymous"></script>
+
+<div class="perfil-container">
+    
+    <!-- LADO IZQUIERDO: TARJETA DEL CLIENTE -->
+    <aside class="perfil-sidebar">
+    <h2>Actualizar Perfil</h2>
+    <span class="role">Cliente Frecuente</span>
+    
+    <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
+        <div style="background: #1b5e20; color: #fff; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 13px;">
+            ¡Datos actualizados correctamente!
+        </div>
+    <?php elseif (isset($_GET['error'])): ?>
+        <div style="background: #b71c1c; color: #fff; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 13px;">
+            Hubo un error al actualizar los datos.
+        </div>
+    <?php endif; ?>
+
+    <form action="ActualizarPerfil.php" method="POST" style="text-align: left;">
         
-        <form action="ActualizarPerfil.php" method="POST" style="background: #242424; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
-            <h3>Editar Datos Personales</h3>
-            <div style="margin-bottom: 15px;">
-                <label>Nombre Completo:</label>
-                <input type="text" name="nombre" value="<?php echo htmlspecialchars($usuario['nombre']); ?>" required style="width: 100%; padding: 10px; background: #141414; border: 1px solid #333; color: #FFF;">
-            </div>
-            <div style="margin-bottom: 15px;">
-                <label>Dirección de Domicilio:</label>
-                <input type="text" name="direccion" value="<?php echo htmlspecialchars($usuario['direccion'] ?? ''); ?>" required style="width: 100%; padding: 10px; background: #141414; border: 1px solid #333; color: #FFF;">
-            </div>
-            <div style="margin-bottom: 15px;">
-                <label>Nueva Contraseña (dejar en blanco para no cambiar):</label>
-                <input type="password" name="contrasena" placeholder="********" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="La contraseña debe tener al menos 8 caracteres, incluir una letra mayúscula, una minúscula y un número." style="width: 100%; padding: 10px; background: #141414; border: 1px solid #333; color: #FFF;">
-            </div>
-            <button type="submit" style="background: #FFB900; color: #141414; padding: 10px 20px; border: none; font-weight: bold; cursor: pointer;">Guardar Cambios</button>
-        </form>
+        <div class="info-group" style="background: #1a1a1a; border-left-color: #555;">
+            <label style="color: #888;">Correo Electrónico (Fijo)</label>
+            <input type="email" value="<?php echo htmlspecialchars($usuario['correo'] ?? ''); ?>" 
+                   style="background: transparent; border: none; color: #888; width: 100%; font-size: 14px; outline: none;" readonly>
+        </div>
+        
+        <div class="info-group">
+            <label for="nombre">Nombre Completo</label>
+            <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($usuario['nombre'] ?? ''); ?>" required
+                   style="background: transparent; border: none; color: #fff; width: 100%; font-size: 14px; outline: none; padding-top: 2px;">
+        </div>
+        
+        <div class="info-group">
+            <label for="direccion">Dirección de Entrega</label>
+            <input type="text" id="direccion" name="direccion" value="<?php echo htmlspecialchars($usuario['direccion'] ?? ''); ?>" required
+                   style="background: transparent; border: none; color: #fff; width: 100%; font-size: 14px; outline: none; padding-top: 2px;">
+        </div>
 
-        <div class="tabs-container" style="margin-top: 40px; width: 100%;">
-            
-            <div class="tabs-header" style="display: flex; flex-direction: row; gap: 15px; margin-bottom: 25px; border-bottom: 2px solid #333; padding-bottom: 10px;">
-                <button class="tab-btn active" onclick="switchTab(event, 'pedidos-registrados')">
-                    📦 Pedidos Registrados
-                </button>
-                <button class="tab-btn" onclick="switchTab(event, 'ordenes-curso')">
-                    🛒 Órdenes en Curso / Monitoreo
-                </button>
-            </div>
+        <div class="info-group" style="border-left-color: #dca872;">
+            <label for="password">Nueva Contraseña</label>
+            <input type="password" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="La contraseña debe tener al menos 8 caracteres, incluir una letra mayúscula, una minúscula y un número."  placeholder="Dejar en blanco para no cambiar"
+                   style="background: transparent; border: none; color: #fff; width: 100%; font-size: 14px; outline: none; padding-top: 2px;">
+        </div>
+        
+        <button type="submit" style="background: #FFB900; color: #000; border: none; width: 100%; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: background 0.2s;"
+                onmouseover="this.style.backgroundColor='#e0a300'" onmouseout="this.style.backgroundColor='#FFB900'">
+            <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
+        </button>
+    </form>
+</aside>
 
-            <div id="pedidos-registrados" class="tab-content active-content">
-                <h3 style="margin-bottom: 15px; font-size: 22px; font-weight: bold;"><i class="fa-solid fa-box" style="color: #FFB900;"></i> Historial de Pedidos Registrados</h3>
-                <div style="overflow-x: auto;">
-                    <table style="width: 100%; border-collapse: collapse; background: #242424; border-radius: 8px; overflow: hidden;">
-                        <thead>
-                            <tr style="background: #333; color: #FFB900; text-align: left;">
-                                <th style="padding: 14px 12px;">ID Orden</th>
-                                <th style="padding: 14px 12px;">Restaurante</th>
-                                <th style="padding: 14px 12px;">Productos</th> <!-- Nueva columna añadida -->
-                                <th style="padding: 14px 12px;">Fecha Registro</th>
-                                <th style="padding: 14px 12px;">Total Pagado</th>
-                                <th style="padding: 14px 12px;">Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if ($historial_pedidos->num_rows > 0): ?>
-                                <?php while ($pedido = $historial_pedidos->fetch_assoc()): ?>
-                                    <tr style="border-bottom: 1px solid #333; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#2d2d2d'" onmouseout="this.style.backgroundColor='transparent'">
-                                        <td style="padding: 14px 12px;">#<?php echo $pedido['id']; ?></td>
-                                        <td style="padding: 14px 12px; font-weight: bold; color: #dca872;"><?php echo htmlspecialchars($pedido['restaurante']); ?></td>
+    <!-- LADO DERECHO: PESTAÑAS E HISTORIALES -->
+    <main class="perfil-main">
+        
+        <!-- Botones de Control de Pestañas -->
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="cambiarPestaña('pedidos')">
+                <i class="fa-solid fa-box"></i> Pedidos Registrados
+            </button>
+            <button class="tab-btn" onclick="cambiarPestaña('monitoreo')">
+                <i class="fa-solid fa-clock"></i> Órdenes en Curso / Monitoreo
+            </button>
+        </div>
 
-                                        <!-- Celda del Resumen con control de texto largo para proteger el diseño gráfico -->
-                                        <!-- Celda del Resumen Corregida: Texto fluido que baja de renglón si es muy largo -->
-                                        <td style="padding: 14px 12px; color: #eee; font-size: 13px; max-width: 300px; word-wrap: break-word; tr-text-wrap: pretty; line-height: 1.4;">
-                                            <i class="fa-solid fa-utensils" style="color: #FFB900; font-size: 11px; margin-right: 5px;"></i>
-                                            <?php echo htmlspecialchars($pedido['resumen_productos'] ?? 'Sin especificar'); ?>
-                                        </td>
-
-                                        <td style="padding: 14px 12px; color: #ccc;"><?php echo $pedido['created']; ?></td>
-                                        <td style="padding: 14px 12px; color: #FFB900; font-weight: bold;">$<?php echo number_format($pedido['total_price'], 0, ',', '.'); ?> COP</td>
-                                        <td style="padding: 14px 12px;">
-                                            <span style="padding: 5px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; background: <?php echo $pedido['status'] == 'Pagado' ? '#1b5e20' : '#7f5f00'; ?>; color: #FFF;">
-                                                <?php echo htmlspecialchars($pedido['status']); ?>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                <?php endwhile; ?>
-                            <?php else: ?>
+        <!-- TAB 1: HISTORIAL DE PEDIDOS -->
+        <div id="tab-pedidos" class="tab-content">
+            <h3 style="color: #fff; margin-bottom: 20px;">Historial de Pedidos Registrados</h3>
+            <div class="table-responsive">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>ID Orden</th>
+                            <th>Restaurante</th>
+                            <th>Productos</th>
+                            <th>Fecha Registro</th>
+                            <th>Total Pagado</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if ($historial_pedidos->num_rows > 0): ?>
+                            <?php while ($pedido = $historial_pedidos->fetch_assoc()): ?>
                                 <tr>
-                                    <td colspan="6" style="padding: 30px; text-align: center; color: #aaa;">Aún no registras pedidos en el sistema.</td>
+                                    <td>#<?php echo $pedido['id']; ?></td>
+                                    <td style="font-weight: bold; color: #dca872;"><?php echo htmlspecialchars($pedido['restaurante']); ?></td>
+                                    
+                                    <!-- Aquí los productos ya no se cortan, bajan fluidamente -->
+                                    <td style="max-width: 320px; line-height: 1.5; color: #ddd;">
+                                        <i class="fa-solid fa-utensils" style="color: #FFB900; font-size: 11px; margin-right: 5px;"></i>
+                                        <?php echo htmlspecialchars($pedido['resumen_productos'] ?? 'Sin especificar'); ?>
+                                    </td>
+                                    
+                                    <td style="color: #aaa;"><?php echo $pedido['created']; ?></td>
+                                    <td style="color: #FFB900; font-weight: bold;">$<?php echo number_format($pedido['total_price'], 0, ',', '.'); ?> COP</td>
+                                    <td>
+                                        <?php 
+                                            $clase_estado = 'warning';
+                                            if ($pedido['status'] == 'Pagado') $clase_estado = 'success';
+                                            if ($pedido['status'] == 'Cancelado') $clase_estado = 'danger';
+                                        ?>
+                                        <span class="badge <?php echo $clase_estado; ?>">
+                                            <?php echo htmlspecialchars($pedido['status']); ?>
+                                        </span>
+                                    </td>
                                 </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="ordenes-curso" class="tab-content">
-                <h3 style="margin-bottom: 15px; font-size: 22px; font-weight: bold;"><i class="fa-solid fa-clock" style="color: #FFB900;"></i> Monitoreo de Órdenes en Tiempo Real</h3>
-                <div style="overflow-x: auto;">
-                    <table style="width: 100%; border-collapse: collapse; background: #242424; border-radius: 8px; overflow: hidden;">
-                        <thead>
-                            <tr style="background: #333; color: #FFB900; text-align: left;">
-                                <th style="padding: 14px 12px;">ID Orden</th>
-                                <th style="padding: 14px 12px;">Restaurante</th>
-                                <th style="padding: 14px 12px;">Total de la Orden</th>
-                                <th style="padding: 14px 12px;">Método de Pago</th>
-                                <th style="padding: 14px 12px;">Fecha Entrada</th>
-                                <th style="padding: 14px 12px;">Estado Actual</th>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="6" style="padding: 30px; text-align: center; color: #aaa;">Aún no registras pedidos en el sistema.</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <?php if ($monitoreo_ordenes->num_rows > 0): ?>
-                                <?php while ($orden = $monitoreo_ordenes->fetch_assoc()): ?>
-                                    <tr style="border-bottom: 1px solid #333; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#2d2d2d'" onmouseout="this.style.backgroundColor='transparent'">
-                                        <td style="padding: 14px 12px;">#<?php echo $orden['id']; ?></td>
-                                        <td style="padding: 14px 12px; font-weight: bold; color: #dca872;"><?php echo htmlspecialchars($orden['restaurante']); ?></td>
-                                        <td style="padding: 14px 12px; color: #FFB900; font-weight: bold;">$<?php echo number_format($orden['total_price'], 0, ',', '.'); ?> COP</td>
-                                        <td style="padding: 14px 12px; color: #ccc; text-transform: capitalize;"><i class="fa-solid fa-wallet" style="margin-right: 5px; color: #FFB900;"></i> <?php echo htmlspecialchars($orden['metodo_pago'] ?? 'Efectivo'); ?></td>
-                                        <td style="padding: 14px 12px; color: #ccc;"><?php echo $orden['created']; ?></td>
-                                        <td style="padding: 14px 12px;">
-                                            <span style="padding: 5px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; background: <?php echo $orden['status'] == 'Pagado' ? '#1b5e20' : '#7f5f00'; ?>; color: #FFF;">
-                                                ⏳ <?php echo htmlspecialchars($orden['status']); ?>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                <?php endwhile; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="6" style="padding: 30px; text-align: center; color: #aaa;">No tienes órdenes activas bajo monitoreo.</td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
-    <style>
-        .tab-btn {
-            background-color: #242424;
-            color: #ccc;
-            padding: 12px 28px;
-            border: 1px solid #333;
-            font-weight: bold;
-            font-size: 14px;
-            cursor: pointer;
-            border-radius: 6px 6px 0 0;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
 
-        .tab-btn.active {
-            background-color: #c4935c;
-            color: #141414;
-            border-color: #c4935c;
-        }
+        <!-- TAB 2: ÓRDENES EN TIEMPO REAL (Oculta por defecto con JS) -->
+        <div id="tab-monitoreo" class="tab-content" style="display: none;">
+            <h3 style="color: #fff; margin-bottom: 20px;">Monitoreo de Órdenes en Tiempo Real</h3>
+            <div class="table-responsive">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>ID Orden</th>
+                            <th>Restaurante</th>
+                            <th>Total de la Orden</th>
+                            <th>Método de Pago</th>
+                            <th>Fecha Entrada</th>
+                            <th>Estado Actual</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if ($monitoreo_ordenes->num_rows > 0): ?>
+                            <?php while ($orden = $monitoreo_ordenes->fetch_assoc()): ?>
+                                <tr>
+                                    <td>#<?php echo $orden['id']; ?></td>
+                                    <td style="font-weight: bold; color: #dca872;"><?php echo htmlspecialchars($orden['restaurante']); ?></td>
+                                    <td style="color: #FFB900; font-weight: bold;">$<?php echo number_format($orden['total_price'], 0, ',', '.'); ?> COP</td>
+                                    <td style="text-transform: capitalize;"><i class="fa-solid fa-wallet" style="margin-right: 5px; color: #FFB900;"></i> <?php echo htmlspecialchars($orden['metodo_pago'] ?? 'Efectivo'); ?></td>
+                                    <td style="color: #aaa;"><?php echo $orden['created']; ?></td>
+                                    <td>
+                                        <span class="badge warning">
+                                            ⏳ <?php echo htmlspecialchars($orden['status']); ?>
+                                        </span>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="6" style="padding: 30px; text-align: center; color: #aaa;">No tienes órdenes activas bajo monitoreo.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-        .tab-btn:hover {
-            background-color: #c4935c;
-            color: #141414;
-            border-color: #c4935c;
-        }
+    </main>
+</div>
 
-        .tab-content {
-            display: none;
-            animation: smoothFade 0.4s ease;
-        }
+<!-- Lógica JS simple para cambiar entre las pestañas si no la tenías hecha -->
+<script>
+function cambiarPestaña(tipo) {
+    document.getElementById('tab-pedidos').style.display = (tipo === 'pedidos') ? 'block' : 'none';
+    document.getElementById('tab-monitoreo').style.display = (tipo === 'monitoreo') ? 'block' : 'none';
+    
+    const botones = document.querySelectorAll('.tab-btn');
+    botones[0].classList.toggle('active', tipo === 'pedidos');
+    botones[1].classList.toggle('active', tipo === 'monitoreo');
+}
 
-        .active-content {
-            display: block;
-        }
 
-        @keyframes smoothFade {
-            from { opacity: 0; transform: translateY(3px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
-
-    <script>
+  
         function switchTab(evt, tabId) {
             const tabContents = document.getElementsByClassName("tab-content");
             for (let i = 0; i < tabContents.length; i++) {
