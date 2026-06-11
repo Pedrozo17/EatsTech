@@ -1,7 +1,9 @@
 <?php
-
 include './La-carta.php';
 $cart = new Cart;
+
+// 🟢 1. INCLUIMOS LA CONEXIÓN A LA BASE DE DATOS EN LA CABECERA
+include("../../config/Configuracion.php"); 
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -17,22 +19,6 @@ $cart = new Cart;
     <link rel="stylesheet" href="../../assets/css/style3.css">
     <link rel="shortcut icon" href="../../assets/images/logo_empresa-removebg-preview.png" type="image/x-icon">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
-    <script>
-        function updateCartItem(obj, id) {
-            $.get("../carrito/AccionCarta", {
-                action: "updateCartItem",
-                id: id,
-                qty: obj.value
-            }, function(data) {
-                if (data == 'ok') {
-                    location.reload();
-                } else {
-                    alert('No se pudo actualizar el carrito, intenta de nuevo.');
-                }
-            });
-        }
-    </script>
 </head>
 
 <body>
@@ -73,8 +59,16 @@ $cart = new Cart;
                         $cartItems = $cart->contents();
                         foreach ($cartItems as $item): 
                             
-                            // 🔴 DEFINIMOS LA RUTA DE LA IMAGEN EN LA CARPETA ASSETS
-                            // Si por algún motivo el plato no tiene foto, pondrá una por defecto
+                            // 🟢 2. CONSULTAMOS EL STOCK REAL EN TIEMPO REAL DESDE LA BASE DE DATOS
+                            $producto_id = intval($item['id']);
+                            $buscar_stock = $db->query("SELECT stock FROM mis_productos WHERE id = $producto_id");
+                            
+                            // Si lo encuentra asigna el stock de la BD, si no, deja 0 por seguridad
+                            $stock_real = 0;
+                            if ($buscar_stock && $prod_data = $buscar_stock->fetch_assoc()) {
+                                $stock_real = intval($prod_data['stock']);
+                            }
+
                             $imgName = !empty($item['image']) ? $item['image'] : 'default.webp';
                             $ruta_imagen = "../../assets/images/" . $imgName;
                         ?>
@@ -93,6 +87,8 @@ $cart = new Cart;
                                            class="qty-input"
                                            value="<?php echo $item['qty']; ?>"
                                            min="1"
+                                           max="<?php echo $stock_real; ?>" 
+                                           data-name="<?php echo htmlspecialchars($item['name']); ?>"
                                            onchange="updateCartItem(this, '<?php echo $item['rowid']; ?>')">
                                 </td>
                                 <td class="price-cell">$<?php echo number_format($item['subtotal'], 0, ',', '.'); ?> COP</td>
@@ -147,7 +143,47 @@ $cart = new Cart;
         <p>© 2026 Camaron Express &mdash; Mosquera, Cundinamarca &mdash;
             <a href="tel:+573248933841">+57 324 893 3841</a>
         </p>
-    </footer>
+    </footer >
+
+    <script>
+    function updateCartItem(obj, id) {
+        const cantidadActual = parseInt(obj.value, 10);
+        const stockMaximo = parseInt(obj.getAttribute('max'), 10);
+        const nombreProducto = obj.getAttribute('data-name') || 'este producto';
+
+        // 1. Validar si excede las existencias reales en cocina
+        if (cantidadActual > stockMaximo) {
+            alert('⚠️ Inventario Insuficiente: Solo quedan ' + stockMaximo + ' unidades disponibles de "' + nombreProducto + '".');
+            
+            // Devolvemos el valor de la pantalla al máximo permitido
+            obj.value = stockMaximo;
+            
+            // Volvemos a disparar la función con el valor corregido para actualizar la sesión
+            updateCartItem(obj, id);
+            return;
+        }
+
+        // 2. Control por si ponen números negativos o vacíos
+        if (cantidadActual < 1 || isNaN(cantidadActual)) {
+            obj.value = 1;
+            updateCartItem(obj, id);
+            return;
+        }
+
+        // 3. Procesa la petición AJAX con jQuery si todo está bajo los límites
+        $.get("../carrito/AccionCarta", {
+            action: "updateCartItem",
+            id: id,
+            qty: obj.value
+        }, function(data) {
+            if (data == 'ok') {
+                location.reload();
+            } else {
+                alert('No se pudo actualizar el carrito, intenta de nuevo.');
+            }
+        });
+    }
+    </script>
 
 </body>
 </html>
