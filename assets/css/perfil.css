@@ -165,9 +165,72 @@
 .badge.warning { background: #7f5f00; color: #fff9c4; }
 .badge.danger  { background: #b71c1c; color: #ffcdd2; }
 
-/* Responsive por si lo ven desde celular */
-@media (max-width: 900px) {
+
+/* ==========================================================================
+   RESPONSIVE DEFINITIVO - TRABAJO PESADO PARA MÓVILES (MÁXIMO 900PX)
+   ========================================================================== */
+@media screen and (max-width: 900px) {
+    /* 1. Forzamos a los contenedores globales a liberar el ancho fijo */
+    html, body, main, .wrapper, .main-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow-x: hidden !important;
+    }
+
+    /* 2. Re-estructuración del contenedor del perfil a una sola columna */
     .perfil-container {
-        grid-template-columns: 1fr;
+        display: flex !important;
+        flex-direction: column !important; /* Manda el formulario arriba y tablas abajo */
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 10px auto !important;
+        padding: 0 10px !important;
+        box-sizing: border-box !important;
+        gap: 15px !important;
+    }
+
+    /* 3. Formulario (Sidebar) al 100% */
+    .perfil-sidebar {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+    }
+
+    /* 4. Contenedor de las Tablas (Main) al 100% */
+    .perfil-main {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 15px 10px !important;
+        margin: 0 !important;
+    }
+
+    /* 5. Apilar los botones de las pestañas en vertical */
+    .tabs-container {
+        flex-direction: column !important;
+        gap: 8px !important;
+        width: 100% !important;
+    }
+
+    .tab-btn {
+        width: 100% !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 6. Asegurar que la tabla no empuje la pantalla sino que use scroll interno */
+    .table-responsive {
+        width: 100% !important;
+        overflow-x: auto !important; /* Permite deslizar la tabla con el dedo */
+        display: block !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Reducción sutil de textos en móvil para evitar saltos toscos */
+    .custom-table th, .custom-table td {
+        padding: 10px 6px !important;
+        font-size: 12px !important;
     }
 }

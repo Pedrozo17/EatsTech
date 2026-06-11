@@ -102,6 +102,29 @@
               <span class="span">Volver</span>
             </a>
           </li>
+
+          <!-- 🟢 ENLACES DE SESIÓN ADAPTADOS AL ESTILO DE TU MENÚ (DEBAJO DE VOLVER) -->
+          <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
+            <li class="navbar-item">
+              <a href="../modules/usuarios/Perfil" class="navbar-link hover-underline">
+                <div class="separator"></div>
+                <span class="span">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
+              </a>
+            </li>
+            <li class="navbar-item">
+              <a href="../modules/usuarios/logout?from=../../pages/camaron" class="navbar-link hover-underline">
+                <div class="separator"></div>
+                <span class="span">Cerrar Sesión</span>
+              </a>
+            </li>
+          <?php else: ?>
+            <li class="navbar-item">
+              <a href="../modules/usuarios/iniciodesesion?redirect=camaron" class="navbar-link hover-underline">
+                <div class="separator"></div>
+                <span class="span">Iniciar Sesión</span>
+              </a>
+            </li>
+          <?php endif; ?>
         </ul>
 
         <div class="text-center">
@@ -129,25 +152,6 @@
         </div>
 
       </nav>
-
-      <!-- Botón sesión -->
-      <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
-        <a href="../modules/usuarios/Perfil" class="btn btn-secondary">
-          <span class="text text-1">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
-          <span class="text text-2" aria-hidden="true">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
-        </a>
-
-        <a href="../modules/usuarios/logout?from=../../pages/camaron" class="btn btn-secondary">
-          <span class="text text-1">Cerrar sesión</span>
-          <span class="text text-2" aria-hidden="true">Cerrar sesión</span>
-        </a>
-      <?php else: ?>
-        <a href="../modules/usuarios/iniciodesesion?redirect=camaron" class="btn btn-secondary">
-          <span class="text text-1">Iniciar sesión</span>
-          <span class="text text-2" aria-hidden="true">Iniciar sesión</span>
-        </a>
-      <?php endif; ?>
-
       <button class="nav-open-btn" aria-label="open menu" data-nav-toggler>
         <span class="line line-1"></span>
         <span class="line line-2"></span>

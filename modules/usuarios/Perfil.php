@@ -67,7 +67,6 @@ $monitoreo_ordenes = $ordenes_query->get_result();
 <head>
     <meta charset="UTF-8">
     <title>Mi Perfil - Camaron Express</title>
-    <link rel="stylesheet" href="../../assets/css/style2.css">
     <link rel="stylesheet" href="../../assets/css/perfil.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://kit.fontawesome.com/tu-kit.js" crossorigin="anonymous"></script>
