@@ -131,20 +131,20 @@
       </nav>
 
       <!-- Botón sesión -->
-      <a href="../modules/usuarios/iniciodesesion?redirect=camaron" class="btn btn-secondary">
-        <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
+      <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
+        <a href="../modules/usuarios/Perfil" class="btn btn-secondary">
           <span class="text text-1">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
           <span class="text text-2" aria-hidden="true">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
-        <?php else: ?>
-          <span class="text text-1">Iniciar sesión</span>
-          <span class="text text-2" aria-hidden="true">Iniciar sesión</span>
-        <?php endif; ?>
-      </a>
+        </a>
 
-      <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
         <a href="../modules/usuarios/logout?from=../../pages/camaron" class="btn btn-secondary">
           <span class="text text-1">Cerrar sesión</span>
           <span class="text text-2" aria-hidden="true">Cerrar sesión</span>
+        </a>
+      <?php else: ?>
+        <a href="../modules/usuarios/iniciodesesion?redirect=camaron" class="btn btn-secondary">
+          <span class="text text-1">Iniciar sesión</span>
+          <span class="text text-2" aria-hidden="true">Iniciar sesión</span>
         </a>
       <?php endif; ?>
 
