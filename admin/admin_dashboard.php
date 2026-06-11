@@ -33,7 +33,7 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
     <link rel="shortcut icon" href="../../assets/images/logo_empresa-removebg-preview.png" type="image/x-icon">
     <link rel="stylesheet" href="../assets/css/estiloADM.css">
 </head>
-<body>z
+<body>
 
     <nav class="navbar">
         <img src="../assets/images/logo_empresa-removebg-preview.png" alt="Logo" class="nav-logo">

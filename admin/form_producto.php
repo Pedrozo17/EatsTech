@@ -1,23 +1,35 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
-if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'empresa') { header("Location: \Eatstech\modules\usuarios\iniciodesesion "); exit(); }
+if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'empresa') { 
+    header("Location: \Eatstech\modules\usuarios\iniciodesesion"); 
+    exit(); 
+}
 
 include("../config/Configuracion.php");
 
 $es_edicion = false;
 $nombre = $descripcion = $precio = "";
+$stock = 0; // 🟢 Inicializamos el stock en 0 por defecto
 $id = null;
 
 // Validar si viene un ID para editar
 if (isset($_GET['id'])) {
     $es_edicion = true;
     $id = intval($_GET['id']);
-    $res = $db->query("SELECT * FROM mis_productos WHERE id = $id");
-    if($prod = $res->fetch_assoc()){
-        $nombre = $prod['name'];        // Corregido
-        $descripcion = $prod['description'] ?? '';  // Corregido
-        $precio = $prod['price'];       // Corregido
+    
+    // Usamos sentencia preparada por seguridad
+    $stmt = $db->prepare("SELECT * FROM mis_productos WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    
+    if ($prod = $res->fetch_assoc()) {
+        $nombre = $prod['name'];        
+        $descripcion = $prod['description'] ?? '';  
+        $precio = $prod['price'];       
+        $stock = $prod['stock']; // 🟢 AQUÍ ESTÁ EL REFUERZO: Traemos el stock real de la base de datos
     }
+    $stmt->close();
 }
 ?>
 <!DOCTYPE html>
@@ -145,13 +157,37 @@ body {
             </div>
 
             <div class="form-group">
-                <label>Precio de Venta ($):</label>
-                <input type="number" step="0.01" name="precio" value="<?php echo $precio; ?>" required placeholder="0.00">
+                <label for="precio_producto">Precio de Venta ($):</label>
+                <input 
+                    type="text" 
+                    id="precio_producto" 
+                    name="precio" 
+                    value="<?php echo isset($precio) ? intval($precio) : ''; ?>" 
+                    class="form-input" 
+                    placeholder="Ej: 15.000" 
+                    data-min="1" 
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="stock_producto">Cantidad en Inventario (Stock):</label>
+                <input 
+                    type="number" 
+                    id="stock_producto" 
+                    name="stock" 
+                    value="<?php echo isset($stock) ? intval($stock) : 0; ?>" 
+                    class="form-input" 
+                    min="0" 
+                    placeholder="Ej: 50" 
+                    required
+                >
             </div>
 
             <button type="submit" class="btn-save">Guardar Cambios</button>
             <a href="admin_dashboard?seccion=productos" class="back-link">← Cancelar y volver</a>
         </form>
+        <script src="../assets/js/admin.js"></script>
     </div>
 </body>
 </html>

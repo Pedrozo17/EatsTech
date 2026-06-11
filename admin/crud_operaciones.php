@@ -1,74 +1,100 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) { session_start(); }
+if (session_status() === PHP_SESSION_NONE) { 
+    session_start(); 
+}
 
-// SEGURIDAD: Si no es empresa, pa' fuera
+// ==========================================================================
+// SEGURIDAD & AUTENTICACIÓN
+// ==========================================================================
 if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'empresa') { 
-    header("Location: ../modules/usuarios/iniciodesesion "); 
+    header("Location: ../modules/usuarios/iniciodesesion"); 
     exit(); 
 }
 
-// CORRECCIÓN DE RUTA DE CONEXIÓN (Igual que en tu frontend)
+// ==========================================================================
+// INCLUSIÓN DE CONEXIÓN (Ruta corregida)
+// ==========================================================================
 $ruta_conexion = "../config/Configuracion.php"; 
 if (!file_exists($ruta_conexion)) {
-    // Si no existe ahí, probamos un nivel más arriba por si acaso
-    $ruta_conexion = "../config/Configuracion.php";
-    if (!file_exists($ruta_conexion)) {
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode(['success' => false, 'message' => 'No se encontró el archivo de conexión en el servidor.']);
-        exit();
-    }
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['success' => false, 'message' => 'No se encontró el archivo de conexión en el servidor.']);
+    exit();
 }
 include($ruta_conexion);
 
-// Detectamos la acción ya sea por POST (Formularios/AJAX) o GET (Enlaces de eliminar)
+// Detectamos la acción por POST o por GET
 $action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : '');
 
 // ==========================================================================
-// 1. CREAR NUEVO PLATO
+// 1. CREAR NUEVO PLATO (Con Stock incluido)
 // ==========================================================================
 if ($action === 'create_prod') {
-    $nombre = $db->real_escape_string(trim($_POST['nombre']));
-    $desc   = $db->real_escape_string(trim($_POST['descripcion']));
-    $precio = floatval($_POST['precio']);
+    $nombre = trim($_POST['nombre']);
+    $desc   = trim($_POST['descripcion']);
+    $precio = intval($_POST['precio']); // Recibe el número ya limpio sin puntos desde JS
+    $stock  = intval($_POST['stock'] ?? 0);
 
-    $query = "INSERT INTO mis_productos (name, description, price, status) VALUES ('$nombre', '$desc', $precio, 1)";
-    $db->query($query);
-    header("Location: admin_dashboard?seccion=productos");
-    exit();
+    // Usamos sentencias preparadas de mysqli por seguridad y orden
+    $stmt = $db->prepare("INSERT INTO mis_productos (name, description, price, stock, status) VALUES (?, ?, ?, ?, 1)");
+    $stmt->bind_param("ssii", $nombre, $desc, $precio, $stock);
+    
+    if ($stmt->execute()) {
+        $stmt->close();
+        header("Location: admin_dashboard?seccion=productos");
+        exit();
+    } else {
+        die("Error al crear producto: " . $db->error);
+    }
 }
 
 // ==========================================================================
-// 2. ACTUALIZAR PLATO
+// 2. ACTUALIZAR PLATO EXISTENTE (Corregido y unificado)
 // ==========================================================================
 if ($action === 'update_prod') {
     $id     = intval($_POST['id']);
-    $nombre = $db->real_escape_string(trim($_POST['nombre']));
-    $desc   = $db->real_escape_string(trim($_POST['descripcion']));
-    $precio = floatval($_POST['precio']);
+    $nombre = trim($_POST['nombre']);
+    $desc   = trim($_POST['descripcion']);
+    $precio = intval($_POST['precio']); // Recibe el número limpio sin puntos desde JS
+    $stock  = intval($_POST['stock'] ?? 0);
 
-    $query = "UPDATE mis_productos SET name='$nombre', description='$desc', price=$precio WHERE id=$id";
-    $db->query($query);
-    header("Location: admin_dashboard?seccion=productos");
-    exit();
+    // 🟢 AQUÍ SE CORRIGIÓ: Usamos una variable $query_update para NO pisar el objeto de conexión $db
+    $query_update = "UPDATE mis_productos SET name = ?, description = ?, price = ?, stock = ? WHERE id = ?";
+    
+    $stmt = $db->prepare($query_update);
+    $stmt->bind_param("ssiii", $nombre, $desc, $precio, $stock, $id);
+    
+    if ($stmt->execute()) {
+        $stmt->close();
+        header("Location: admin_dashboard?seccion=productos");
+        exit();
+    } else {
+        die("Error al actualizar producto: " . $db->error);
+    }
 }
 
 // ==========================================================================
-// 3. ELIMINAR PLATO
+// 3. ELIMINAR PLATO (Arreglado el error Fatal Error de la línea 66)
 // ==========================================================================
 if ($action === 'delete_prod') {
-    $id = intval($_GET['id']);
-    $db->query("DELETE FROM mis_productos WHERE id = $id");
+    $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    
+    if ($id > 0) {
+        // Ahora $db está totalmente libre y conserva la conexión intacta
+        $stmt = $db->prepare("DELETE FROM mis_productos WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->close();
+    }
+    
     header("Location: admin_dashboard?seccion=productos");
     exit();
 }
+
 // ==========================================================================
-// 4. CAMBIAR ESTADO DE PEDIDOS / ÓRDENES EN TIEMPO REAL (AJAX FETCH)
+// 4. CAMBIAR ESTADO DE PEDIDOS / ÓRDENES (AJAX FETCH)
 // ==========================================================================
 if ($action === 'update_status') {
-    // Forzamos que la respuesta sea JSON limpio pase lo que pase
     header('Content-Type: application/json; charset=utf-8');
-    
-    // Evitamos que los errores nativos de PHP rompan el JSON, los manejaremos nosotros
     ini_set('display_errors', 0);
     error_reporting(E_ALL);
 
@@ -76,43 +102,40 @@ if ($action === 'update_status') {
         
         $id = intval($_POST['id']);
         $tabla = preg_replace("/[^a-zA-Z0-9_]/", "", $_POST['tabla']); 
-        $estado = $db->real_escape_string(trim($_POST['estado']));
+        $estado = trim($_POST['estado']);
 
-        // Evaluamos las columnas según la tabla elegida
-
+        // Evaluación de las columnas según la tabla elegida
         if ($tabla === 'pedidos_registrados') {
             $columna_estado = "estado"; 
-            $valor_final = "'$estado'"; // Guarda texto ('Pagado', 'En Cocina'...)
         } elseif ($tabla === 'orden') {
             $columna_estado = "status";
-            $valor_final = "'$estado'"; // <--- ANTES TENÍA INTVAL, AHORA LLEVA COMILLAS PARA TEXTO
         } else {
             echo json_encode(['success' => false, 'message' => 'Tabla no válida.']);
             exit();
         }
 
-        // Armamos el query estructurado
-        $query = "UPDATE $tabla SET $columna_estado = $valor_final WHERE id = $id";
+        // Armamos el query dinámico seguro para la tabla, pero parametrizamos el valor
+        $query_status = "UPDATE $tabla SET $columna_estado = ? WHERE id = ?";
+        
+        $stmt = $db->prepare($query_status);
+        $stmt->bind_param("si", $estado, $id);
 
-        // Ejecutamos la consulta validando errores
-        $resultado = $db->query($query);
-
-        if ($resultado) {
+        if ($stmt->execute()) {
             echo json_encode(['success' => true, 'message' => '¡Estado actualizado con éxito!']);
         } else {
-            // SI LA BASE DE DATOS DA ERROR, YA NO MANDA UN ERROR 500. Devuelve el por qué en texto claro:
             echo json_encode([
                 'success' => false, 
-                'message' => "Error de MySQL en la tabla [$tabla]: " . $db->error . " | Query intentado: " . $query
+                'message' => "Error de MySQL en la tabla [$tabla]: " . $db->error
             ]);
         }
+        $stmt->close();
     } else {
         echo json_encode(['success' => false, 'message' => 'Parámetros POST incompletos en el backend.']);
     }
     exit();
 }
 
-// Si entran directo al archivo sin acción válida
+// Si intentan entrar directo a la URL de este archivo sin enviar una acción
 header("Location: admin_dashboard");
 exit();
 ?>

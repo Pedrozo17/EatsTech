@@ -62,3 +62,66 @@
         });
     }
 });
+// ==========================================================================
+// MÁSCARA DE MILES Y VALIDACIÓN DE PRECIO MÍNIMO (EATS-TECH)
+// ==========================================================================
+document.addEventListener("DOMContentLoaded", function () {
+    const precioInput = document.getElementById("precio_producto");
+    
+    // Si el input no existe en la vista actual, detenemos el script para evitar errores
+    if (!precioInput) return;
+
+    const form = precioInput.closest("form");
+
+    // FUNCIÓN PARA FORMATEAR NÚMEROS A MILES EN COLOMBIA (es-CO)
+    function formatearA_Miles(valor) {
+        // Elimina cualquier caracter que no sea un número
+        let num = valor.replace(/\D/g, "");
+        
+        // Evita ceros a la izquierda (ej: "05" -> "5")
+        if (num.startsWith("0")) {
+            num = num.replace(/^0+/, "");
+        }
+        
+        // Aplica el formato con puntos si hay un número válido
+        return num ? new Intl.NumberFormat("es-CO").format(num) : "";
+    }
+
+    // 1. FORMATEAR VALOR INICIAL (Por si viene de "Editar Plato" desde la Base de Datos)
+    if (precioInput.value) {
+        precioInput.value = formatearA_Miles(precioInput.value);
+    }
+
+    // 2. ESCUCHAR EN TIEMPO REAL MIENTRAS EL USUARIO DIGITA
+    precioInput.addEventListener("input", function (e) {
+        e.target.value = formatearA_Miles(e.target.value);
+    });
+
+    // 3. VALIDAR EL PRECIO MÍNIMO Y LIMPIAR PUNTOS ANTES DE ENVIAR A PHP
+// Busca donde pusiste el form.addEventListener("submit" ... anterior y déjalo así:
+    if (form) {
+    form.addEventListener("submit", function (e) {
+        // 1. Validación del precio (la que ya tenías)
+        const numeroLimpio = parseInt(precioInput.value.replace(/\./g, ""), 10);
+        if (isNaN(numeroLimpio) || numeroLimpio <= 0) {
+            e.preventDefault();
+            alert("⚠️ El precio del plato debe ser mayor a $0.");
+            precioInput.focus();
+            return false;
+        }
+        precioInput.value = numeroLimpio;
+
+        // 2. 🟢 NUEVA VALIDACIÓN DE STOCK
+        const stockInput = document.getElementById("stock_producto");
+        if (stockInput) {
+            const valorStock = parseInt(stockInput.value, 10);
+            if (isNaN(valorStock) || valorStock < 0) {
+                e.preventDefault(); // Evita que se guarde en la BD
+                alert("⚠️ El stock no puede ser un número negativo o estar vacío.");
+                stockInput.focus();
+                return false;
+            }
+        }
+    });
+    }
+});
