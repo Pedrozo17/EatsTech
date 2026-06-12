@@ -46,6 +46,7 @@
                 <div class="nav-buttons">
                     <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
                         <div class="user-logged-wrapper">
+                            <a href="../modules/usuarios/Perfil" class="navbar-link hover-underline">
                             <span class="nav-user">👤 <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
                             <a href="../modules/usuarios/logout " class="btn-login">Cerrar sesión</a>
                         </div>

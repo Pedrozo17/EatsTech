@@ -19,7 +19,7 @@ $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $usuario = $stmt->get_result()->fetch_assoc();
 
-// 2. PESTAÑA 1: PEDIDOS REGISTRADOS (🟢 ÚNICA CON RESUMEN DE PRODUCTOS)
+// 2. PESTAÑA 1: PEDIDOS REGISTRADOS
 $sql_pedidos = "SELECT pr.id, pr.fecha_registro AS created, pr.total_pagar AS total_price, pr.estado AS status,
                 COALESCE((
                     SELECT r.nombre_restaurante 
@@ -44,7 +44,6 @@ $pedidos_query->execute();
 $historial_pedidos = $pedidos_query->get_result();
 
 // 3. PESTAÑA 2: ÓRDENES EN TIEMPO REAL 
-// (🟢 SOLUCIÓN FINAL: Jalamos de 'orden' usando 'customer_id' y mapeamos correctamente el negocio)
 $sql_ordenes = "SELECT o.id, o.total_price, o.metodo_pago, o.created, o.status,
                 COALESCE((
                     SELECT r.nombre_restaurante 
@@ -75,64 +74,85 @@ $monitoreo_ordenes = $ordenes_query->get_result();
 </head>
 <body style="background-color: #141414; color: #FFF; font-family: 'DM Sans', sans-serif;">
 
-    <!-- Vincular el nuevo archivo CSS en el head de tu HTML -->
-<link rel="stylesheet" href="../../assets/css/perfil.css">
-<script src="https://kit.fontawesome.com/tu-kit.js" crossorigin="anonymous"></script>
+    <nav class="navbar">
+        <div class="nav-container">
+            <img src="../../assets/images/logo.png" href="../../pages/index" alt="Logo" class="nav-logo">
+            
+            <button class="menu-toggle" id="mobile-menu-btn" aria-label="Abrir menú">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
+            <div class="nav-collapse" id="navbar-collapse-target">
+                <ul class="nav-links">
+                    <li><a href="../../pages/index">Home</a></li>
+                    <li><a href="../../pages/index#servicios">Servicios</a></li>
+                    <li><a href="../../pages/index#sobre-nosotros">Sobre Nosotros</a></li>
+                    <li><a href="../../pages/index#contactanos">Contáctanos</a></li>
+                </ul>
+                
+                <div class="nav-buttons">
+                    <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
+                        <div class="user-logged-wrapper" style="display: flex; align-items: center; gap: 15px;">
+                            <span class="nav-user">👤 <?php echo htmlspecialchars($_SESSION['nombre'] ?? 'Usuario'); ?></span>
+                            <a href="../modules/usuarios/logout" class="btn-login">Cerrar sesión</a>
+                        </div>
+                    <?php else: ?>
+                        <?php endif; ?> </div>
+            </div>
+        </div>
+    </nav>
 
 <div class="perfil-container">
     
-    <!-- LADO IZQUIERDO: TARJETA DEL CLIENTE -->
     <aside class="perfil-sidebar">
-    <h2>Actualizar Perfil</h2>
-    <span class="role">Cliente Frecuente</span>
-    
-    <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
-        <div style="background: #1b5e20; color: #fff; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 13px;">
-            ¡Datos actualizados correctamente!
-        </div>
-    <?php elseif (isset($_GET['error'])): ?>
-        <div style="background: #b71c1c; color: #fff; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 13px;">
-            Hubo un error al actualizar los datos.
-        </div>
-    <?php endif; ?>
+        <h2>Actualizar Perfil</h2>
+        <span class="role">Cliente Frecuente</span>
+        
+        <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
+            <div style="background: #1b5e20; color: #fff; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 13px;">
+                ¡Datos actualizados correctamente!
+            </div>
+        <?php elseif (isset($_GET['error'])): ?>
+            <div style="background: #b71c1c; color: #fff; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 13px;">
+                Hubo un error al actualizar los datos.
+            </div>
+        <?php endif; ?>
 
-    <form action="ActualizarPerfil.php" method="POST" style="text-align: left;">
-        
-        <div class="info-group" style="background: #1a1a1a; border-left-color: #555;">
-            <label style="color: #888;">Correo Electrónico (Fijo)</label>
-            <input type="email" value="<?php echo htmlspecialchars($usuario['correo'] ?? ''); ?>" 
-                   style="background: transparent; border: none; color: #888; width: 100%; font-size: 14px; outline: none;" readonly>
-        </div>
-        
-        <div class="info-group">
-            <label for="nombre">Nombre Completo</label>
-            <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($usuario['nombre'] ?? ''); ?>" required
-                   style="background: transparent; border: none; color: #fff; width: 100%; font-size: 14px; outline: none; padding-top: 2px;">
-        </div>
-        
-        <div class="info-group">
-            <label for="direccion">Dirección de Entrega</label>
-            <input type="text" id="direccion" name="direccion" value="<?php echo htmlspecialchars($usuario['direccion'] ?? ''); ?>" required
-                   style="background: transparent; border: none; color: #fff; width: 100%; font-size: 14px; outline: none; padding-top: 2px;">
-        </div>
+        <form action="ActualizarPerfil.php" method="POST" style="text-align: left;">
+            <div class="info-group" style="background: #1a1a1a; border-left-color: #555;">
+                <label style="color: #888;">Correo Electrónico (Fijo)</label>
+                <input type="email" value="<?php echo htmlspecialchars($usuario['correo'] ?? ''); ?>" 
+                       style="background: transparent; border: none; color: #888; width: 100%; font-size: 14px; outline: none;" readonly>
+            </div>
+            
+            <div class="info-group">
+                <label for="nombre">Nombre Completo</label>
+                <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($usuario['nombre'] ?? ''); ?>" required
+                       style="background: transparent; border: none; color: #fff; width: 100%; font-size: 14px; outline: none; padding-top: 2px;">
+            </div>
+            
+            <div class="info-group">
+                <label for="direccion">Dirección de Entrega</label>
+                <input type="text" id="direccion" name="direccion" value="<?php echo htmlspecialchars($usuario['direccion'] ?? ''); ?>" required
+                       style="background: transparent; border: none; color: #fff; width: 100%; font-size: 14px; outline: none; padding-top: 2px;">
+            </div>
 
-        <div class="info-group" style="border-left-color: #dca872;">
-            <label for="password">Nueva Contraseña</label>
-            <input type="password" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="La contraseña debe tener al menos 8 caracteres, incluir una letra mayúscula, una minúscula y un número."  placeholder="Dejar en blanco para no cambiar"
-                   style="background: transparent; border: none; color: #fff; width: 100%; font-size: 14px; outline: none; padding-top: 2px;">
-        </div>
-        
-        <button type="submit" style="background: #FFB900; color: #000; border: none; width: 100%; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: background 0.2s;"
-                onmouseover="this.style.backgroundColor='#e0a300'" onmouseout="this.style.backgroundColor='#FFB900'">
-            <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
-        </button>
-    </form>
-</aside>
+            <div class="info-group" style="border-left-color: #dca872;">
+                <label for="password">Nueva Contraseña</label>
+                <input type="password" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="La contraseña debe tener al menos 8 caracteres, incluir una letra mayúscula, una minúscula y un número." placeholder="Dejar en blanco para no cambiar"
+                       style="background: transparent; border: none; color: #fff; width: 100%; font-size: 14px; outline: none; padding-top: 2px;">
+            </div>
+            
+            <button type="submit" style="background: #FFB900; color: #000; border: none; width: 100%; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: background 0.2s;"
+                    onmouseover="this.style.backgroundColor='#e0a300'" onmouseout="this.style.backgroundColor='#FFB900'">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
+            </button>
+        </form>
+    </aside>
 
-    <!-- LADO DERECHO: PESTAÑAS E HISTORIALES -->
     <main class="perfil-main">
-        
-        <!-- Botones de Control de Pestañas -->
         <div class="tabs-container">
             <button class="tab-btn active" onclick="cambiarPestaña('pedidos')">
                 <i class="fa-solid fa-box"></i> Pedidos Registrados
@@ -142,7 +162,6 @@ $monitoreo_ordenes = $ordenes_query->get_result();
             </button>
         </div>
 
-        <!-- TAB 1: HISTORIAL DE PEDIDOS -->
         <div id="tab-pedidos" class="tab-content">
             <h3 style="color: #fff; margin-bottom: 20px;">Historial de Pedidos Registrados</h3>
             <div class="table-responsive">
@@ -163,13 +182,10 @@ $monitoreo_ordenes = $ordenes_query->get_result();
                                 <tr>
                                     <td>#<?php echo $pedido['id']; ?></td>
                                     <td style="font-weight: bold; color: #dca872;"><?php echo htmlspecialchars($pedido['restaurante']); ?></td>
-                                    
-                                    <!-- Aquí los productos ya no se cortan, bajan fluidamente -->
                                     <td style="max-width: 320px; line-height: 1.5; color: #ddd;">
                                         <i class="fa-solid fa-utensils" style="color: #FFB900; font-size: 11px; margin-right: 5px;"></i>
                                         <?php echo htmlspecialchars($pedido['resumen_productos'] ?? 'Sin especificar'); ?>
                                     </td>
-                                    
                                     <td style="color: #aaa;"><?php echo $pedido['created']; ?></td>
                                     <td style="color: #FFB900; font-weight: bold;">$<?php echo number_format($pedido['total_price'], 0, ',', '.'); ?> COP</td>
                                     <td>
@@ -194,7 +210,6 @@ $monitoreo_ordenes = $ordenes_query->get_result();
             </div>
         </div>
 
-        <!-- TAB 2: ÓRDENES EN TIEMPO REAL (Oculta por defecto con JS) -->
         <div id="tab-monitoreo" class="tab-content" style="display: none;">
             <h3 style="color: #fff; margin-bottom: 20px;">Monitoreo de Órdenes en Tiempo Real</h3>
             <div class="table-responsive">
@@ -234,37 +249,25 @@ $monitoreo_ordenes = $ordenes_query->get_result();
                 </table>
             </div>
         </div>
-
     </main>
 </div>
 
-<!-- Lógica JS simple para cambiar entre las pestañas si no la tenías hecha -->
 <script>
-function cambiarPestaña(tipo) {
-    document.getElementById('tab-pedidos').style.display = (tipo === 'pedidos') ? 'block' : 'none';
-    document.getElementById('tab-monitoreo').style.display = (tipo === 'monitoreo') ? 'block' : 'none';
-    
-    const botones = document.querySelectorAll('.tab-btn');
-    botones[0].classList.toggle('active', tipo === 'pedidos');
-    botones[1].classList.toggle('active', tipo === 'monitoreo');
-}
+    // Toggle del menú móvil
+    document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+        this.classList.toggle('open');
+        document.getElementById('navbar-collapse-target').classList.toggle('show');
+    });
 
-
-  
-        function switchTab(evt, tabId) {
-            const tabContents = document.getElementsByClassName("tab-content");
-            for (let i = 0; i < tabContents.length; i++) {
-                tabContents[i].classList.remove("active-content");
-            }
-
-            const tabButtons = document.getElementsByClassName("tab-btn");
-            for (let i = 0; i < tabButtons.length; i++) {
-                tabButtons[i].classList.remove("active");
-            }
-
-            document.getElementById(tabId).classList.add("active-content");
-            evt.currentTarget.classList.add("active");
-        }
-    </script>
+    // Control de pestañas
+    function cambiarPestaña(tipo) {
+        document.getElementById('tab-pedidos').style.display = (tipo === 'pedidos') ? 'block' : 'none';
+        document.getElementById('tab-monitoreo').style.display = (tipo === 'monitoreo') ? 'block' : 'none';
+        
+        const botones = document.querySelectorAll('.tab-btn');
+        botones[0].classList.toggle('active', tipo === 'pedidos');
+        botones[1].classList.toggle('active', tipo === 'monitoreo');
+    }
+</script>
 </body>
-</html> 
+</html>
