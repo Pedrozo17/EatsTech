@@ -142,7 +142,7 @@ body {
 <body>
     <div class="form-container">
         <h2><?php echo $es_edicion ? '✏️ Editar Plato' : '🍔 Nuevo Plato'; ?></h2>
-        <form action="crud_operaciones " method="POST">
+        <form action="crud_operaciones " method="POST" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?php echo $id; ?>">
             <input type="hidden" name="action" value="<?php echo $es_edicion ? 'update_prod' : 'create_prod'; ?>">
 
@@ -183,6 +183,9 @@ body {
                     required
                 >
             </div>
+
+            <label for="imagen">Foto del Producto (Opcional):</label>
+            <input type="file" name="imagen" id="imagen" accept="image/*">
 
             <button type="submit" class="btn-save">Guardar Cambios</button>
             <a href="admin_dashboard?seccion=productos" class="back-link">← Cancelar y volver</a>

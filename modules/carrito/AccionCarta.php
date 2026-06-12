@@ -21,7 +21,7 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
             'id' => $row['id'],
             'name' => $row['name'],
             'price' => $row['price'],
-            'image' => $row['imagen'], 
+            'imagen' => $row['imagen'], 
             'qty' => 1
         );
         

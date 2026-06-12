@@ -49,59 +49,61 @@ $cart_count = $cart->total_items();
     </div>
 
     <section class="products-section">
-        <div class="products-grid">
-            <?php
-            $query = $db->query("SELECT * FROM mis_productos WHERE status = '1' ORDER BY id ASC");
-            if ($query && $query->num_rows > 0):
-                while ($row = $query->fetch_assoc()):
-            ?>
-                <div class="product-card">
+    <div class="products-grid">
+        <?php
+        $query = $db->query("SELECT * FROM mis_productos WHERE status = '1' ORDER BY id ASC");
+        if ($query && $query->num_rows > 0):
+            while ($row = $query->fetch_assoc()):
+                
+                // 🟢 LIMPIAMOS EL VALOR: Eliminamos espacios en blanco accidentales o nulos
+                $nombre_imagen = isset($row['imagen']) ? trim($row['imagen']) : '';
+        ?>
+            <div class="product-card">
 
-                    <div class="card-img-wrap">
-                        <?php if (!empty($row['imagen'])): 
-                            // 🟢 AQUÍ ESTÁ EL TRUCO: Concatenamos la ruta física de la carpeta assets
-                            $ruta_completa = "../../assets/images/" . $row['imagen'];
-                        ?>
-                            <img src="<?php echo htmlspecialchars($ruta_completa); ?>" loading="lazy"
-                                 alt="<?php echo htmlspecialchars($row['name']); ?>">
-                        <?php else: ?>
-                            <div class="no-image-placeholder">
-                                <i class="fa-solid fa-shrimp"></i>
-                                <span>Camaron Express</span>
-                            </div>
-                        <?php endif; ?>
-                    </div>
+                <div class="card-img-wrap">
+                    <?php if ($nombre_imagen !== ''): 
+                        $ruta_completa = "../../assets/images/" . $nombre_imagen;
+                    ?>
+                        <img src="<?php echo htmlspecialchars($ruta_completa); ?>" loading="lazy"
+                             alt="<?php echo htmlspecialchars($row['name']); ?>">
+                    <?php else: ?>
+                        <div class="no-image-placeholder">
+                            <i class="fa-solid fa-shrimp"></i>
+                            <span>Camaron Express</span>
+                        </div>
+                    <?php endif; ?>
+                </div>
 
-                    <div class="card-body">
-                        <h3 class="card-name"><?php echo htmlspecialchars($row['name']); ?></h3>
-                        <p class="card-description"><?php echo htmlspecialchars($row['description']); ?></p>
+                <div class="card-body">
+                    <h3 class="card-name"><?php echo htmlspecialchars($row['name']); ?></h3>
+                    <p class="card-description"><?php echo htmlspecialchars($row['description']); ?></p>
 
                     <div class="card-footer-row">
-                            <span class="card-price">
-                                $<?php echo number_format($row['price'], 0, ',', '.'); ?> COP
-                            </span>
+                        <span class="card-price">
+                            $<?php echo number_format($row['price'], 0, ',', '.'); ?> COP
+                        </span>
 
-                            <a href="#" 
-                               data-id="<?php echo $row['id']; ?>" 
-                               class="btn-add-cart">
-                                <i class="fa-solid fa-cart-plus"></i>
-                                Agregar
-                            </a>
-                        </div>
+                        <a href="#" 
+                           data-id="<?php echo $row['id']; ?>" 
+                           class="btn-add-cart">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            Agregar
+                        </a>
                     </div>
+                </div>
 
-                </div>
-            <?php
-                endwhile;
-            else:
-            ?>
-                <div class="empty-state">
-                    <i class="fa-solid fa-bowl-food"></i>
-                    <p>No hay productos disponibles por el momento.</p>
-                </div>
-            <?php endif; ?>
-        </div>
-    </section>
+            </div>
+        <?php
+            endwhile;
+        else:
+        ?>
+            <div class="empty-state">
+                <i class="fa-solid fa-bowl-food"></i>
+                <p>No hay productos disponibles por el momento.</p>
+            </div>
+        <?php endif; ?>
+    </div>
+</section>
 
     <footer class="site-footer">
         <p>© 2026 Camaron Express &mdash; Mosquera, Cundinamarca &mdash;

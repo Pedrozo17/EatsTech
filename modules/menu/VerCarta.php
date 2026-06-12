@@ -59,17 +59,17 @@ include("../../config/Configuracion.php");
                         $cartItems = $cart->contents();
                         foreach ($cartItems as $item): 
                             
-                            // 🟢 2. CONSULTAMOS EL STOCK REAL EN TIEMPO REAL DESDE LA BASE DE DATOS
+                            // 1. Consultamos el stock en tiempo real (dejamos la base de datos limpia)
                             $producto_id = intval($item['id']);
-                            $buscar_stock = $db->query("SELECT stock FROM mis_productos WHERE id = $producto_id");
-                            
-                            // Si lo encuentra asigna el stock de la BD, si no, deja 0 por seguridad
+                            $buscar_producto = $db->query("SELECT stock FROM mis_productos WHERE id = $producto_id");
                             $stock_real = 0;
-                            if ($buscar_stock && $prod_data = $buscar_stock->fetch_assoc()) {
+                            
+                            if ($buscar_producto && $prod_data = $buscar_producto->fetch_assoc()) {
                                 $stock_real = intval($prod_data['stock']);
                             }
-
-                            $imgName = !empty($item['image']) ? $item['image'] : 'default.webp';
+                        
+                            // 2. Leemos la imagen directamente desde la sesión que unificamos
+                            $imgName = !empty($item['imagen']) ? trim($item['imagen']) : 'default.png';
                             $ruta_imagen = "../../assets/images/" . $imgName;
                         ?>
                             <tr>
