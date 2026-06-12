@@ -37,6 +37,7 @@ if (isset($_GET['id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../assets/images/logo_empresa-removebg-preview.png" type="image/x-icon">
     <title>Plato - EatsTech</title>
     <style>
 body { 
@@ -184,8 +185,8 @@ body {
                 >
             </div>
 
-            <label for="imagen">Foto del Producto (Opcional):</label>
-            <input type="file" name="imagen" id="imagen" accept="image/*">
+            <label for="imagen">Foto del Producto (Solo formato WEBP):</label>
+            <input type="file" name="imagen" id="imagen" accept="image/webp">
 
             <button type="submit" class="btn-save">Guardar Cambios</button>
             <a href="admin_dashboard?seccion=productos" class="back-link">← Cancelar y volver</a>

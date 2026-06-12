@@ -39,40 +39,33 @@ if ($action === 'create_prod') {
     // DETECTOR DE ERRORES: Si quieres ver qué está llegando, descomenta las dos líneas de abajo:
     // echo "<pre>"; print_r($_FILES); echo "</pre>"; die();
 
-    if (isset($_FILES['imagen'])) {
-        if ($_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-            $fileTmpPath = $_FILES['imagen']['tmp_name'];
-            $fileName = $_FILES['imagen']['name'];
-            
-            $fileNameCmps = explode(".", $fileName);
-            $fileExtension = strtolower(end($fileNameCmps));
-            
-            // Nombre único
-            $nombre_imagen = time() . '_' . preg_replace("/[^a-zA-Z0-9]/", "", $fileNameCmps[0]) . '.' . $fileExtension;
-            
-            $directoryPath = '../assets/images/';
-            $dest_path = $directoryPath . $nombre_imagen;
-
-            // Verificación física del directorio
-            if (!is_dir($directoryPath)) {
-                die("Error crítico: La carpeta '$directoryPath' no existe en el servidor. Créala manualmente.");
-            }
-
-            if (!is_writable($directoryPath)) {
-                die("Error de permisos: La carpeta '$directoryPath' existe pero PHP no tiene permiso de escritura/subida.");
-            }
-
-            // Intento de mover el archivo
-            if (!move_uploaded_file($fileTmpPath, $dest_path)) {
-                die("Error del sistema: move_uploaded_file falló al mover el archivo temporal a: " . $dest_path);
-            }
-        } else {
-            // Si el error no es OK, evaluamos qué pasó en el navegador
-            $codigo_error = $_FILES['imagen']['error'];
-            die("Error al cargar el archivo de imagen. Código de error de PHP: " . $codigo_error . ". (Si es 4, es porque el formulario no envió ningún archivo).");
+    // 🟢 VALIDAR SUBIDA DE IMAGEN DESDE EL COMPUTADOR DEL USUARIO
+    if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $_FILES['imagen']['tmp_name'];
+        $fileName = $_FILES['imagen']['name'];
+        
+        $fileNameCmps = explode(".", $fileName);
+        $fileExtension = strtolower(end($fileNameCmps));
+        
+        // 🚨 CONTROL DE FORMATO ESTRICTO:
+        if ($fileExtension !== 'webp') {
+            // Detiene el proceso y muestra tu mensaje personalizado
+            die("<script>
+                alert('⚠️ Por favor, sube tu archivo en formato WEBP para mejorar la experiencia de los clientes y optimizar la velocidad de la página.');
+                window.history.back();
+            </script>");
         }
-    } else {
-        die("Error de comunicación: El backend no recibió ninguna variable llamada 'imagen'. Revisa el atributo 'name' de tu <input type='file' name='imagen'>");
+        
+        // Si pasa la validación (es webp), creamos el nombre único usando la marca de tiempo
+        $nombre_imagen = time() . '_' . preg_replace("/[^a-zA-Z0-9]/", "", $fileNameCmps[0]) . '.' . $fileExtension;
+        
+        $directoryPath = '../assets/images/';
+        $dest_path = $directoryPath . $nombre_imagen;
+
+        // Si falla la subida física, dejamos la variable vacía por seguridad
+        if (!move_uploaded_file($fileTmpPath, $dest_path)) {
+            $nombre_imagen = "";
+        }
     }
 
     // Insertamos en la columna 'imagen'
@@ -95,7 +88,7 @@ if ($action === 'update_prod') {
     $id     = intval($_POST['id']);
     $nombre = trim($_POST['nombre']);
     $desc   = trim($_POST['descripcion']);
-    $precio = intval($_POST['precio']); // Recibe el número limpio sin puntos desde JS
+    $precio = intval($_POST['precio']); 
     $stock  = intval($_POST['stock'] ?? 0);
 
     // 🟢 VALIDAMOS SI SUBIERON UNA NUEVA IMAGEN PARA REEMPLAZAR LA ANTERIOR
@@ -106,13 +99,21 @@ if ($action === 'update_prod') {
         $fileNameCmps = explode(".", $fileName);
         $fileExtension = strtolower(end($fileNameCmps));
         
+        // 🚨 CONTROL DE FORMATO ESTRICTO AL EDITAR:
+        if ($fileExtension !== 'webp') {
+            die("<script>
+                alert('⚠️ Por favor, sube tu archivo en formato WEBP para mejorar la experiencia de los clientes y optimizar la velocidad de la página.');
+                window.history.back();
+            </script>");
+        }
+        
         $nombre_imagen = time() . '_' . preg_replace("/[^a-zA-Z0-9]/", "", $fileNameCmps[0]) . '.' . $fileExtension;
         
         $directoryPath = '../assets/images/';
         $dest_path = $directoryPath . $nombre_imagen;
 
         if (move_uploaded_file($fileTmpPath, $dest_path)) {
-            // Si la foto subió bien, actualizamos todos los campos incluyendo la nueva ruta de la imagen
+            // Si la foto subió bien y es webp, actualizamos todo incluyendo la nueva ruta
             $query_update = "UPDATE mis_productos SET name = ?, description = ?, price = ?, stock = ?, imagen = ? WHERE id = ?";
             $stmt = $db->prepare($query_update);
             $stmt->bind_param("ssiisi", $nombre, $desc, $precio, $stock, $nombre_imagen, $id);
@@ -120,7 +121,7 @@ if ($action === 'update_prod') {
             die("Error al mover el nuevo archivo de imagen al servidor.");
         }
     } else {
-        // 🟢 SI NO SUBIÓ FOTO NUEVA: Mantenemos intacta la foto que ya tenía el producto anteriormente
+        // 🟢 SI NO SUBIÓ FOTO NUEVA (Campo vacío en el HTML): Mantenemos intacta la foto que ya tenía
         $query_update = "UPDATE mis_productos SET name = ?, description = ?, price = ?, stock = ? WHERE id = ?";
         $stmt = $db->prepare($query_update);
         $stmt->bind_param("ssiii", $nombre, $desc, $precio, $stock, $id);
