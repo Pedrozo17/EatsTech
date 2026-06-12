@@ -5,32 +5,27 @@ if (session_status() === PHP_SESSION_NONE) {
 date_default_timezone_set("America/Bogota");
 include '../../config/Configuracion.php'; // Tu conexión oficial $db
 
-    if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])){
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])){
     
     // --- ACCIÓN 1: GENERAR CÓDIGO CON DOBLE FACTOR DE VERIFICACIÓN (CORREO + TELÉFONO) ---
+// --- ACCIÓN 1: GENERAR CÓDIGO CON DOBLE FACTOR DE VERIFICACIÓN (CORREO + TELÉFONO) ---
     if($_POST['action'] == 'solicitar_codigo'){
         $correo = $db->real_escape_string($_POST['correo']);
-        
-        // Capturamos el teléfono digitado por el usuario y le removemos caracteres raros por si acaso
         $telefonoIngresado = preg_replace('/[^0-9]/', '', $_POST['telefono']);
         
-        // 🟢 DOBLE CANDADO: La consulta busca que coincidan obligatoriamente el CORREO Y el TELEFONO
         $checkUser = $db->query("SELECT id, telefono FROM datos WHERE correo = '$correo' AND telefono = '$telefonoIngresado'");
         
         if($checkUser && $checkUser->num_rows > 0){
-            $userRow = $checkUser->fetch_assoc();       
-            $telefonoCliente = $userRow['telefono']; // Usamos el de la BD verificado
+            $userRow = $checkUser->fetch_assoc();      
+            $telefonoCliente = $userRow['telefono'];
             
-            // Si el teléfono no tiene el prefijo de Colombia (57), se lo agregamos para WhatsApp
             if (strlen($telefonoCliente) == 10) {
                 $telefonoCliente = "57" . $telefonoCliente;
             }
 
-            // Generamos el código secreto
             $codigo = rand(100000, 999999);
             $expira = date("Y-m-d H:i:s", strtotime('+15 minutes'));
             
-            // Guardamos el código seguro ligado al correo verificado
             $update = $db->query("UPDATE datos SET codigo_reset = '$codigo', codigo_expira = '$expira' WHERE correo = '$correo'");
             
             if($update){
@@ -40,23 +35,32 @@ include '../../config/Configuracion.php'; // Tu conexión oficial $db
                 $mensajeUrl = urlencode($mensajeTxt);
                 $enlaceWhatsapp = "https://wa.me/" . $telefonoCliente . "?text=" . $mensajeUrl;
                 
-                // Disparamos el WhatsApp en la pestaña ya autorizada y redirigimos a verificar
+                // 🟢 CASO ÉXITO: Inyectamos WhatsApp en la pestaña reservada ('enlace_whatsapp') y redirigimos la principal
                 echo "<script>
                     window.open('$enlaceWhatsapp', 'enlace_whatsapp');
-                    window.location.href = '../../pages/VerificarCodigo ';
+                    window.location.href = '../../pages/VerificarCodigo';
                 </script>";
                 exit();
             } else {
-                echo "<script>window.close('enlace_whatsapp'); window.location.href='../../pages/OlvideClave?error=db';</script>";
+                // Si falla la BD, cerramos la pestaña huérfana y devolvemos el error
+                echo "<script>
+                    var ventana = window.open('', 'enlace_whatsapp');
+                    if(ventana) ventana.close();
+                    window.location.href = '../../pages/OlvideClave?error=db';
+                </script>";
                 exit();
             }
         } else {
-            // ❌ SI NO COINCIDEN: Cerramos la pestaña automática y devolvemos el error de datos inválidos
-            echo "<script>window.close('enlace_whatsapp'); window.location.href='../../pages/OlvideClave?error=no_coincide';</script>";
+            // 🚨 CASO ERROR: Los datos no coinciden. Cerramos la pestaña vacía al instante y mostramos el error en la principal
+            echo "<script>
+                var ventana = window.open('', 'enlace_whatsapp');
+                if(ventana) ventana.close();
+                window.location.href = '../../pages/OlvideClave?error=no_coincide';
+            </script>";
             exit();
         }
     }
-    
+}    
     // --- ACCIÓN 2: VERIFICAR SI EL CÓDIGO ES CORRECTO ---
     if($_POST['action'] == 'verificar_codigo'){
         $codigoUser = $db->real_escape_string($_POST['codigo']);
@@ -83,13 +87,13 @@ include '../../config/Configuracion.php'; // Tu conexión oficial $db
         }
     }
     
-// --- ACCIÓN 3: CAMBIAR LA CONTRASEÑA EN LA BD (CON ENCRIPCION SEGURA) ---
+    // --- ACCIÓN 3: CAMBIAR LA CONTRASEÑA EN LA BD (CON ENCRIPCION SEGURA) ---
     if($_POST['action'] == 'actualizar_clave'){
         if(!empty($_SESSION['reset_permitido']) && !empty($_SESSION['reset_correo'])){
             $nuevaClave = trim($_POST['nueva_clave']);
             $correo = $_SESSION['reset_correo'];
             
-            // 🟢 APLICAMOS LA ENCRIPCION CORRECTA QUE USA TU PROYECTO
+            // 🟢 APLICAMOS LA ENCRIPCION CORRECTA
             $claveEncriptada = password_hash($nuevaClave, PASSWORD_DEFAULT);
             
             // Guardamos la contraseña ya encriptada en la base de datos
@@ -109,7 +113,7 @@ include '../../config/Configuracion.php'; // Tu conexión oficial $db
             }
         }
     }
-} else {
+ else {
     header("Location: ../../pages/OlvideClave");
     exit();
 }

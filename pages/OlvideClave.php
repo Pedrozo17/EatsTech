@@ -36,7 +36,7 @@
         .recovery-wrapper {
             width: 100%;
             max-width: 450px;
-            margin: 120px auto 40px auto; /* Margen superior para que el navbar no lo tape */
+            margin: 120px auto 40px auto;
             padding: 0 20px;
             box-sizing: border-box;
         }
@@ -53,7 +53,6 @@
             border: 1px solid #2a2a2a;
         }
 
-        /* Icono decorativo de seguridad */
         .recovery-icon {
             width: 70px;
             height: 70px;
@@ -79,7 +78,6 @@
             margin-bottom: 25px;
         }
 
-        /* --- ESTRUCTURA DEL FORMULARIO --- */
         .form-group {
             margin-bottom: 20px;
             text-align: left;
@@ -112,7 +110,6 @@
             box-shadow: 0 0 8px rgba(255, 185, 0, 0.25);
         }
 
-        /* --- BOTÓN PRINCIPAL --- */
         .btn-reset {
             background: var(--amarillo);
             color: #000;
@@ -137,7 +134,6 @@
             transform: scale(0.98);
         }
 
-        /* --- ALERTAS DE ERROR --- */
         .error-msg {
             background-color: rgba(255, 77, 77, 0.15);
             border: 1px solid #ff4d4d;
@@ -149,7 +145,6 @@
             text-align: left;
         }
 
-        /* --- ENLACE INFERIOR --- */
         .recovery-footer {
             margin-top: 1.5rem;
             border-top: 1px solid #2a2a2a;
@@ -167,9 +162,6 @@
             color: var(--amarillo);
         }
 
-        /* ==========================================================================
-           RESPONSIVE DICTADO POR TU NAVBAR COMPACTO (PANTALLAS CELULARES)
-           ========================================================================== */
         @media (max-width: 767px) {
             .recovery-wrapper {
                 margin-top: 100px;
@@ -210,24 +202,24 @@
                 </div>
             <?php endif; ?>
 
-            <form action="../modules/carrito/AccionClave " method="POST" onsubmit="window.open('', 'enlace_whatsapp');">
+            <form action="../modules/carrito/AccionClave" method="POST" target="_self" onsubmit="window.open('', 'enlace_whatsapp');">
                 <input type="hidden" name="action" value="solicitar_codigo">
-                
+                        
                 <div class="form-group">
                     <label>Correo Electrónico:</label>
                     <input type="email" name="correo" required placeholder="ejemplo@correo.com">
                 </div>
-
+                        
                 <div class="form-group">
                     <label>Número de Teléfono Celular:</label>
                     <input type="text" name="telefono" required placeholder="3248933841" maxlength="10" pattern="[0-9]+">
                 </div>
-
+                        
                 <button type="submit" class="btn-reset">Generar Código Seguro</button>
             </form>
 
             <div class="recovery-footer">
-                <a href="../modules/usuarios/iniciodesesion " class="back-link">← Volver al inicio de sesión</a>
+                <a href="../modules/usuarios/iniciodesesion" class="back-link">← Volver al inicio de sesión</a>
             </div>
         </div>
     </div>
