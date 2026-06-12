@@ -89,8 +89,7 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
                                         <option value="Pendiente" <?php echo ($estado_actual == 'Pendiente') ? 'selected' : ''; ?>>⏳ Pendiente</option>
                                         <option value="En Cocina" <?php echo ($estado_actual == 'En Cocina') ? 'selected' : ''; ?>>🍳 En Cocina</option>
                                         <option value="En Camino" <?php echo ($estado_actual == 'En Camino') ? 'selected' : ''; ?>>🛵 En Camino</option>
-                                        <option value="Pagado" <?php echo ($estado_actual == 'Pagado') ? 'selected' : ''; ?>>✅ Pagado</option>
-                                        <option value="Cancelado" <?php echo ($estado_actual == 'Cancelado') ? 'selected' : ''; ?>>❌ Cancelado</option>
+                                        <option value="Entregado" <?php echo ($estado_actual == 'Entregado') ? 'selected' : ''; ?>>📦 Entregado</option>
                                     </select>
                                 </div>
                             </td>
@@ -145,7 +144,11 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
         <?php endif; ?>
 
         <?php if ($seccion === 'ordenes'): 
-            $res = $db->query("SELECT * FROM orden ORDER BY id DESC");
+            // 🟢 INNER JOIN ajustado a tu tabla 'datos'
+            $res = $db->query("SELECT o.*, u.nombre AS nombre_cliente 
+                               FROM orden o 
+                               INNER JOIN datos u ON o.customer_id = u.id 
+                               ORDER BY o.id DESC");
         ?>
         <div class="panel-box">
             <div class="panel-header">
@@ -156,7 +159,7 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
                     <thead>
                         <tr>
                             <th>ID Orden</th>
-                            <th>ID Cliente</th>
+                            <th>Cliente</th>
                             <th>Total de la Orden</th>
                             <th>Método de Pago</th>
                             <th>Fecha Entrada</th>
@@ -168,7 +171,9 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
                         <tr>
                             <td>#<?php echo $row['id']; ?></td>
                             <td>
-                                <span style="background: rgba(0,0,0,0.05); padding: 4px 8px; border-radius: 5px; font-family: monospace;">
+                                <strong><?php echo htmlspecialchars($row['nombre_cliente'] ?? 'Cliente Desconocido'); ?></strong>
+                                <br>
+                                <span style="background: rgba(0,0,0,0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 11px; color: #666;">
                                     User ID: <?php echo $row['customer_id']; ?>
                                 </span>
                             </td>
@@ -183,8 +188,6 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
                                 <div class="status-select-container">
                                     <select class="status-select" data-id="<?php echo $row['id']; ?>" data-tabla="orden" onchange="cambiarEstadoFila(this)">
                                         <option value="Pendiente" <?php echo ($row['status'] == 'Pendiente') ? 'selected' : ''; ?>>⏳ Pendiente</option>
-                                        <option value="En Cocina" <?php echo ($row['status'] == 'En Cocina') ? 'selected' : ''; ?>>🍳 En Cocina</option>
-                                        <option value="En Camino" <?php echo ($row['status'] == 'En Camino') ? 'selected' : ''; ?>>🛵 En Camino</option>
                                         <option value="Pagado" <?php echo ($row['status'] == 'Pagado') ? 'selected' : ''; ?>>✅ Pagado</option>
                                         <option value="Cancelado" <?php echo ($row['status'] == 'Cancelado') ? 'selected' : ''; ?>>❌ Cancelado</option>
                                     </select>
@@ -197,7 +200,6 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
             </div>
         </div>
         <?php endif; ?>
-
     </div>
 
     <div class="card-qr" style="background: #242424; padding: 25px; border-radius: 12px; text-align: center; border: 1px solid #333; max-width: 300px; margin: 20px auto;">
@@ -217,7 +219,6 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
     <script src="../assets/js/admin.js"></script>
 </body>
 </html>
