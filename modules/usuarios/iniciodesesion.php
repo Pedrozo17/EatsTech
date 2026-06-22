@@ -44,7 +44,7 @@
     <div class="container right-panel-active" id="container-wrapper">
         
         <div class="container__form container--signup">
-            <h2 class="form__title">Sign up</h2>
+            <h2 class="form__title">Registrate</h2>
 
             <?php if (isset($_GET['registro']) && $_GET['registro'] == 'exito'): ?>
                 <div style="background: rgba(46, 204, 113, 0.15); border: 1px solid #2ecc71; color: #2ecc71; padding: 10px; margin-bottom: 15px; border-radius: 6px; text-align: center; font-size: 13px; font-family: sans-serif; font-weight: bold; width: 100%; box-sizing: border-box;">
@@ -56,6 +56,7 @@
             if (isset($_GET['error'])): 
                 $mensajeError = "";
                 if ($_GET['error'] == 'duplicado') $mensajeError = "⚠️ El correo ya está registrado.";
+                if ($_GET['error'] == 'terminos') $mensajeError = "⚖️ Debe aceptar los Términos y Condiciones para registrarse.";
                 if ($_GET['error'] == 'password') $mensajeError = "❌ Las contraseñas no coinciden.";
                 if ($_GET['error'] == 'vacio')    $mensajeError = "📝 Por favor, llene todos los campos.";
                 if ($_GET['error'] == 'db')       $mensajeError = "⚙️ Error interno. Intente más tarde.";
@@ -93,12 +94,20 @@
                 <input class="input" type="text" name="direccion" placeholder="Dirección de envío" required>
                 <input class="input" type="password" name="contraseña" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="La contraseña debe tener al menos 8 caracteres, incluir una letra mayúscula, una minúscula y un número." placeholder="Contraseña" required>
                 <input class="input" type="password" name="confirmar_contraseña" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="La contraseña debe tener al menos 8 caracteres, incluir una letra mayúscula, una minúscula y un número." placeholder="Confirmar contraseña" required>
+
+                <div class="terms-container" style="display: flex; align-items: flex-start; gap: 8px; margin: 15px 0; text-align: left; width: 100%; box-sizing: border-box;">
+                    <input type="checkbox" name="terminos" id="terminos" required style="margin-top: 4px; cursor: pointer;">
+                    <label for="terminos" style="font-family: sans-serif; font-size: 12px; color: #666; line-height: 1.4; cursor: pointer;">
+                        Acepto los <a href="./terminos-y-condiciones" target="_blank" style="color: #3498db; text-decoration: none; font-weight: bold;">Términos y Condiciones</a> y la política de tratamiento de datos.
+                    </label>
+                </div>
+
                 <input class="btn" type="submit" name="register" value="Registrarse">
             </form>
         </div>
 
         <div class="container__form container--signin">
-            <h2 class="form__title">Sign In</h2>
+            <h2 class="form__title">Inicia sesion</h2>
             <form method="post" action="./login?redirect=<?php echo isset($_GET['redirect']) ? $_GET['redirect'] : ''; ?>">
                 
                 <div class="role-selector">

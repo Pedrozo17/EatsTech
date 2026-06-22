@@ -3,6 +3,15 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 include("../../config/con_db.php");
 
 if (isset($_POST['register'])) {
+    
+    // ==========================================================================
+    // VALIDACIÓN DE TÉRMINOS Y CONDICIONES (Seguridad en el Servidor)
+    // ==========================================================================
+    if (!isset($_POST['terminos'])) {
+        header("Location: ../usuarios/iniciodesesion?error=terminos");
+        exit();
+    }
+
     if (strlen($_POST['nombre']) >= 1 && 
         strlen($_POST['correo']) >= 1 && 
         strlen($_POST['cedula']) >= 1 && 
@@ -84,6 +93,8 @@ if (isset($_POST['register'])) {
         }
     } else {
         echo '<h3 class="bad">¡Por favor complete todos los campos!</h3>';
+        header("Location: ../usuarios/iniciodesesion?error=vacio");
+        exit();
     }
 }
 ?>
