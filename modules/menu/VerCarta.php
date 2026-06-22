@@ -30,7 +30,7 @@ include("../../config/Configuracion.php");
         </a>
 
         <ul class="header-nav">
-            <li><a href="../../pages/camaron" class="active">Inicio</a></li>
+            <li><a href="../../pages/camaron">Inicio</a></li>
             <li><a href="../../modules/carrito/carritodecompras">Menú</a></li>
             <li><a href="../../modules/menu/VerCarta" class="active">Mi Carrito</a></li>
             <li><a href="../../modules/pagos/Pagos">Pagar</a></li>

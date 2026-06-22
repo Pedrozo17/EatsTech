@@ -29,7 +29,7 @@ $cart_count = $cart->total_items();
         </a>
 
         <ul class="header-nav">
-            <li><a href="../../pages/camaron" class="active">Inicio</a></li>
+            <li><a href="../../pages/camaron">Inicio</a></li>
             <li><a href="../carrito/carritodecompras" class="active">Menú</a></li>
             <li><a href="../menu/VerCarta">Mi Carrito</a></li>
             <li><a href="../pagos/Pagos">Pagar</a></li>
