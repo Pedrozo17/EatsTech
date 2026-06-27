@@ -1,7 +1,7 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
-include_once '../modules/usuarios/control_plan.php';
+include_once 'control_plan.php';
 
 // SEGURIDAD: Si no es empresa, pa' fuera
 if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'empresa') {
@@ -94,7 +94,9 @@ if (array_sum($platos_cantidades) === 0) {
 
     <nav class="navbar">
         <img src="../assets/images/logo_empresa-removebg-preview.png" alt="Logo" class="nav-logo">
+        <a href="./cambiar_plan.php" class="btn-plan">Sube de nivel ⏫</a>
         <a href="../modules/usuarios/logout" class="btn-logout">Cerrar Sesión</a>
+        
     </nav>
 
     <div class="dashboard-container">

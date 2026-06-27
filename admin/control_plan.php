@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Conexión segura usando la ruta absoluta
-$ruta_db = dirname(__DIR__, 2) . '/config/con_db.php';
+$ruta_db = dirname(__DIR__, 1) . '/config/con_db.php';
 if (file_exists($ruta_db)) {
     require_once $ruta_db;
 } else {
@@ -12,7 +12,7 @@ if (file_exists($ruta_db)) {
 }
 
 if (!isset($_SESSION['id_usuario'])) {
-    echo "<script>window.location.href = '../login.php';</script>";
+    echo "<script>window.location.href = '../modules/usuarios/iniciodesesion';</script>";
     exit();
 }
 

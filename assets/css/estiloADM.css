@@ -74,6 +74,23 @@ body {
     box-shadow: 0 4px 12px rgba(207, 148, 101, 0.3);
 }
 
+.btn-plan {
+    background-color: var(--primary-cream);
+    color: var(--dark-navbar);
+    padding: 8px 18px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+.btn-plan:hover {
+    background-color: var(--amarillo);
+    color: var(--pure-white);
+    box-shadow: 0 4px 12px rgba(207, 148, 101, 0.3);
+}
+
 .dashboard-container {
     width: 100%;
     max-width: 1200px;
