@@ -7,21 +7,47 @@ if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'empresa') {
     exit();
 }
 
-// Incluimos tu controlador para conocer el estado real
-include_once './control_plan.php';
+// Incluimos tu controlador
+include_once 'control_plan.php';
+
+// Dejamos por defecto 'start'
+$plan_actual = 'start'; 
 
 /**
- * DETERMINAR EL PLAN ACTUAL DEL RESTAURANTE
- * Buscamos la variable en la sesión o en el arreglo de control_plan.
- * Si no está definida en la base de datos, por defecto siempre será 'start'.
+ * CAPTURA REAL BASADA EN TU ARREGLO:
+ * Leemos 'nombre_plan' desde $dataRestaurante, lo pasamos a minúsculas
+ * y limpiamos espacios para que la comparación sea exacta.
  */
-$plan_actual = 'start'; // Por defecto
-
-if (isset($_SESSION['plan'])) {
-    $plan_actual = strtolower($_SESSION['plan']);
-} elseif (isset($dataRestaurante['plan'])) {
-    $plan_actual = strtolower($dataRestaurante['plan']);
+if (isset($dataRestaurante['nombre_plan']) && !empty($dataRestaurante['nombre_plan'])) {
+    $plan_actual = trim(strtolower($dataRestaurante['nombre_plan']));
+} elseif (isset($_SESSION['plan']) && !empty($_SESSION['plan'])) {
+    $plan_actual = trim(strtolower($_SESSION['plan']));
 }
+
+/**
+ * MAPEO TRADUCIDO A LA INTERFAZ:
+ * Como tu base de datos devuelve "Enterprise (Developer Mode)", buscamos si el texto
+ * contiene la palabra clave para marcar la tarjeta correcta en la vista.
+ */
+if (strpos($plan_actual, 'start') !== false || strpos($plan_actual, 'gratis') !== false) {
+    $plan_actual = 'start';
+} elseif (strpos($plan_actual, 'basic') !== false || strpos($plan_actual, 'basico') !== false) {
+    $plan_actual = 'basic';
+} elseif (strpos($plan_actual, 'pro') !== false) {
+    // Evitamos que confunda 'enterprise pro' con el plan Pro normal
+    if (strpos($plan_actual, 'enterprise') !== false) {
+        $plan_actual = 'enterprise';
+    } else {
+        $plan_actual = 'pro';
+    }
+} elseif (strpos($plan_actual, 'enterprise') !== false || strpos($plan_actual, 'premium') !== false) {
+    $plan_actual = 'enterprise';
+} else {
+    // Por seguridad, si no coincide con ninguna palabra, regresa a start
+    $plan_actual = 'start'; 
+}
+
+// Ya puedes volver a comentar la línea del echo poniéndole las dos barras (//) si deseas.
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -31,241 +57,325 @@ if (isset($_SESSION['plan'])) {
     <title>Planes de Suscripción - EatsTech</title>
     <link rel="stylesheet" href="../assets/css/estiloADM.css">
     <style>
-        :root {
-            --bg-eatstech: #323232;
-            --oro-eatstech: #FFB900;
-            --blanco-texto: #FFFFFF;
-            --tarjeta-fondo: #242424;
-            --gris-detalle: #8a8a8a;
-        }
+:root {
+    --bg-eatstech: #323232;
+    --oro-eatstech: #FFB900;
+    --blanco-texto: #FFFFFF;
+    --tarjeta-fondo: #242424;
+    --gris-detalle: #8a8a8a;
+}
 
-        body {
-            background-color: var(--bg-eatstech) !important;
-            color: var(--blanco-texto);
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+body {
+    background-color: var(--bg-eatstech) !important;
+    color: var(--blanco-texto);
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
 
-        .planes-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-            text-align: center;
-        }
+.planes-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    text-align: center;
+}
 
-        .btn-back {
-            display: inline-block;
-            margin-bottom: 25px;
-            color: var(--oro-eatstech);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: bold;
-            transition: opacity 0.2s;
-        }
-        .btn-back:hover { opacity: 0.8; }
+.btn-back {
+    display: inline-block;
+    margin-bottom: 25px;
+    color: var(--oro-eatstech);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+.btn-back:hover { opacity: 0.8; }
 
-        .planes-header h1 {
-            color: var(--blanco-texto);
-            font-size: 36px;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
+.planes-header h1 {
+    color: var(--oro-eatstech);
+    font-size: 36px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
 
-        .planes-header p {
-            color: var(--gris-detalle);
-            margin-bottom: 30px;
-            font-size: 16px;
-        }
+.planes-header p {
+    color: var(--gris-detalle);
+    margin-bottom: 30px;
+    font-size: 16px;
+}
 
-        .toggle-container {
-            display: inline-flex;
-            background: var(--tarjeta-fondo);
-            padding: 5px;
-            border-radius: 30px;
-            margin-bottom: 40px;
-            border: 1px solid #444;
-        }
+.toggle-container {
+    display: inline-flex;
+    background: var(--tarjeta-fondo);
+    padding: 5px;
+    border-radius: 30px;
+    margin-bottom: 40px;
+    border: 1px solid #444;
+}
 
-        .toggle-btn {
-            background: transparent;
-            border: none;
-            color: var(--blanco-texto);
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
+.toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--blanco-texto);
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.3s;
+}
 
-        .toggle-btn.active {
-            background: var(--oro-eatstech);
-            color: #141414;
-        }
+.toggle-btn.active {
+    background: var(--oro-eatstech);
+    color: #141414;
+}
 
-        .ahorro-badge {
-            background: #28a745;
-            color: white;
-            font-size: 11px;
-            padding: 2px 6px;
-            border-radius: 10px;
-            margin-left: 5px;
-        }
+.ahorro-badge {
+    background: #28a745;
+    color: white;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 5px;
+}
 
-        .grid-planes {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-            align-items: stretch;
-        }
+.grid-planes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    align-items: stretch;
+}
 
-        .card-plan {
-            background: var(--tarjeta-fondo);
-            border-radius: 14px;
-            padding: 35px 20px;
-            border: 1px solid #444;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
+.card-plan {
+    background: var(--tarjeta-fondo);
+    border-radius: 14px;
+    padding: 35px 20px;
+    border: 1px solid #444;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
 
-        .card-plan:hover {
-            transform: translateY(-8px);
-        }
+.card-plan:hover {
+    transform: translateY(-8px);
+}
 
-        .card-plan.destacado {
-            border: 2px solid var(--oro-eatstech);
-        }
+.card-plan.destacado {
+    border: 2px solid var(--oro-eatstech);
+}
 
-        /* Tarjeta visual para el plan actualmente activo en BD */
-        .card-plan.plan-activo-card {
-            border: 2px solid #28a745;
-        }
+/* Tarjeta visual para el plan actualmente activo en BD */
+.card-plan.plan-activo-card {
+    border: 2px solid #28a745;
+}
 
-        .badge-popular {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--oro-eatstech);
-            color: #141414;
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
+.badge-popular {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--oro-eatstech);
+    color: #141414;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
 
-        .badge-activo {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #28a745;
-            color: white;
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
+.badge-activo {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #28a745;
+    color: white;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
 
-        .plan-name {
-            font-size: 24px;
-            color: var(--blanco-texto);
-            margin: 0 0 5px 0;
-            font-weight: 600;
-        }
+.plan-name {
+    font-size: 24px;
+    color: var(--blanco-texto);
+    margin: 0 0 5px 0;
+    font-weight: 600;
+}
 
-        .plan-ideal {
-            font-size: 12px;
-            color: var(--gris-detalle);
-            margin-bottom: 20px;
-            height: 35px;
-        }
+.plan-ideal {
+    font-size: 12px;
+    color: var(--gris-detalle);
+    margin-bottom: 20px;
+    height: 35px;
+}
 
-        .plan-price {
-            font-size: 34px;
-            font-weight: bold;
-            color: var(--oro-eatstech);
-            margin-bottom: 5px;
-        }
+.plan-price {
+    font-size: 34px;
+    font-weight: bold;
+    color: var(--oro-eatstech);
+    margin-bottom: 5px;
+}
 
-        .plan-price span {
-            font-size: 14px;
-            color: var(--blanco-texto);
-            font-weight: normal;
-        }
+.plan-price span {
+    font-size: 14px;
+    color: var(--blanco-texto);
+    font-weight: normal;
+}
 
-        .plan-comision {
-            font-size: 13px;
-            color: #ff4a4a;
-            margin-bottom: 25px;
-            font-weight: 500;
-        }
-        .plan-comision.free-trans {
-            color: #28a745;
-        }
+.plan-comision {
+    font-size: 13px;
+    color: #ff4a4a;
+    margin-bottom: 25px;
+    font-weight: 500;
+}
+.plan-comision.free-trans {
+    color: #28a745;
+}
 
-        .plan-features {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 35px 0;
-            text-align: left;
-        }
+.plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 35px 0;
+    text-align: left;
+}
 
-        .plan-features li {
-            padding: 10px 0;
-            color: #e0e0e0;
-            font-size: 13px;
-            border-bottom: 1px solid #333;
-        }
+.plan-features li {
+    padding: 10px 0;
+    color: #e0e0e0;
+    font-size: 13px;
+    border-bottom: 1px solid #333;
+}
 
-        .plan-features li::before {
-            content: "✓  ";
-            color: var(--oro-eatstech);
-            font-weight: bold;
-        }
+.plan-features li::before {
+    content: "✓  ";
+    color: var(--oro-eatstech);
+    font-weight: bold;
+}
 
-        .btn-elegir {
-            display: block;
-            background: transparent;
-            color: var(--oro-eatstech);
-            border: 1px solid var(--oro-eatstech);
-            padding: 12px;
-            text-align: center;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 13px;
-            text-transform: uppercase;
-            transition: all 0.2s ease;
-        }
+.btn-elegir {
+    display: block;
+    background: transparent;
+    color: var(--oro-eatstech);
+    border: 1px solid var(--oro-eatstech);
+    padding: 12px;
+    text-align: center;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+}
 
-        .btn-elegir:hover {
-            background: var(--oro-eatstech);
-            color: #141414;
-        }
+.btn-elegir:hover {
+    background: var(--oro-eatstech);
+    color: #141414;
+}
 
-        .btn-elegir.active-plan {
-            background: #28a745;
-            color: white;
-            border-color: #28a745;
-            cursor: not-allowed;
-            pointer-events: none;
-        }
+.btn-elegir.active-plan {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
+    cursor: not-allowed;
+    pointer-events: none;
+}
 
-        .btn-elegir.btn-gold {
-            background: var(--oro-eatstech);
-            color: #141414;
-        }
-        .btn-elegir.btn-gold:hover {
-            background: transparent;
-            color: var(--oro-eatstech);
-        }
+.btn-elegir.btn-gold {
+    background: var(--oro-eatstech);
+    color: #141414;
+}
+.btn-elegir.btn-gold:hover {
+    background: transparent;
+    color: var(--oro-eatstech);
+}
+
+/* ==========================================
+   MEDIA QUERIES (RESPONSIVE DESIGN)
+   ========================================== */
+
+/* Tabletas y pantallas medianas (Dispositivos menores a 992px) */
+@media (max-width: 992px) {
+    .planes-container {
+        margin: 30px auto;
+    }
+    .planes-header h1 {
+        font-size: 32px;
+    }
+    .grid-planes {
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablets */
+        gap: 15px;
+    }
+}
+
+/* Teléfonos móviles grandes (Dispositivos menores a 768px) */
+@media (max-width: 768px) {
+    .planes-container {
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+    .planes-header h1 {
+        font-size: 28px;
+    }
+    .planes-header p {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+    .toggle-container {
+        margin-bottom: 30px;
+    }
+    .toggle-btn {
+        padding: 8px 15px;
+        font-size: 13px;
+    }
+    .grid-planes {
+        grid-template-columns: 1fr; /* 1 sola columna, tarjetas apiladas */
+        gap: 25px; /* Más espacio vertical entre tarjetas */
+    }
+    .card-plan {
+        padding: 30px 15px;
+    }
+    .card-plan:hover {
+        transform: none; /* Desactivamos el efecto hover en móvil para evitar saltos táctiles */
+    }
+    .plan-ideal {
+        height: auto; /* Permite que el texto fluya libremente en pantallas pequeñas */
+        margin-bottom: 15px;
+    }
+}
+
+/* Teléfonos móviles pequeños (Dispositivos menores a 480px) */
+@media (max-width: 480px) {
+    .planes-header h1 {
+        font-size: 24px;
+    }
+    .plan-name {
+        font-size: 20px;
+    }
+    .plan-price {
+        font-size: 30px;
+    }
+    .toggle-container {
+        display: flex;
+        flex-direction: column; /* Apila los botones de Mes/Año si el espacio es muy reducido */
+        border-radius: 15px;
+        width: 100%;
+        max-width: 250px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .toggle-btn {
+        border-radius: 10px;
+    }
+    .ahorro-badge {
+        display: inline-block;
+        margin-top: 2px;
+        margin-left: 0;
+    }
+}
     </style>
 </head>
 <body>
@@ -274,7 +384,7 @@ if (isset($_SESSION['plan'])) {
         <a href="./admin_dashboard" class="btn-back">⬅ Volver al Panel Administrativo</a>
         
         <div class="planes-header">
-            <h1>Tarifas Corporativas SaaS</h1>
+            <h1>Actualiza para potenciar aún mas tu negocio</h1>
             <p>Selecciona el modelo estratégico ideal para potenciar y automatizar las comandas de tu restaurante.</p>
         </div>
 
