@@ -3,6 +3,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start(); 
 }
 
+include_once '../modules/usuarios/control_plan.php';
+
 // ==========================================================================
 // SEGURIDAD & AUTENTICACIÓN
 // ==========================================================================

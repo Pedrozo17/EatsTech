@@ -1,6 +1,8 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
+include_once '../modules/usuarios/control_plan.php';
+
 // SEGURIDAD: Si no es empresa, pa' fuera
 if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'empresa') {
     header("Location: ../modules/usuarios/iniciodesesion");

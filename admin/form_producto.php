@@ -5,6 +5,8 @@ if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'empresa') {
     exit(); 
 }
 
+include_once '../modules/usuarios/control_plan.php';
+
 include("../config/Configuracion.php");
 
 $es_edicion = false;
