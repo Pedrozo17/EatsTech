@@ -96,7 +96,7 @@ $monitoreo_ordenes = $ordenes_query->get_result();
                     <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
                         <div class="user-logged-wrapper" style="display: flex; align-items: center; gap: 15px;">
                             <span class="nav-user">👤 <?php echo htmlspecialchars($_SESSION['nombre'] ?? 'Usuario'); ?></span>
-                            <a href="../modules/usuarios/logout" class="btn-login">Cerrar sesión</a>
+                            <a href="./logout" class="btn-login">Cerrar sesión</a>
                         </div>
                     <?php else: ?>
                         <?php endif; ?> </div>
