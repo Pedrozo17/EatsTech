@@ -62,6 +62,37 @@
         });
     }
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const ctx = document.getElementById('chartPlatosMasVendidos');
+    
+    // Validamos que el canvas exista en el DOM antes de intentar renderizar
+    if (ctx) {
+        // Obtenemos los arreglos globales declarados previamente en el HTML
+        if (typeof nombresPlatos !== 'undefined' && typeof cantidadesPlatos !== 'undefined') {
+            new Chart(ctx.getContext('2d'), {
+                type: 'pie',
+                data: {
+                    labels: nombresPlatos,
+                    datasets: [{
+                        label: 'Unidades Vendidas',
+                        data: cantidadesPlatos,
+                        backgroundColor: ['#ffbc00', '#cf9465', '#17a2b8', '#6c757d'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+    }
+});
 // ==========================================================================
 // MÁSCARA DE MILES Y VALIDACIÓN DE PRECIO MÍNIMO (EATS-TECH)
 // ==========================================================================
@@ -124,4 +155,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
     }
+
+    
 });

@@ -25,6 +25,57 @@ if (!isset($db)) {
 
 // Detectar sección activa
 $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
+
+// 1. Sumar las ventas reales de la tabla orden
+$queryVentas = $db->query("SELECT SUM(total_price) as total_finanzas FROM orden WHERE status = 'Pagado'");
+$rowVentas = $queryVentas->fetch_assoc();
+$total_ventas = $rowVentas['total_finanzas'] ?? 0;
+
+// 2. Tráfico comercial: Total de órdenes históricas
+$queryVisitas = $db->query("SELECT COUNT(*) as total_ordenes FROM orden");
+$rowVisitas = $queryVisitas->fetch_assoc();
+$total_visitas = $rowVisitas['total_ordenes'] ?? 0;
+
+// =================================================================
+// 🍔 TRUCO ALGORÍTMICO: EXTRAER EL PLATO MÁS VENDIDO DEL RESUMEN
+// =================================================================
+
+// Traemos todos los productos existentes en tu menú para buscar coincidencias exactas
+$queryMenu = $db->query("SELECT name FROM mis_productos");
+$todos_los_platos = [];
+while ($platoMenu = $queryMenu->fetch_assoc()) {
+    $todos_los_platos[] = $platoMenu['name'];
+}
+
+// Traemos todos los textos de los resúmenes de los pedidos exitosos
+$queryResumenes = $db->query("SELECT resumen_productos FROM pedidos_registrados WHERE estado != 'Pendiente'");
+$conteo_platos = array_fill_keys($todos_los_platos, 0); // Inicializamos el contador de cada plato en 0
+
+while ($pedido = $queryResumenes->fetch_assoc()) {
+    $texto_resumen = $pedido['resumen_productos'];
+    
+    // Buscamos si el nombre de cada plato del menú aparece dentro del texto del pedido
+    foreach ($todos_los_platos as $plato) {
+        if (!empty($texto_resumen) && stripos($texto_resumen, $plato) !== false) {
+            // Si el plato aparece en el texto, le sumamos una unidad vendida
+            $conteo_platos[$plato]++;
+        }
+    }
+}
+
+// Ordenamos los platos de mayor a menor venta y tomamos los 4 principales
+arsort($conteo_platos);
+$top_platos = array_slice($conteo_platos, 0, 4, true);
+
+// Preparamos los arreglos limpios que se enviarán a Chart.js
+$platos_nombres = array_keys($top_platos);
+$platos_cantidades = array_values($top_platos);
+
+// Si ningún plato ha sido vendido aún, ponemos valores por defecto para que la gráfica no salga vacía
+if (array_sum($platos_cantidades) === 0) {
+    $platos_nombres = ["Sin ventas aún"];
+    $platos_cantidades = [1];
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -34,6 +85,10 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
     <title>Panel de Control - EatsTech</title>
     <link rel="shortcut icon" href="../../assets/images/logo_empresa-removebg-preview.png" type="image/x-icon">
     <link rel="stylesheet" href="../assets/css/estiloADM.css">
+    <!-- Cargamos Chart.js solo si estamos en la sección de estadísticas -->
+    <?php if ($seccion === 'estadisticas'): ?>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <?php endif; ?>
 </head>
 <body>
 
@@ -48,8 +103,11 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
             <a href="./admin_dashboard?seccion=pedidos" class="<?php echo $seccion === 'pedidos' ? 'active' : ''; ?>">📦 Pedidos Registrados</a>
             <a href="./admin_dashboard?seccion=productos" class="<?php echo $seccion === 'productos' ? 'active' : ''; ?>">🍔 Menú de Productos</a>
             <a href="./admin_dashboard?seccion=ordenes" class="<?php echo $seccion === 'ordenes' ? 'active' : ''; ?>">🛒 Órdenes en Curso</a>
+            <!-- NUEVO BOTÓN SOLICITADO -->
+            <a href="./admin_dashboard?seccion=estadisticas" class="<?php echo $seccion === 'estadisticas' ? 'active' : ''; ?>">📊 Estadísticas de mi Restaurante</a>
         </div>
 
+        <!-- SECCIÓN: PEDIDOS -->
         <?php if ($seccion === 'pedidos'): 
             $res = $db->query("SELECT * FROM pedidos_registrados ORDER BY id DESC");
         ?>
@@ -103,6 +161,7 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
         </div>
         <?php endif; ?>
 
+        <!-- SECCIÓN: PRODUCTOS -->
         <?php if ($seccion === 'productos'): 
             $res = $db->query("SELECT * FROM mis_productos ORDER BY id ASC");
         ?>
@@ -145,8 +204,8 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
         </div>
         <?php endif; ?>
 
+        <!-- SECCIÓN: ÓRDENES -->
         <?php if ($seccion === 'ordenes'): 
-            // 🟢 INNER JOIN ajustado a tu tabla 'datos'
             $res = $db->query("SELECT o.*, u.nombre AS nombre_cliente 
                                FROM orden o 
                                INNER JOIN datos u ON o.customer_id = u.id 
@@ -202,25 +261,80 @@ $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
             </div>
         </div>
         <?php endif; ?>
+
+        <!-- NUEVA SECCIÓN: ESTADÍSTICAS DEL RESTAURANTE -->
+        <?php if ($seccion === 'estadisticas'): ?>
+            <div class="panel-box">
+                <div class="panel-header">
+                    <h2>Rendimiento Comercial y Analíticas</h2>
+                </div>
+                
+                <?php if (isset($dataRestaurante['tiene_estadisticas']) && $dataRestaurante['tiene_estadisticas'] == true): ?>
+                    
+                    <div class="metrics-grid">
+                        <div class="metric-card" style="border-left-color: #28a745;">
+                            <h3>Suma Total Ventas</h3>
+                            <div class="value">$<?php echo number_format($total_ventas, 0, ',', '.'); ?> COP</div>
+                        </div>
+
+                        <div class="metric-card" style="border-left-color: #17a2b8;">
+                            <h3>Tráfico / Visitas</h3>
+                            <div class="value"><?php echo number_format($total_visitas, 0, ',', '.'); ?> Usuarios</div>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3 style="font-family: sans-serif; color: #333;">📊 Distribución del Plato Más Vendido</h3>
+                            <div class="chart-container">
+                                <canvas id="chartPlatosMasVendidos"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card" style="justify-content: center; text-align: center; font-family: sans-serif;">
+                            <h4 style="color: #28a745; margin: 0;">Soporte Premium Activo</h4>
+                            <p style="font-size: 13px; color: #555;">Canal directo con la mesa de servicio de EatsTech habilitado.</p>
+                        </div>
+                    </div>
+
+                <?php else: ?>
+                    <div class="blocked-module">
+                        <h3>🔒 Módulo de Analíticas Bloqueado</h3>
+                        <p>Las analíticas de ventas financieras y gráficos avanzados están reservados únicamente para clientes de planes Premium.</p>
+                        <a href="cambiar_plan" class="btn-upgrade">Adquirir Plan Premium</a>
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+
     </div>
 
+    <!-- TARJETA QR DEL MENÚ -->
     <div class="card-qr" style="background: #242424; padding: 25px; border-radius: 12px; text-align: center; border: 1px solid #333; max-width: 300px; margin: 20px auto;">
         <h3 style="color: #FFFFFF; font-family: sans-serif; font-size: 18px; margin-bottom: 10px;">📋 Tu Menú Digital</h3>
         <p style="color: #8a8a8a; font-size: 13px; margin-bottom: 20px;">Coloca este código en tus mesas físicas para que los clientes escaneen el menú.</p>
     
-    <div id="contenedor-qr" 
-     data-slug="<?php echo (isset($_SESSION['tipo']) && $_SESSION['tipo'] === 'empresa') ? strtolower($_SESSION['nombre']) : 'index'; ?>" 
-     style="display: inline-block; padding: 15px; background: white; border-radius: 8px;">
+        <div id="contenedor-qr" 
+             data-slug="<?php echo (isset($_SESSION['tipo']) && $_SESSION['tipo'] === 'empresa') ? strtolower($_SESSION['nombre']) : 'index'; ?>" 
+             style="display: inline-block; padding: 15px; background: white; border-radius: 8px;">
+        </div>
+        
+        <div style="margin-top: 15px;">
+            <button onclick="window.print();" style="background: #FFB900; color: #141414; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;">
+                🖨️ Imprimir QR
+            </button>
+        </div>
     </div>
-    
-    <div style="margin-top: 15px;">
-        <button onclick="window.print();" style="background: #FFB900; color: #141414; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;">
-            🖨️ Imprimir QR
-        </button>
-    </div>
-    </div>
+
+    <?php if ($seccion === 'estadisticas' && isset($dataRestaurante['tiene_estadisticas']) && $dataRestaurante['tiene_estadisticas'] == true): ?>
+    <script>
+        const nombresPlatos = <?php echo json_encode($platos_nombres); ?>;
+        const cantidadesPlatos = <?php echo json_encode($platos_cantidades); ?>;
+    </script>
+    <?php endif; ?>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="../assets/js/admin.js"></script>
+</body>
+</html>
 </body>
 </html>
