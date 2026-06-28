@@ -1,5 +1,5 @@
 <?php
-// Quitamos el session_start de aquí porque 'La-carta' ya lo inicia automáticamente
+// AccionCarta.php
 date_default_timezone_set("America/Bogota");
 
 // Iniciamos la clase de la carta
@@ -25,6 +25,13 @@ if (!empty($action)) {
         $stmt->close();
         
         if ($row) {
+            // 🟢 SOLUCIÓN CRÍTICA: Guardamos en la sesión el restaurante_id al que pertenece este plato
+            // Asumiendo que tu tabla 'mis_productos' tiene una columna 'restaurante_id' o 'id_restaurante'
+            // (Asegúrate de cambiar 'restaurante_id' si en tu tabla tiene otro nombre)
+            if (isset($row['restaurante_id'])) {
+                $_SESSION['carrito_restaurante_id'] = intval($row['restaurante_id']);
+            }
+
             // Guardamos también la columna 'imagen' en la sesión del carrito
             $itemData = array(
                 'id' => $row['id'],
@@ -51,6 +58,12 @@ if (!empty($action)) {
         
     } elseif ($action == 'removeCartItem' && !empty($_REQUEST['id'])) {
         $deleteItem = $cart->remove($_REQUEST['id']);
+        
+        // Si el carrito se queda vacío, limpiamos la variable del restaurante
+        if ($cart->total_items() <= 0) {
+            unset($_SESSION['carrito_restaurante_id']);
+        }
+        
         header("Location: ../menu/VerCarta");
         exit();
         
@@ -61,8 +74,13 @@ if (!empty($action)) {
             exit();
         }
 
-        // 🟢 NUEVO: Capturamos el restaurante actual desde la sesión
-        $restauranteID = isset($_SESSION['restaurante_id']) ? intval($_SESSION['restaurante_id']) : 0;
+        // 🟢 SOLUCIÓN CRÍTICA: Priorizamos el ID del restaurante donde se origina el carrito
+        if (isset($_SESSION['carrito_restaurante_id'])) {
+            $restauranteID = intval($_SESSION['carrito_restaurante_id']);
+        } else {
+            // Si por alguna razón no está en el carrito, usamos el de la sesión general
+            $restauranteID = isset($_SESSION['restaurante_id']) ? intval($_SESSION['restaurante_id']) : 0;
+        }
 
         $metodoPago = $_REQUEST['metodo'] ?? 'efectivo';
         $nombreCliente   = $_SESSION['nombre'] ?? '';
@@ -88,7 +106,7 @@ if (!empty($action)) {
         
         $fechaActual = date("Y-m-d H:i:s");
 
-        // 🟢 NUEVO: Agregamos restaurante_id al INSERT de la tabla 'orden'
+        // Agregamos restaurante_id al INSERT de la tabla 'orden'
         $stmt_order = $db->prepare("INSERT INTO orden (customer_id, restaurante_id, total_price, created, modified, metodo_pago, nombre_cliente, telefono, direccion, correo_cliente) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $totalCart = $cart->total();
         $stmt_order->bind_param("iidsssssss", $customerID, $restauranteID, $totalCart, $fechaActual, $fechaActual, $metodoPago, $nombreCliente, $telefonoCliente, $direccionCliente, $correoSession);
@@ -116,11 +134,14 @@ if (!empty($action)) {
             $db_telefono  = $telefonoCliente ?: 'No registrado';
             $db_direccion = $direccionCliente ?: 'No registrada';
 
-            // 🟢 NUEVO: Agregamos restaurante_id al INSERT de 'pedidos_registrados'
+            // Agregamos restaurante_id al INSERT de 'pedidos_registrados'
             $stmt_pedidos = $db->prepare("INSERT INTO pedidos_registrados (restaurante_id, nombre_cliente, correo_cliente, telefono, direccion, resumen_productos, total_pagar, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt_pedidos->bind_param("isssssds", $restauranteID, $nombreCliente, $correoSession, $db_telefono, $db_direccion, $db_productos, $totalCart, $fechaActual);
             $stmt_pedidos->execute();
             $stmt_pedidos->close();
+
+            // 🟢 Al finalizar el pedido con éxito, eliminamos la variable temporal
+            unset($_SESSION['carrito_restaurante_id']);
 
             $cart->destroy(); 
             header("Location: ../pagos/OrdenExito?id=" . $orderID);

@@ -18,6 +18,8 @@ function toggleRegistroEmpresa(show) {
 }
 
 function consultarRestaurantesServidor(correo, selectElement) {
+    const modalAviso = document.getElementById("modal-restaurante-bloqueado");
+    
     if (correo === '') {
         selectElement.innerHTML = '<option value="">⚠️ Digita tu correo primero</option>';
         return;
@@ -25,26 +27,27 @@ function consultarRestaurantesServidor(correo, selectElement) {
 
     selectElement.innerHTML = '<option value="">⏳ Buscando restaurantes...</option>';
 
-    // Reemplaza esta parte en tu auth.js
     fetch(`buscar_restaurantes.php?correo=${encodeURIComponent(correo)}`)
         .then(res => {
             if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
-            return res.text(); // 🟢 Cambiado a text() para capturar errores de PHP
+            return res.text();
         })
         .then(textoCompleto => {
             try {
-                const data = JSON.parse(textoCompleto); // Intentamos procesar el JSON
+                const data = JSON.parse(textoCompleto);
                 
                 selectElement.innerHTML = '';
                 if (!data || data.length === 0) {
                     selectElement.innerHTML = '<option value="ninguno">No tienes restaurantes asignados</option>';
                 } else {
+                    // 🟢 CORRECCIÓN: Si encontramos restaurantes válidos, nos aseguramos de ocultar el modal de bloqueo
+                    if (modalAviso) modalAviso.classList.remove("active");
+
                     data.forEach(rest => {
                         selectElement.innerHTML += `<option value="${rest.id}">${rest.nombre_restaurante}</option>`;
                     });
                 }
             } catch (err) {
-                // 🛑 SI CORREO DA ERROR, AQUÍ VERÁS EL ERROR REAL EN TU CONSOLA (F12)
                 console.error("❌ El servidor no envió un JSON válido. Respuesta recibida:");
                 console.error(textoCompleto); 
                 selectElement.innerHTML = '<option value="error">Error interno de PHP (Ver Consola F12)</option>';
@@ -59,6 +62,7 @@ function consultarRestaurantesServidor(correo, selectElement) {
 function toggleRestauranteSelector(show) {
     const container = document.getElementById('restaurante-select-container');
     const select = document.getElementById('restaurante_slug');
+    const modalAviso = document.getElementById("modal-restaurante-bloqueado");
     
     if (!container || !select) return;
     
@@ -69,6 +73,9 @@ function toggleRestauranteSelector(show) {
         const correoInput = formulario ? formulario.querySelector('input[name="correo"]') : null;
         const correo = correoInput ? correoInput.value.trim() : '';
         consultarRestaurantesServidor(correo, select);
+    } else {
+        // 🟢 Si cambia a rol Persona, ocultamos inmediatamente cualquier modal residual en móvil
+        if (modalAviso) modalAviso.classList.remove("active");
     }
 }
 
@@ -104,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll('input[name="correo"]').forEach(input => {
         input.addEventListener('input', function() {
             const formulario = this.closest('form');
-            if (!formulario || formulario.id !== 'formulario-login') return; // Solo actuar en el login
+            if (!formulario || formulario.id !== 'formulario-login') return;
             
             const radioEmpresa = formulario.querySelector('input[name="tipo_usuario"]:checked');
             if (radioEmpresa && radioEmpresa.value === 'empresa') {
@@ -133,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 // CASO A: Si el correo no tiene empresas asociadas o el campo está vacío/con error
                 if (valorSeleccionado === '' || valorSeleccionado === 'ninguno' || valorSeleccionado === 'error' || textoSeleccionado.includes('digita tu correo')) {
-                    e.preventDefault(); // Detener el submit
+                    e.preventDefault();
                     Swal.fire({
                         title: 'Acceso Denegado',
                         text: 'Este correo electrónico no tiene ningún restaurante o empresa registrada en nuestra plataforma.',
@@ -147,6 +154,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
 
                 // CASO B: Si la empresa existe pero NO es Camaron Express (Despliega aviso modal corporativo)
+                // 💡 NOTA: Si estás probando otros restaurantes en tu entorno local, puedes comentar temporalmente estas líneas
                 if (!textoSeleccionado.includes('camaron express') && !textoSeleccionado.includes('camaron-express')) {
                     e.preventDefault(); 
                     if (modalAviso) modalAviso.classList.add("active"); 
