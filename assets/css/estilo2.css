@@ -30,7 +30,8 @@ body {
     top: 0;
     left: 0;
     z-index: 9999;
-    background: #323232; /* mismo color de tu body */
+    background: #323232;
+    /* mismo color de tu body */
     height: 100vh;
     width: 100%;
     display: flex;
@@ -120,6 +121,95 @@ body {
     align-items: center;
 }
 
+/* ==========================================================================
+           ESTILOS FIJOS DEL MODAL DE ALERTA DE EATS TECH (PREVIENE DESBORDAMIENTO)
+           ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background: #2a2a2a;
+    border: 1px solid #3d3d3d;
+    padding: 40px 30px;
+    border-radius: 12px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-icon {
+    width: 70px;
+    height: 70px;
+    border: 4px solid #3498db;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px auto;
+}
+
+.modal-icon i {
+    color: #3498db;
+    font-size: 32px;
+}
+
+.modal-content h2 {
+    color: #ffffff;
+    font-family: sans-serif;
+    font-size: 26px;
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.modal-content p {
+    color: #cccccc;
+    font-family: sans-serif;
+    font-size: 15px;
+    margin-bottom: 25px;
+    line-height: 1.4;
+}
+
+.btn-modal {
+    background: #FFB900;
+    border: none;
+    color: #141414;
+    padding: 12px 35px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.btn-modal:hover {
+    transform: scale(1.04);
+}
 
 .container {
     background-color: var(--black);
@@ -169,10 +259,12 @@ body {
 .container__form::-webkit-scrollbar {
     width: 6px;
 }
+
 .container__form::-webkit-scrollbar-thumb {
     background-color: var(--amarillo);
     border-radius: 10px;
 }
+
 .container__form::-webkit-scrollbar-track {
     background: transparent;
 }
@@ -269,7 +361,7 @@ body {
     background-color: #2a2a2a;
     display: flex;
     align-items: center;
-    justify-content:  flex-start;
+    justify-content: flex-start;
     flex-direction: column;
     padding: 2rem 1.5rem;
     height: 100%;
@@ -347,11 +439,15 @@ body {
 }
 
 @keyframes show {
-    0%, 49.99% {
+
+    0%,
+    49.99% {
         opacity: 0;
         z-index: 1;
     }
-    50%, 100% {
+
+    50%,
+    100% {
         opacity: 1;
         z-index: 5;
     }
@@ -401,7 +497,8 @@ input[type="submit"]:hover {
 input:focus {
     outline: none;
     border-color: var(--amarillo);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); }
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
 
 /* ==========================================================================
    MENÚ RESPONSIVE Y HAMBURGUESA (Añadir al final del archivo)
@@ -424,7 +521,8 @@ input:focus {
 .menu-toggle .bar {
     width: 100%;
     height: 3px;
-    background-color: #ffcc00; /* Color amarillo característico */
+    background-color: #ffcc00;
+    /* Color amarillo característico */
     border-radius: 2px;
     transition: all 0.3s ease-in-out;
 }
@@ -453,13 +551,15 @@ input:focus {
 
 .role-selector {
     display: flex;
-    background-color: #1a1a1a; /* Fondo oscuro a juego con las tarjetas */
+    background-color: #1a1a1a;
+    /* Fondo oscuro a juego con las tarjetas */
     border-radius: 12px;
     padding: 5px;
     margin: 15px 0 20px 0;
     width: 100%;
     box-sizing: border-box;
-    border: 1px solid #333; /* Borde sutil para dar profundidad */
+    border: 1px solid #333;
+    /* Borde sutil para dar profundidad */
 }
 
 .role-option {
@@ -493,10 +593,12 @@ input:focus {
 }
 
 /* Transición Activa: Cuando el Radio Button está seleccionado (+ selecciona al hermano .role-box) */
-.role-option input[type="radio"]:checked + .role-box {
+.role-option input[type="radio"]:checked+.role-box {
     background-color: var(--amarillo);
-    color: #000; /* Texto oscuro para que contraste perfectamente con el amarillo */
-    box-shadow: 0 4px 15px rgba(255, 185, 0, 0.25); /* Destello dorado característico */
+    color: #000;
+    /* Texto oscuro para que contraste perfectamente con el amarillo */
+    box-shadow: 0 4px 15px rgba(255, 185, 0, 0.25);
+    /* Destello dorado característico */
 }
 
 /* ==========================================================================
@@ -519,14 +621,15 @@ input:focus {
 .menu-toggle .bar {
     width: 100%;
     height: 3px;
-    background-color: #ffcc00; /* Color amarillo característico */
+    background-color: #ffcc00;
+    /* Color amarillo característico */
     border-radius: 2px;
     transition: all 0.3s ease-in-out;
 }
 
 /* --- Estilos para Escritorio (Ajusta los píxeles según tu diseño) --- */
 @media (min-width: 992px) {
-    
+
     /* 1. El contenedor principal distribuye el Logo y el Bloque Colapsable */
     .nav-container {
         display: flex;
@@ -537,19 +640,23 @@ input:focus {
 
     /* 2. ¡La pieza que faltaba! Hacemos que el div collapse fluya horizontalmente en PC */
     .nav-collapse {
-        display: flex !important; /* Fuerza a que se muestre en escritorio si JS lo ocultó */
+        display: flex !important;
+        /* Fuerza a que se muestre en escritorio si JS lo ocultó */
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        flex-grow: 0.5; /* Hace que ocupe todo el espacio disponible entre el logo y el final */
-        margin-left: 2rem; /* Separa un poco los enlaces del logo */
+        flex-grow: 0.5;
+        /* Hace que ocupe todo el espacio disponible entre el logo y el final */
+        margin-left: 2rem;
+        /* Separa un poco los enlaces del logo */
     }
 
     /* 3. Aseguramos que la lista interna de enlaces se ponga en fila */
     .nav-links {
         display: flex;
         flex-direction: row;
-        gap: 1.5rem; /* Controla la separación entre Home, Servicios, etc. */
+        gap: 1.5rem;
+        /* Controla la separación entre Home, Servicios, etc. */
         list-style: none;
         margin: 0;
         padding: 0;
@@ -557,14 +664,17 @@ input:focus {
 
     /* 4. Si el botón de Samuel / Cerrar Sesión está dentro del nav-collapse, 
           este truco lo mandará automáticamente al extremo derecho */
-    .user-actions, .session-block {
-        margin-left: auto; 
-        white-space: nowrap; /* Evita que el texto de cerrar sesión se rompa en dos renglones */
+    .user-actions,
+    .session-block {
+        margin-left: auto;
+        white-space: nowrap;
+        /* Evita que el texto de cerrar sesión se rompa en dos renglones */
     }
 }
 
 
 @media (max-width: 858px) {
+
     /* Mostramos la hamburguesa */
     .menu-toggle {
         display: flex;
@@ -573,18 +683,20 @@ input:focus {
     /* Ocultamos los links y botones pasándolos a bloque vertical */
     .nav-collapse {
         position: absolute;
-        top: 100%; /* Justo debajo de tu barra flotante */
+        top: 100%;
+        /* Justo debajo de tu barra flotante */
         left: 0;
         width: 100%;
-        background-color: rgba(20, 20, 20, 0.98); /* Fondo oscuro a juego con tu tema */
+        background-color: rgba(20, 20, 20, 0.98);
+        /* Fondo oscuro a juego con tu tema */
         backdrop-filter: blur(10px);
         flex-direction: column;
         align-items: center;
         padding: 20px 0;
         gap: 20px;
         border-radius: 0 0 20px 20px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-        
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+
         /* Animación de apertura suave */
         max-height: 0;
         overflow: hidden;
@@ -595,7 +707,8 @@ input:focus {
 
     /* Clase que inyecta JS al pulsar el botón */
     .nav-collapse.show {
-        max-height: 400px; /* Suficiente espacio para desplegarse completo */
+        max-height: 400px;
+        /* Suficiente espacio para desplegarse completo */
         padding-top: 20px;
         padding-bottom: 20px;
     }
@@ -626,9 +739,11 @@ input:focus {
     .menu-toggle.open .bar:nth-child(1) {
         transform: translateY(7px) rotate(45deg);
     }
+
     .menu-toggle.open .bar:nth-child(2) {
         opacity: 0;
     }
+
     .menu-toggle.open .bar:nth-child(3) {
         transform: translateY(-8px) rotate(-45deg);
     }

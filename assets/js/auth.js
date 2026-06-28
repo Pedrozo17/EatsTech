@@ -17,6 +17,45 @@ function toggleRegistroEmpresa(show) {
     });
 }
 
+function consultarRestaurantesServidor(correo, selectElement) {
+    if (correo === '') {
+        selectElement.innerHTML = '<option value="">⚠️ Digita tu correo primero</option>';
+        return;
+    }
+
+    selectElement.innerHTML = '<option value="">⏳ Buscando restaurantes...</option>';
+
+    // Reemplaza esta parte en tu auth.js
+    fetch(`buscar_restaurantes.php?correo=${encodeURIComponent(correo)}`)
+        .then(res => {
+            if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+            return res.text(); // 🟢 Cambiado a text() para capturar errores de PHP
+        })
+        .then(textoCompleto => {
+            try {
+                const data = JSON.parse(textoCompleto); // Intentamos procesar el JSON
+                
+                selectElement.innerHTML = '';
+                if (!data || data.length === 0) {
+                    selectElement.innerHTML = '<option value="ninguno">No tienes restaurantes asignados</option>';
+                } else {
+                    data.forEach(rest => {
+                        selectElement.innerHTML += `<option value="${rest.id}">${rest.nombre_restaurante}</option>`;
+                    });
+                }
+            } catch (err) {
+                // 🛑 SI CORREO DA ERROR, AQUÍ VERÁS EL ERROR REAL EN TU CONSOLA (F12)
+                console.error("❌ El servidor no envió un JSON válido. Respuesta recibida:");
+                console.error(textoCompleto); 
+                selectElement.innerHTML = '<option value="error">Error interno de PHP (Ver Consola F12)</option>';
+            }
+        })
+        .catch(err => {
+            console.error("Error de Red/Ruta:", err);
+            selectElement.innerHTML = '<option value="error">Error de ruta o red</option>';
+        });
+}
+
 function toggleRestauranteSelector(show) {
     const container = document.getElementById('restaurante-select-container');
     const select = document.getElementById('restaurante_slug');
@@ -29,36 +68,12 @@ function toggleRestauranteSelector(show) {
         const formulario = select.closest('form');
         const correoInput = formulario ? formulario.querySelector('input[name="correo"]') : null;
         const correo = correoInput ? correoInput.value.trim() : '';
-        
-        if (correo === '') {
-            select.innerHTML = '<option value="">⚠️ Digita tu correo primero</option>';
-            return;
-        }
-
-        select.innerHTML = '<option value="">⏳ Buscando restaurantes...</option>';
-
-        fetch(`buscar_restaurantes.php?correo=${encodeURIComponent(correo)}`)
-            .then(res => res.json())
-            .then(data => {
-                select.innerHTML = '';
-                if (!data || data.length === 0) {
-                    select.innerHTML = '<option value="">No tienes restaurantes asignados</option>';
-                } else {
-                    data.forEach(rest => {
-                        // 🔑 Ahora inyectamos el ID numérico en el value para procesarlo directamente en el login
-                        select.innerHTML += `<option value="${rest.id}">${rest.nombre_restaurante}</option>`;
-                    });
-                }
-            })
-            .catch(err => {
-                console.error("Error en Fetch:", err);
-                select.innerHTML = '<option value="">Error al conectar con el servidor</option>';
-            });
+        consultarRestaurantesServidor(correo, select);
     }
 }
 
 // ==========================================================================
-// EVENTOS AUTOMÁTICOS Y COMPORTAMIENTO UX (SE DISPARA AL CARGAR EL DOM)
+// EVENTOS AUTOMÁTICOS Y COMPORTAMIENTO UX (AL CARGAR EL DOM)
 // ==========================================================================
 document.addEventListener("DOMContentLoaded", function() {
     
@@ -78,44 +93,83 @@ document.addEventListener("DOMContentLoaded", function() {
             this.value = this.value.replace(/[^0-9]/g, '');
         });
     }
-    // 🔒 Nueva restricción para el código de recuperación
+
     if (inputCodigo) {
-    inputCodigo.addEventListener('input', function() {
-        // Reemplaza cualquier carácter que NO sea un número del 0 al 9 por un vacío al instante
-        this.value = this.value.replace(/[^0-9]/g, '');
-    });
+        inputCodigo.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
     }
     
-    // 2. Escuchar cambios en los inputs de correo en tiempo real (Para empresas)
+    // 2. ESCUCHAR CAMBIOS EN LOS INPUTS DE CORREO EN TIEMPO REAL
     document.querySelectorAll('input[name="correo"]').forEach(input => {
         input.addEventListener('input', function() {
             const formulario = this.closest('form');
-            if (!formulario) return;
+            if (!formulario || formulario.id !== 'formulario-login') return; // Solo actuar en el login
             
             const radioEmpresa = formulario.querySelector('input[name="tipo_usuario"]:checked');
             if (radioEmpresa && radioEmpresa.value === 'empresa') {
                 const select = formulario.querySelector('#restaurante_slug');
-                const correo = this.value.trim();
-                
-                if (select && correo !== '') {
-                    fetch(`buscar_restaurantes.php?correo=${encodeURIComponent(correo)}`)
-                        .then(res => res.json())
-                        .then(data => {
-                            select.innerHTML = '';
-                            if (!data || data.length === 0) {
-                                select.innerHTML = '<option value="">No tienes restaurantes asignados</option>';
-                            } else {
-                                data.forEach(rest => {
-                                    select.innerHTML += `<option value="${rest.slug_carpeta}">${rest.nombre_restaurante}</option>`;
-                                });
-                            }
-                        });
+                if (select) {
+                    const correo = this.value.trim();
+                    consultarRestaurantesServidor(correo, select);
                 }
             }
         });
     });
 
-    // 3. Control del Menú Hamburguesa
+    // 3. INTERCEPTOR DEL ENVÍO DE FORMULARIO (VALIDA EMPRESAS NO DISPONIBLES O INEXISTENTES)
+    const formularioLogin = document.getElementById("formulario-login");
+    const selectRestaurante = document.getElementById("restaurante_slug");
+    const radioEmpresa = document.getElementById("role-empresa");
+    const modalAviso = document.getElementById("modal-restaurante-bloqueado");
+    const btnCerrarAviso = document.getElementById("btn-cerrar-aviso");
+
+    if (formularioLogin) {
+        formularioLogin.addEventListener("submit", function(e) {
+            if (radioEmpresa && radioEmpresa.checked) {
+                const opcionSeleccionada = selectRestaurante.options[selectRestaurante.selectedIndex];
+                const textoSeleccionado = opcionSeleccionada ? opcionSeleccionada.text.toLowerCase() : '';
+                const valorSeleccionado = opcionSeleccionada ? opcionSeleccionada.value : '';
+
+                // CASO A: Si el correo no tiene empresas asociadas o el campo está vacío/con error
+                if (valorSeleccionado === '' || valorSeleccionado === 'ninguno' || valorSeleccionado === 'error' || textoSeleccionado.includes('digita tu correo')) {
+                    e.preventDefault(); // Detener el submit
+                    Swal.fire({
+                        title: 'Acceso Denegado',
+                        text: 'Este correo electrónico no tiene ningún restaurante o empresa registrada en nuestra plataforma.',
+                        icon: 'error',
+                        confirmButtonText: 'Entendido',
+                        confirmButtonColor: '#FFB900',
+                        background: '#242424',
+                        color: '#FFFFFF'
+                    });
+                    return;
+                }
+
+                // CASO B: Si la empresa existe pero NO es Camaron Express (Despliega aviso modal corporativo)
+                if (!textoSeleccionado.includes('camaron express') && !textoSeleccionado.includes('camaron-express')) {
+                    e.preventDefault(); 
+                    if (modalAviso) modalAviso.classList.add("active"); 
+                }
+            }
+        });
+    }
+
+    if (btnCerrarAviso && modalAviso) {
+        btnCerrarAviso.addEventListener("click", function() {
+            modalAviso.classList.remove("active");
+        });
+    }
+
+    if (modalAviso) {
+        modalAviso.addEventListener("click", function(e) {
+            if (e.target === modalAviso) {
+                modalAviso.classList.remove("active");
+            }
+        });
+    }
+
+    // 4. CONTROL DEL MENÚ HAMBURGUESA
     const menuBtn = document.getElementById("mobile-menu-btn");
     const navCollapse = document.getElementById("navbar-collapse-target");
     if (menuBtn && navCollapse) {
@@ -125,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // 4. Manejo de Paneles Deslizantes (Sign In / Sign Up)
+    // 5. MANEJO DE PANELES DESLIZANTES (SIGN IN / SIGN UP)
     const signUpButton = document.getElementById('signUp');
     const signInButton = document.getElementById('signIn');
     const container = document.getElementById('container-wrapper');
@@ -139,12 +193,11 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // 5. CAPTURA DE ERRORES DE LOGIN CON SWEETALERT2
+    // 6. CONTROLADORES DE ALERTAS GLOBALES DE URL (SWEETALERT2)
     const urlParams = new URLSearchParams(window.location.search);
     const errorParam = urlParams.get('error');
 
     if (errorParam) {
-        // 🔒 CASO 1: Contraseña incorrecta (?error=1)
         if (errorParam === '1') {
             Swal.fire({
                 title: 'Contraseña Incorrecta',
@@ -153,12 +206,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 confirmButtonText: 'Corregir',
                 confirmButtonColor: '#FFB900',
                 background: '#242424',
-                color: '#FFFFFF',
-                customClass: { popup: 'borde-redondeado-personalizado' }
+                color: '#FFFFFF'
             });
         }
-        
-        // 🔍 CASO 2: El correo no existe en la Base de Datos (?error=no_existe)
         else if (errorParam === 'no_existe') {
             Swal.fire({
                 title: 'Usuario no encontrado',
@@ -167,16 +217,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 confirmButtonText: 'Entendido',
                 confirmButtonColor: '#FFB900',
                 background: '#242424',
-                color: '#FFFFFF',
-                customClass: { popup: 'borde-redondeado-personalizado' }
+                color: '#FFFFFF'
             });
-
-            if (container) {
-                container.classList.add("right-panel-active");
-            }
+            if (container) container.classList.add("right-panel-active");
         }
-
-                else if (errorParam === 'duplicado') {
+        else if (errorParam === 'duplicado') {
             Swal.fire({
                 title: 'Usuario ya registrado',
                 text: 'El correo electrónico ingresado ya está registrado en EatsTech. Inicia sesión.',
@@ -184,16 +229,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 confirmButtonText: 'Entendido',
                 confirmButtonColor: '#FFB900',
                 background: '#242424',
-                color: '#FFFFFF',
-                customClass: { popup: 'borde-redondeado-personalizado' }
+                color: '#FFFFFF'
             });
-
-            if (container) {
-                container.classList.add("right-panel-active");
-            }
+            if (container) container.classList.add("right-panel-active");
         }
-
-        // 🛡️ CASO 3: El rol no coincide (?error=rol_incorrecto)
         else if (errorParam === 'rol_incorrecto') {
             Swal.fire({
                 title: 'Error de Acceso',
@@ -202,12 +241,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 confirmButtonText: 'Verificar Rol',
                 confirmButtonColor: '#FFB900',
                 background: '#242424',
-                color: '#FFFFFF',
-                customClass: { popup: 'borde-redondeado-personalizado' }
+                color: '#FFFFFF'
             });
         }
-        
-        // 💳 CASO 4: Intento de pago sin iniciar sesión (?error=auth)
         else if (errorParam === 'auth') {
             Swal.fire({
                 title: '¡Paso necesario!',
@@ -216,27 +252,31 @@ document.addEventListener("DOMContentLoaded", function() {
                 confirmButtonText: 'Entendido',
                 confirmButtonColor: '#FFB900',
                 background: '#242424',
-                color: '#FFFFFF',
-                customClass: { popup: 'borde-redondeado-personalizado' }
+                color: '#FFFFFF'
             });
         }
     }
-}); // <-- Llave y paréntesis que cierran correctamente el DOMContentLoaded
+}); 
 
 // ==========================================================================
 // ANIMACIONES DE CARGA INICIAL (GSAP)
 // ==========================================================================
 document.body.classList.add("loading");
 
-gsap.fromTo(".logo-name", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 2, delay: 0.5 });
-gsap.fromTo("#svg", { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.5, ease: "back.out(1.7)" });
+if (document.querySelector(".logo-name")) {
+    gsap.fromTo(".logo-name", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 2, delay: 0.5 });
+}
+if (document.getElementById("svg")) {
+    gsap.fromTo("#svg", { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.5, ease: "back.out(1.7)" });
+}
 
 gsap.fromTo(".loading-page", { opacity: 1 }, {
     opacity: 0,
     duration: 1.0,
     delay: 2.0,
     onComplete: () => {
-        document.querySelector(".loading-page").style.display = "none";
+        const loadPage = document.querySelector(".loading-page");
+        if (loadPage) loadPage.style.display = "none";
         const swiperContainer = document.querySelector(".swiper");
         if(swiperContainer) swiperContainer.style.visibility = "visible";
         document.body.classList.remove("loading");

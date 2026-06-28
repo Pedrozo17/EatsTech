@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../assets/css/estilo2.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="../../assets/images/logo.png">
     <title>EatsTech - Iniciar Sesión / Registro</title>
 </head>
@@ -106,17 +107,17 @@
             </form>
         </div>
 
-        <div class="container__form container--signin">
+        <div class="container__form container--signin" id="form-login-section">
             <h2 class="form__title">Inicia sesion</h2>
-            <form method="post" action="./login?redirect=<?php echo isset($_GET['redirect']) ? $_GET['redirect'] : ''; ?>">
+            <form method="post" id="formulario-login" action="./login?redirect=<?php echo isset($_GET['redirect']) ? $_GET['redirect'] : ''; ?>">
                 
                 <div class="role-selector">
                     <label class="role-option">
-                        <input type="radio" name="tipo_usuario" value="persona" checked onclick="toggleRestauranteSelector(false)">
+                        <input type="radio" name="tipo_usuario" id="role-persona" value="persona" checked onclick="toggleRestauranteSelector(false)">
                         <span class="role-box">👤 Persona</span>
                     </label>
                     <label class="role-option">
-                        <input type="radio" name="tipo_usuario" value="empresa" onclick="toggleRestauranteSelector(true)">
+                        <input type="radio" name="tipo_usuario" id="role-empresa" value="empresa" onclick="toggleRestauranteSelector(true)">
                         <span class="role-box">🏢 Empresa</span>
                     </label>
                 </div>
@@ -124,12 +125,10 @@
                 <input type="text" id="login_correo" name="correo" placeholder="correo" required>
                 <input type="password" name="contraseña" placeholder="contraseña" required>
 
-<!-- Reemplaza el bloque del contenedor por este -->
                 <div id="restaurante-select-container" style="display: none; width: 100%; margin-bottom: 15px; text-align: left;">
                     <label style="color: var(--davys-grey, #6f675d); font-size: 12px; display: block; margin-bottom: 5px; font-weight: bold; font-family: sans-serif;">
                         Selecciona el restaurante a gestionar:
                     </label>
-                    <!-- 🔄 Cambiado name a restaurante_id -->
                     <select name="restaurante_id" id="restaurante_slug" style="width: 100%; padding: 12px; background: #efe6d3; border: 1px solid #6f675d; color: #2a241d; border-radius: 8px; font-weight: bold; cursor: pointer;">
                         <option value="">Escribe tu correo primero...</option>
                     </select>
@@ -155,6 +154,17 @@
                     <button class="btn" id="signUp">Sign Up</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="modal-restaurante-bloqueado" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fa-solid fa-info"></i>
+            </div>
+            <h2>¡Muy pronto!</h2>
+            <p>Aún no tenemos este restaurante disponible.</p>
+            <button id="btn-cerrar-aviso" class="btn-modal">Entendido</button>
         </div>
     </div>
 

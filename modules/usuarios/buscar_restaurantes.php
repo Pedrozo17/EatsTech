@@ -1,19 +1,30 @@
 <?php
-// 1. Cambiamos al archivo correcto que maneja tus usuarios y restaurantes
+// buscar_restaurantes.php
+ob_start(); 
+header('Content-Type: application/json; charset=utf-8');
+
 include("../../config/con_db.php"); 
 
-// 2. Usamos mysqli_real_escape_string con la variable $conex (tu conexión de con_db)
+if (isset($conex) && !isset($db)) {
+    $db = $conex;
+}
+
+if (!$db) {
+    echo json_encode(["error" => "No se detectó la variable de conexión de la BD"]);
+    exit();
+}
+
 $correo = isset($_GET['correo']) ? mysqli_real_escape_string($db, trim($_GET['correo'])) : '';
 $restaurantes = [];
 
 if (!empty($correo)) {
-    // Consulta relacional: Busca los restaurantes del usuario dueño de ese correo
-    $query = "SELECT r.nombre_restaurante, r.slug_carpeta 
+    // 🟢 CORRECCIÓN CRÍTICA: Cambiamos 'r.usuario_id = d.id' por 'd.restaurante_id = r.id'
+    // También nos aseguramos de que solo busque usuarios de tipo 'empresa'
+    $query = "SELECT r.id, r.nombre_restaurante, r.slug_carpeta 
               FROM restaurantes r 
-              JOIN datos d ON r.usuario_id = d.id 
-              WHERE d.correo = '$correo'";
+              JOIN datos d ON d.restaurante_id = r.id 
+              WHERE d.correo = '$correo' AND d.tipo = 'empresa'";
               
-    // 3. Cambiamos la ejecución al estilo por procedimientos que usa tu con_db 
     $res = mysqli_query($db, $query);
     
     if ($res) {
@@ -23,7 +34,7 @@ if (!empty($correo)) {
     }
 }
 
-// Devolvemos la respuesta en formato JSON para el JavaScript del Login
-header('Content-Type: application/json');
+ob_end_clean(); 
 echo json_encode($restaurantes);
 exit();
+?>
