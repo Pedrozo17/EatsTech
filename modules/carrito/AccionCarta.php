@@ -1,5 +1,5 @@
 <?php
-// Quitamos el session_start de aquí porque 'La-carta ' ya lo inicia automáticamente
+// Quitamos el session_start de aquí porque 'La-carta' ya lo inicia automáticamente
 date_default_timezone_set("America/Bogota");
 
 // Iniciamos la clase de la carta
@@ -9,28 +9,38 @@ $cart = new Cart;
 // Include database configuration file (Conectado a la BD 'carrito')
 include '../../config/Configuracion.php';
 
-if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
+$action = $_REQUEST['action'] ?? '';
+
+if (!empty($action)) {
     
-    if($_REQUEST['action'] == 'addToCart' && !empty($_REQUEST['id'])){
-        $productID = $_REQUEST['id'];
-        $query = $db->query("SELECT * FROM mis_productos WHERE id = ".$productID);
-        $row = $query->fetch_assoc();
+    if ($action == 'addToCart' && !empty($_REQUEST['id'])) {
+        $productID = intval($_REQUEST['id']);
         
-        // Guardamos también la columna 'imagen' en la sesión del carrito
-        $itemData = array(
-            'id' => $row['id'],
-            'name' => $row['name'],
-            'price' => $row['price'],
-            'imagen' => $row['imagen'], 
-            'qty' => 1
-        );
+        // Sentencia preparada para mayor seguridad
+        $stmt = $db->prepare("SELECT * FROM mis_productos WHERE id = ?");
+        $stmt->bind_param("i", $productID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $stmt->close();
         
-        $insertItem = $cart->insert($itemData);
-        $redirectLoc = $insertItem ? '../carrito/carritodecompras' : '../../pages/index';
-        header("Location: ".$redirectLoc);
-        exit();
+        if ($row) {
+            // Guardamos también la columna 'imagen' en la sesión del carrito
+            $itemData = array(
+                'id' => $row['id'],
+                'name' => $row['name'],
+                'price' => $row['price'],
+                'imagen' => $row['imagen'], 
+                'qty' => 1
+            );
+            
+            $insertItem = $cart->insert($itemData);
+            $redirectLoc = $insertItem ? '../carrito/carritodecompras' : '../../pages/index';
+            header("Location: " . $redirectLoc);
+            exit();
+        }
         
-    } elseif($_REQUEST['action'] == 'updateCartItem' && !empty($_REQUEST['id'])){
+    } elseif ($action == 'updateCartItem' && !empty($_REQUEST['id'])) {
         $itemData = array(
             'rowid' => $_REQUEST['id'],
             'qty' => $_REQUEST['qty']
@@ -39,114 +49,90 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
         echo $updateItem ? 'ok' : 'err';
         die;
         
-    } elseif($_REQUEST['action'] == 'removeCartItem' && !empty($_REQUEST['id'])){
+    } elseif ($action == 'removeCartItem' && !empty($_REQUEST['id'])) {
         $deleteItem = $cart->remove($_REQUEST['id']);
-        header("Location: ../menu/VerCarta ");
+        header("Location: ../menu/VerCarta");
         exit();
         
-    } elseif($_REQUEST['action'] == 'placeOrder' && $cart->total_items() > 0){
+    } elseif ($action == 'placeOrder' && $cart->total_items() > 0) {
         
-        // 1. Verificamos si el usuario realmente está logueado según tu sesión
-        if(empty($_SESSION['logueado']) || empty($_SESSION['correo'])){
-            header("Location: ../../pages/index "); 
+        if (empty($_SESSION['logueado']) || empty($_SESSION['correo'])) {
+            header("Location: ../../pages/index"); 
             exit();
         }
 
-        // 2. Capturamos el método de pago que viene por la URL
-        $metodoPago = isset($_REQUEST['metodo']) ? $db->real_escape_string($_REQUEST['metodo']) : 'efectivo';
+        // 🟢 NUEVO: Capturamos el restaurante actual desde la sesión
+        $restauranteID = isset($_SESSION['restaurante_id']) ? intval($_SESSION['restaurante_id']) : 0;
 
-        // 3. Obtenemos los datos del usuario desde la sesión para rellenar la tabla orden
-        $nombreCliente   = isset($_SESSION['nombre']) ? $db->real_escape_string($_SESSION['nombre']) : '';
-        $telefonoCliente = isset($_SESSION['telefono']) ? $db->real_escape_string($_SESSION['telefono']) : '';
-        $direccionCliente= isset($_SESSION['direccion']) ? $db->real_escape_string($_SESSION['direccion']) : '';
-        $correoSession   = $db->real_escape_string($_SESSION['correo']);
+        $metodoPago = $_REQUEST['metodo'] ?? 'efectivo';
+        $nombreCliente   = $_SESSION['nombre'] ?? '';
+        $telefonoCliente = $_SESSION['telefono'] ?? '';
+        $direccionCliente= $_SESSION['direccion'] ?? '';
+        $correoSession   = $_SESSION['correo'];
         
-        // Buscamos el ID del usuario en la base de datos 'registro'
-        $correoSeguro = $db->real_escape_string($correoSession);
-        $buscarCliente = $db->query("SELECT id FROM datos WHERE correo = '$correoSeguro'");
+        // Buscamos el ID del usuario
+        $stmt_user = $db->prepare("SELECT id FROM datos WHERE correo = ?");
+        $stmt_user->bind_param("s", $correoSession);
+        $stmt_user->execute();
+        $result_user = $stmt_user->get_result();
         
-        if($buscarCliente && $buscarCliente->num_rows > 0){
-            $clienteRow = $buscarCliente->fetch_assoc();
+        if ($result_user && $result_user->num_rows > 0) {
+            $clienteRow = $result_user->fetch_assoc();
             $customerID = $clienteRow['id']; 
         } else {
+            $stmt_user->close();
             header("Location: ../pagos/Pagos?error=usuario_no_encontrado");
             exit();
         }
+        $stmt_user->close();
         
-        // Aseguramos la zona horaria correcta de Colombia
         $fechaActual = date("Y-m-d H:i:s");
 
-        // 4. INSERT de la Orden Principal
-        $insertOrder = $db->query("INSERT INTO orden (
-            customer_id, total_price, created, modified, metodo_pago, nombre_cliente, telefono, direccion, correo_cliente
-        ) VALUES (
-            '".$customerID."', 
-            '".$cart->total()."', 
-            '".$fechaActual."', 
-            '".$fechaActual."', 
-            '".$metodoPago."', 
-            '".$nombreCliente."', 
-            '".$telefonoCliente."', 
-            '".$direccionCliente."', 
-            '".$correoSession."'
-        )");
+        // 🟢 NUEVO: Agregamos restaurante_id al INSERT de la tabla 'orden'
+        $stmt_order = $db->prepare("INSERT INTO orden (customer_id, restaurante_id, total_price, created, modified, metodo_pago, nombre_cliente, telefono, direccion, correo_cliente) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $totalCart = $cart->total();
+        $stmt_order->bind_param("iidsssssss", $customerID, $restauranteID, $totalCart, $fechaActual, $fechaActual, $metodoPago, $nombreCliente, $telefonoCliente, $direccionCliente, $correoSession);
         
-
-        if($insertOrder){
+        if ($stmt_order->execute()) {
             $orderID = $db->insert_id;
-            $sql = '';
+            $stmt_order->close();
             
-            // Obtenemos los productos del carrito
             $cartItems = $cart->contents();
-            foreach($cartItems as $item){
-                $sql .= "INSERT INTO orden_articulos (order_id, product_id, quantity) VALUES ('".$orderID."', '".$item['id']."', '".$item['qty']."');";
+            
+            // Insertamos los artículos
+            $stmt_items = $db->prepare("INSERT INTO orden_articulos (order_id, product_id, quantity) VALUES (?, ?, ?)");
+            foreach ($cartItems as $item) {
+                $stmt_items->bind_param("iii", $orderID, $item['id'], $item['qty']);
+                $stmt_items->execute();
+            }
+            $stmt_items->close();
+            
+            // Construimos la lista legible de productos
+            $db_productos = "";
+            foreach ($cartItems as $item) {
+                $db_productos .= "• " . $item['name'] . " x" . $item['qty'] . " — $" . number_format($item['subtotal'], 0, ',', '.') . " COP\n";
             }
             
-            // Insertamos los artículos en lote
-            $insertOrderItems = $db->multi_query($sql);
-            
-            if($insertOrderItems){
-                
-                while($db->more_results() && $db->next_result());
-                
-                $db_nombre    = $db->real_escape_string($nombreCliente);
-                $db_correo    = $db->real_escape_string($correoSession);
-                $db_telefono  = $db->real_escape_string($telefonoCliente ?: 'No registrado');
-                $db_direccion = $db->real_escape_string($direccionCliente ?: 'No registrada');
-                $db_total     = $cart->total();
-                
-                // Construimos la lista legible de productos
-                $db_productos = "";
-                foreach($cartItems as $item){
-                    $db_productos .= "• " . $item['name'] . " x" . $item['qty'] . " — $" . number_format($item['subtotal'], 0, ',', '.') . " COP\n";
-                }
-                $db_productos = $db->real_escape_string($db_productos);
+            $db_telefono  = $telefonoCliente ?: 'No registrado';
+            $db_direccion = $direccionCliente ?: 'No registrada';
 
-                // Ejecutamos el query directo en tu nueva tabla sin conflictos
-                $db->query("INSERT INTO pedidos_registrados (
-                    nombre_cliente, correo_cliente, telefono, direccion, resumen_productos, total_pagar, fecha_registro
-                ) VALUES (
-                    '$db_nombre', '$db_correo', '$db_telefono', '$db_direccion', '$db_productos', '$db_total', '$fechaActual'
-                )");
-                // =========================================================================
+            // 🟢 NUEVO: Agregamos restaurante_id al INSERT de 'pedidos_registrados'
+            $stmt_pedidos = $db->prepare("INSERT INTO pedidos_registrados (restaurante_id, nombre_cliente, correo_cliente, telefono, direccion, resumen_productos, total_pagar, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt_pedidos->bind_param("isssssds", $restauranteID, $nombreCliente, $correoSession, $db_telefono, $db_direccion, $db_productos, $totalCart, $fechaActual);
+            $stmt_pedidos->execute();
+            $stmt_pedidos->close();
 
-                $cart->destroy(); // Vaciamos el carrito
-                header("Location: ../pagos/OrdenExito?id=" . $orderID);
-                exit();
-            } else {
-                header("Location: ../pagos/Pagos?error=articulos");
-                exit();
-            }
+            $cart->destroy(); 
+            header("Location: ../pagos/OrdenExito?id=" . $orderID);
+            exit();
         } else {
+            $stmt_order->close();
             header("Location: ../pagos/Pagos?error=orden");
             exit();
         }
-    } else {
-        header("Location: ../../pages/index");
-        exit();
     }
-} else {
-    header("Location: ../../pages/index");
-    exit();
 }
+
+header("Location: ../../pages/index");
+exit();
 ?>

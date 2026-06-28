@@ -57,25 +57,38 @@ include("../../config/Configuracion.php");
                 <tbody>
                     <?php if ($cart->total_items() > 0):
                         $cartItems = $cart->contents();
+                        
+                        // Preparar la consulta de stock una sola vez afuera del bucle por rendimiento
+                        $stmt_stock = $db->prepare("SELECT stock FROM mis_productos WHERE id = ?");
+
                         foreach ($cartItems as $item): 
                             
-                            // 1. Consultamos el stock en tiempo real (dejamos la base de datos limpia)
+                            // 🟢 1. Consultamos el stock en tiempo real con Sentencias Preparadas
                             $producto_id = intval($item['id']);
-                            $buscar_producto = $db->query("SELECT stock FROM mis_productos WHERE id = $producto_id");
                             $stock_real = 0;
                             
-                            if ($buscar_producto && $prod_data = $buscar_producto->fetch_assoc()) {
+                            $stmt_stock->bind_param("i", $producto_id);
+                            $stmt_stock->execute();
+                            $result_stock = $stmt_stock->get_result();
+                            
+                            if ($prod_data = $result_stock->fetch_assoc()) {
                                 $stock_real = intval($prod_data['stock']);
                             }
                         
-                            // 2. Leemos la imagen directamente desde la sesión que unificamos
-                            $imgName = !empty($item['imagen']) ? trim($item['imagen']) : 'default.png';
+                            // 🟢 2. LO NUEVO: Forzar la extensión .webp de las imágenes optimizadas
+                            $imgName = !empty($item['imagen']) ? trim($item['imagen']) : '';
+                            if (!empty($imgName)) {
+                                $info = pathinfo($imgName);
+                                $imgName = $info['filename'] . '.webp';
+                            } else {
+                                $imgName = 'default.png';
+                            }
                             $ruta_imagen = "../../assets/images/" . $imgName;
                         ?>
                             <tr>
                                 <td class="product-name">
                                     <div style="display: flex; align-items: center; gap: 15px;">
-                                        <img src="<?php echo $ruta_imagen; ?>" 
+                                        <img src="<?php echo htmlspecialchars($ruta_imagen); ?>" 
                                              alt="<?php echo htmlspecialchars($item['name']); ?>" 
                                              style="width: 55px; height: 55px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;">
                                         <span><?php echo htmlspecialchars($item['name']); ?></span>
@@ -102,6 +115,7 @@ include("../../config/Configuracion.php");
                                 </td>
                             </tr>
                         <?php endforeach;
+                        $stmt_stock->close(); // Cerramos la sentencia al finalizar el bucle
                     else: ?>
                         <tr>
                             <td colspan="5">
@@ -143,7 +157,7 @@ include("../../config/Configuracion.php");
         <p>© 2026 Camaron Express &mdash; Mosquera, Cundinamarca &mdash;
             <a href="tel:+573248933841">+57 324 893 3841</a>
         </p>
-    </footer >
+    </footer>
 
     <script>
     function updateCartItem(obj, id) {
@@ -151,26 +165,19 @@ include("../../config/Configuracion.php");
         const stockMaximo = parseInt(obj.getAttribute('max'), 10);
         const nombreProducto = obj.getAttribute('data-name') || 'este producto';
 
-        // 1. Validar si excede las existencias reales en cocina
         if (cantidadActual > stockMaximo) {
             alert('⚠️ Inventario Insuficiente: Solo quedan ' + stockMaximo + ' unidades disponibles de "' + nombreProducto + '".');
-            
-            // Devolvemos el valor de la pantalla al máximo permitido
             obj.value = stockMaximo;
-            
-            // Volvemos a disparar la función con el valor corregido para actualizar la sesión
             updateCartItem(obj, id);
             return;
         }
 
-        // 2. Control por si ponen números negativos o vacíos
         if (cantidadActual < 1 || isNaN(cantidadActual)) {
             obj.value = 1;
             updateCartItem(obj, id);
             return;
         }
 
-        // 3. Procesa la petición AJAX con jQuery si todo está bajo los límites
         $.get("../carrito/AccionCarta", {
             action: "updateCartItem",
             id: id,
