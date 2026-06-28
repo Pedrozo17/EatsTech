@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start(); 
 }
 
-include_once '../modules/usuarios/control_plan.php';
+include_once 'control_plan.php';
 
 // ==========================================================================
 // SEGURIDAD & AUTENTICACIÓN
@@ -31,6 +31,28 @@ $action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ?
 // 1. CREAR NUEVO PLATO (Con Stock e Imagen Incluida) - VERSIÓN DE PRUEBA
 // ==========================================================================
 if ($action === 'create_prod') {
+
+    // 🔒 RESTRICCIÓN DE MODELO SAAS: LÍMITE DE PRODUCTOS
+    $limite_productos = isset($dataRestaurante['limite_productos']) ? intval($dataRestaurante['limite_productos']) : 10;
+
+    // Si el límite es diferente de -1 (no es ilimitado), validamos las existencias actuales
+    if ($limite_productos !== -1) {
+        // Contamos cuántos productos tiene creados actualmente el restaurante
+        // Nota: Si manejas multi-inquilino estricto, asegúrate de filtrar la consulta usando: WHERE restaurante_id = 'id'
+        $sql_contar = $db->query("SELECT COUNT(*) AS total FROM mis_productos");
+        if ($sql_contar) {
+            $fila_contar = $sql_contar->fetch_assoc();
+            $total_actual = intval($fila_contar['total']);
+
+            if ($total_actual >= $limite_productos) {
+                die("<script>
+                    alert('⚠️ Límite de productos alcanzado. Tu plan actual no te permite registrar más de " . $limite_productos . " productos. Por favor, mejora tu suscripción en la sección de planes.');
+                    window.location.href = './cambiar_plan.php';
+                </script>");
+            }
+        }
+    }
+
     $nombre = trim($_POST['nombre']);
     $desc   = trim($_POST['descripcion']);
     $precio = intval($_POST['precio']); 
