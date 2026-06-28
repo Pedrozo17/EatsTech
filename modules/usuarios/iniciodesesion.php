@@ -124,11 +124,13 @@
                 <input type="text" id="login_correo" name="correo" placeholder="correo" required>
                 <input type="password" name="contraseña" placeholder="contraseña" required>
 
+<!-- Reemplaza el bloque del contenedor por este -->
                 <div id="restaurante-select-container" style="display: none; width: 100%; margin-bottom: 15px; text-align: left;">
                     <label style="color: var(--davys-grey, #6f675d); font-size: 12px; display: block; margin-bottom: 5px; font-weight: bold; font-family: sans-serif;">
                         Selecciona el restaurante a gestionar:
                     </label>
-                    <select name="restaurante_slug" id="restaurante_slug" style="width: 100%; padding: 12px; background: #efe6d3; border: 1px solid #6f675d; color: #2a241d; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                    <!-- 🔄 Cambiado name a restaurante_id -->
+                    <select name="restaurante_id" id="restaurante_slug" style="width: 100%; padding: 12px; background: #efe6d3; border: 1px solid #6f675d; color: #2a241d; border-radius: 8px; font-weight: bold; cursor: pointer;">
                         <option value="">Escribe tu correo primero...</option>
                     </select>
                 </div>

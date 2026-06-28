@@ -5,13 +5,13 @@ if (session_status() === PHP_SESSION_NONE) {
 include("../../config/con_db.php");
 
 $paginas = [
-    'camaron' => '../../pages/camaron ',
-    'index'     => '../../pages/index '
+    'camaron' => '../../pages/camaron',
+    'index'   => '../../pages/index'
 ];
 
 $redirect = isset($_GET['redirect']) && isset($paginas[$_GET['redirect']]) 
     ? $paginas[$_GET['redirect']] 
-    : '../../pages/index ';
+    : '../../pages/index';
 
 $redirect_param = isset($_GET['redirect']) ? $_GET['redirect'] : '';
 
@@ -20,7 +20,15 @@ if (isset($_POST['login'])) {
     $contraseña = trim($_POST['contraseña']);
     $tipo_usuario = $_POST['tipo_usuario']; // Captura 'persona' o 'empresa'
     
-    $consulta = "SELECT * FROM datos WHERE correo='$correo'";
+    // Hacemos una consulta con INNER JOIN si es empresa para traer los datos de su restaurante asignado de golpe
+    $consulta = "
+        SELECT u.*, r.slug_carpeta, r.id AS r_id 
+        FROM datos u
+        LEFT JOIN restaurantes r ON u.restaurante_id = r.id 
+        WHERE u.correo='$correo'
+    ";
+    
+    // Nota: He usado LEFT JOIN para que si es un cliente ('persona'), la consulta no falle aunque r.id sea NULL.
     $resultado = mysqli_query($db, $consulta);
     
     if ($resultado && mysqli_num_rows($resultado) > 0) {
@@ -44,31 +52,36 @@ if (isset($_POST['login'])) {
             $_SESSION['tipo'] = $usuario['tipo']; 
             
             // =========================================================
-            // REDIRECCIÓN INTELIGENTE SEGÚN EL ROL Y EL ESTADO DE COMPRA
+            // REDIRECCIÓN INTELIGENTE MULTI-INQUILINO SAAS
             // =========================================================
             if ($usuario['tipo'] === 'empresa') {
-                // Capturamos el slug de la carpeta enviado desde el selector dinámico
-                $carpeta_destino = isset($_POST['restaurante_slug']) && !empty($_POST['restaurante_slug']) 
-                                   ? trim($_POST['restaurante_slug']) 
-                                   : 'admin';
+                
+                // Si por alguna razón el usuario no tiene restaurante asignado en la BD
+                if (empty($usuario['r_id'])) {
+                    header("Location: ../usuarios/iniciodesesion?error=sin_restaurante");
+                    exit();
+                }
+
+                // GUARDAMOS LOS CANDADOS SAAS EN LA SESIÓN DE FORMA TOTALMENTE SEGURA
+                $_SESSION['restaurante_id']   = intval($usuario['r_id']);
+                $_SESSION['slug_restaurante'] = $usuario['slug_carpeta']; 
         
-                // Redirección al Dashboard del restaurante seleccionado
-                header("Location: ../../" . $carpeta_destino . "/admin_dashboard ");
+                // Redirección al Dashboard usando el slug oficial registrado en su Base de Datos
+                header("Location: ../../" . $usuario['slug_carpeta'] . "/admin_dashboard");
                 exit();
 
             } else {
+                // El cliente final no posee un ID de restaurante corporativo corporativo
+                $_SESSION['restaurante_id'] = null;
+
                 // 🔥 SI ES PERSONA (CLIENTE): Verificamos primero si tiene un pago pendiente por procesar
                 if (isset($_SESSION['redireccion_post_login'])) {
                     $destino_pago = $_SESSION['redireccion_post_login'];
-                    
-                    // Limpiamos la variable para que no se quede estancada en las siguientes sesiones
                     unset($_SESSION['redireccion_post_login']);
                     
-                    // Lo redirigimos de inmediato a la pantalla de pago donde fue interrumpido
                     header("Location: " . $destino_pago);
                     exit();
                 } else {
-                    // Flujo normal de navegación si no estaba intentando pagar nada
                     header("Location: " . $redirect);
                     exit();
                 }
@@ -76,12 +89,10 @@ if (isset($_POST['login'])) {
             // =========================================================
 
         } else {
-            // Contraseña incorrecta
             header("Location: ../usuarios/iniciodesesion?error=1&redirect=" . $redirect_param);
             exit();
         }
     } else {
-        // Correo no existe
         header("Location: ../usuarios/iniciodesesion?error=no_existe&redirect=" . $redirect_param);
         exit();
     }

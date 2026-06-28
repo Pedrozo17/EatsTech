@@ -14,14 +14,15 @@ $nombre = $descripcion = $precio = "";
 $stock = 0; // 🟢 Inicializamos el stock en 0 por defecto
 $id = null;
 
-// Validar si viene un ID para editar
+// En form_producto.php, cambia el bloque IF que valida el $_GET['id'] por este:
 if (isset($_GET['id'])) {
     $es_edicion = true;
     $id = intval($_GET['id']);
+    $id_restaurante_actual = (int)$dataRestaurante['restaurante_id'];
     
-    // Usamos sentencia preparada por seguridad
-    $stmt = $db->prepare("SELECT * FROM mis_productos WHERE id = ?");
-    $stmt->bind_param("i", $id);
+    // Validamos usando sentencia preparada que el producto le pertenezca al restaurante logueado
+    $stmt = $db->prepare("SELECT * FROM mis_productos WHERE id = ? AND restaurante_id = ?");
+    $stmt->bind_param("ii", $id, $id_restaurante_actual);
     $stmt->execute();
     $res = $stmt->get_result();
     
@@ -29,11 +30,13 @@ if (isset($_GET['id'])) {
         $nombre = $prod['name'];        
         $descripcion = $prod['description'] ?? '';  
         $precio = $prod['price'];       
-        $stock = $prod['stock']; // 🟢 AQUÍ ESTÁ EL REFUERZO: Traemos el stock real de la base de datos
+        $stock = $prod['stock']; 
+    } else {
+        // Si no se encuentra el producto o pertenece a otro restaurante, bloqueamos la intrusión
+        die("⚠️ Alerta de Seguridad: No tienes permisos para editar este producto o el registro no existe.");
     }
     $stmt->close();
 }
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>

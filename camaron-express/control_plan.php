@@ -11,76 +11,47 @@ if (file_exists($ruta_db)) {
     die("Error crítico: No se encontró con_db.php");
 }
 
-if (!isset($_SESSION['id_usuario'])) {
+if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['restaurante_id'])) {
     echo "<script>window.location.href = '../modules/usuarios/iniciodesesion';</script>";
     exit();
 }
 
-$usuario_logueado = (int)$_SESSION['id_usuario'];
+$restaurante_sesion_id = (int)$_SESSION['restaurante_id'];
 
 // =================================================================
-// 🛠️ CONSULTAR DATOS DEL RESTAURANTE Y SU PLAN
+// 🛠️ CONSULTAR DATOS DEL RESTAURANTE Y SU PLAN (Multi-Inquilino Real)
 // =================================================================
-$query = "SELECT r.id AS restaurante_id, r.nombre_restaurante, r.color_principal, 
+$query = "SELECT r.id AS restaurante_id, r.nombre_restaurante, r.color_principal, r.slug_carpeta,
                  p.id AS plan_id, p.nombre AS nombre_plan, p.limite_productos, p.tiene_estadisticas
           FROM restaurantes r
           LEFT JOIN planes p ON r.plan_id = p.id
-          WHERE r.usuario_id = ?";
+          WHERE r.id = ?";
 
 $stmt = $db->prepare($query);
-$stmt->bind_param("i", $usuario_logueado);
+$stmt->bind_param("i", $restaurante_sesion_id);
 $stmt->execute();
 $resultado = $stmt->get_result();
 $dataRestaurante = $resultado->fetch_assoc();
 $stmt->close();
 
-// 👑 MODO ENTERPRISE FORZADO PARA TU USUARIO DE PRUEBA (ID 17)
-if ($usuario_logueado == 17) { 
-    if (!$dataRestaurante) {
-        $dataRestaurante = [
-            'restaurante_id' => 1,
-            'nombre_restaurante' => 'Camaron Express (Test)'
-        ];
-    }
-    $dataRestaurante['plan_id'] = 4; 
-    $dataRestaurante['nombre_plan'] = 'Enterprise (Developer Mode)';
-    $dataRestaurante['limite_productos'] = -1; 
-    $dataRestaurante['tiene_estadisticas'] = true; 
-} else {
-    if (!$dataRestaurante) {
-        die("Error: Este usuario no tiene un restaurante configurado.");
-    }
+if (!$dataRestaurante) {
+    die("Error de configuración: Tu cuenta de usuario no tiene un restaurante válido asignado.");
 }
 
 // =================================================================
 // 📊 CONTEO SEGURO EN LA TABLA REAL 'mis_productos'
 // =================================================================
 $total_productos_actuales = 0;
-$restaurante_id = $dataRestaurante['restaurante_id'];
+$restaurante_id = (int)$dataRestaurante['restaurante_id'];
 
-// 1. Validamos primero si la columna 'restaurante_id' ya existe en tu tabla 'mis_productos'
-$checkColumn = $db->query("SHOW COLUMNS FROM mis_productos LIKE 'restaurantes_id'"); 
-// Nota: Revisa en tu BD si la creas como restaurante_id o usuario_id
+// Consultamos contando únicamente los platos que pertenecen a este restaurante_id
+$queryContar = "SELECT COUNT(*) as total_productos FROM mis_productos WHERE restaurante_id = ?";
+$stmtContar = $db->prepare($queryContar);
+$stmtContar->bind_param("i", $restaurante_id);
+$stmtContar->execute();
+$resultadoContar = $stmtContar->get_result();
+$conteo = $resultadoContar->fetch_assoc();
+$stmtContar->close();
 
-if ($checkColumn && $checkColumn->num_rows > 0) {
-    // Si ya tienes la columna de relación lista:
-    $queryContar = "SELECT COUNT(*) as total_productos FROM mis_productos WHERE restaurantes_id = ?";
-    $stmtContar = $db->prepare($queryContar);
-    $stmtContar->bind_param("i", $restaurante_id);
-    $stmtContar->execute();
-    $resultadoContar = $stmtContar->get_result();
-    $conteo = $resultadoContar->fetch_assoc();
-    $stmtContar->close();
-    
-    $total_productos_actuales = $conteo['total_productos'];
-} else {
-    // Si aún no relacionas los productos por restaurante, contamos el total general temporalmente
-    // para que no se te rompa el dashboard en la presentación
-    $queryContarGenerales = "SELECT COUNT(*) as total_productos FROM mis_productos";
-    $resultGenerales = $db->query($queryContarGenerales);
-    if ($resultGenerales) {
-        $conteo = $resultGenerales->fetch_assoc();
-        $total_productos_actuales = $conteo['total_productos'];
-    }
-}
+$total_productos_actuales = (int)$conteo['total_productos'];
 ?>

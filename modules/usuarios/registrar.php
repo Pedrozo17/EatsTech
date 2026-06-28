@@ -42,7 +42,7 @@ if (isset($_POST['register'])) {
             } else {
                 $contraseña_encrypted = password_hash($contraseña, PASSWORD_DEFAULT);
 
-                // 1. Guardamos el usuario en la tabla 'datos'
+                // 1. Guardamos el usuario en la tabla 'datos' (Inicialmente sin restaurante_id)
                 $consulta = "INSERT INTO datos(nombre, correo, contraseña, cedula, telefono, direccion, tipo) 
                              VALUES ('$nombre','$correo','$contraseña_encrypted','$cedula','$telefono','$direccion', '$tipo_usuario')";
                 
@@ -55,21 +55,40 @@ if (isset($_POST['register'])) {
                     // EVALUACIÓN DE FLUJO SEGÚN EL ROL
                     // ==========================================================================
                     if ($tipo_usuario === 'empresa') {
-                        // Flujo Empresa: Registramos restaurante base y mandamos al login para que lo seleccione
                         $nombre_restaurante = mysqli_real_escape_string($db, trim($_POST['nombre_restaurante']));
                         
-                        $slug_carpeta = 'admin';      
+                        // 1. Generamos el slug base limpio automáticamente
+                        $slug_base = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $nombre_restaurante)));
                         $color_principal = '#cf9465'; 
 
-                        $consulta_restaurante = "INSERT INTO restaurantes (usuario_id, nombre_restaurante, slug_carpeta, color_principal) 
-                                                 VALUES ('$nuevo_usuario_id', '$nombre_restaurante', '$slug_carpeta', '$color_principal')";
-                        
+                        // 🔍 COMPROBACIÓN INTELIGENTE ANTES DEL INSERT:
+                        // Verificamos si ese slug ya existe en la tabla de restaurantes
+                        $consulta_verificar = "SELECT COUNT(*) as total FROM restaurantes WHERE slug_carpeta = '$slug_base'";
+                        $resultado_verificar = mysqli_query($db, $consulta_verificar);
+                        $fila_verificar = mysqli_fetch_assoc($resultado_verificar);
+
+                        if ($fila_verificar['total'] > 0) {
+                            // 🛠️ Si ya existe, le concatenamos un número aleatorio único para evitar el choque en la base de datos
+                            $slug_carpeta = $slug_base . '-' . rand(100, 999);
+                        } else {
+                            // Si está libre, se queda con el slug limpio original
+                            $slug_carpeta = $slug_base;
+                        }
+
+                        // 2. Insertamos la nueva empresa con el $slug_carpeta garantizado como único
+                        $consulta_restaurante = "INSERT INTO restaurantes (nombre_restaurante, slug_carpeta, color_principal, plan_id) 
+                                                VALUES ('$nombre_restaurante', '$slug_carpeta', '$color_principal', 1)";
                         mysqli_query($db, $consulta_restaurante);
+                        $nuevo_restaurante_id = mysqli_insert_id($db);
+
+                        // 3. Enlazamos al usuario con su nuevo restaurante asignado (El verdadero puente)
+                        $actualizar_usuario = "UPDATE datos SET restaurante_id = '$nuevo_restaurante_id' WHERE id = '$nuevo_usuario_id'";
+                        mysqli_query($db, $actualizar_usuario);
 
                         // Redirección al login con aviso para seleccionar empresa
                         header("Location: ../usuarios/iniciodesesion?registro=exito");
                         exit();
-
+                    }
                     } else {
                         // Flujo Persona: Iniciamos sesión automáticamente para romper la fricción
                         $_SESSION['logueado'] = true;
@@ -79,9 +98,10 @@ if (isset($_POST['register'])) {
                         $_SESSION['telefono'] = $telefono;     
                         $_SESSION['direccion'] = $direccion;   
                         $_SESSION['tipo'] = $tipo_usuario; 
+                        $_SESSION['restaurante_id'] = null; // Un comensal no pertenece a ninguna empresa
 
                         // Mandamos directo al index público a comprar
-                        header("Location: ../../pages/index ");
+                        header("Location: ../../pages/index");
                         exit();
                     }
                     
@@ -92,7 +112,6 @@ if (isset($_POST['register'])) {
             }
         }
     } else {
-        echo '<h3 class="bad">¡Por favor complete todos los campos!</h3>';
         header("Location: ../usuarios/iniciodesesion?error=vacio");
         exit();
     }

@@ -28,28 +28,20 @@ include($ruta_conexion);
 $action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : '');
 
 // ==========================================================================
-// 1. CREAR NUEVO PLATO (Con Stock e Imagen Incluida) - VERSIÓN DE PRUEBA
+// 1. CREAR NUEVO PLATO (Con Stock e Imagen Incluida)
 // ==========================================================================
 if ($action === 'create_prod') {
 
     // 🔒 RESTRICCIÓN DE MODELO SAAS: LÍMITE DE PRODUCTOS
     $limite_productos = isset($dataRestaurante['limite_productos']) ? intval($dataRestaurante['limite_productos']) : 10;
+    $id_restaurante_actual = (int)$dataRestaurante['restaurante_id'];
 
-    // Si el límite es diferente de -1 (no es ilimitado), validamos las existencias actuales
     if ($limite_productos !== -1) {
-        // Contamos cuántos productos tiene creados actualmente el restaurante
-        // Nota: Si manejas multi-inquilino estricto, asegúrate de filtrar la consulta usando: WHERE restaurante_id = 'id'
-        $sql_contar = $db->query("SELECT COUNT(*) AS total FROM mis_productos");
-        if ($sql_contar) {
-            $fila_contar = $sql_contar->fetch_assoc();
-            $total_actual = intval($fila_contar['total']);
-
-            if ($total_actual >= $limite_productos) {
-                die("<script>
-                    alert('⚠️ Límite de productos alcanzado. Tu plan actual no te permite registrar más de " . $limite_productos . " productos. Por favor, mejora tu suscripción en la sección de planes.');
-                    window.location.href = './cambiar_plan.php';
-                </script>");
-            }
+        if ($total_productos_actuales >= $limite_productos) {
+            die("<script>
+                alert('⚠️ Límite de productos alcanzado. Tu plan actual no te permite registrar más de " . $limite_productos . " productos. Por favor, mejora tu suscripción en la sección de planes.');
+                window.location.href = 'cambiar_plan.php';
+            </script>");
         }
     }
 
@@ -60,10 +52,6 @@ if ($action === 'create_prod') {
 
     $nombre_imagen = ""; 
 
-    // DETECTOR DE ERRORES: Si quieres ver qué está llegando, descomenta las dos líneas de abajo:
-    // echo "<pre>"; print_r($_FILES); echo "</pre>"; die();
-
-    // 🟢 VALIDAR SUBIDA DE IMAGEN DESDE EL COMPUTADOR DEL USUARIO
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
         $fileTmpPath = $_FILES['imagen']['tmp_name'];
         $fileName = $_FILES['imagen']['name'];
@@ -71,30 +59,25 @@ if ($action === 'create_prod') {
         $fileNameCmps = explode(".", $fileName);
         $fileExtension = strtolower(end($fileNameCmps));
         
-        // 🚨 CONTROL DE FORMATO ESTRICTO:
         if ($fileExtension !== 'webp') {
-            // Detiene el proceso y muestra tu mensaje personalizado
             die("<script>
                 alert('⚠️ Por favor, sube tu archivo en formato WEBP para mejorar la experiencia de los clientes y optimizar la velocidad de la página.');
                 window.history.back();
             </script>");
         }
         
-        // Si pasa la validación (es webp), creamos el nombre único usando la marca de tiempo
         $nombre_imagen = time() . '_' . preg_replace("/[^a-zA-Z0-9]/", "", $fileNameCmps[0]) . '.' . $fileExtension;
-        
         $directoryPath = '../assets/images/';
         $dest_path = $directoryPath . $nombre_imagen;
 
-        // Si falla la subida física, dejamos la variable vacía por seguridad
         if (!move_uploaded_file($fileTmpPath, $dest_path)) {
             $nombre_imagen = "";
         }
     }
 
-    // Insertamos en la columna 'imagen'
-    $stmt = $db->prepare("INSERT INTO mis_productos (name, description, price, stock, imagen, status) VALUES (?, ?, ?, ?, ?, 1)");
-    $stmt->bind_param("ssiis", $nombre, $desc, $precio, $stock, $nombre_imagen);
+    // Inyectamos el restaurante_id correspondiente en la consulta de inserción
+    $stmt = $db->prepare("INSERT INTO mis_productos (restaurante_id, name, description, price, stock, imagen, status) VALUES (?, ?, ?, ?, ?, ?, 1)");
+    $stmt->bind_param("issiis", $id_restaurante_actual, $nombre, $desc, $precio, $stock, $nombre_imagen);
     
     if ($stmt->execute()) {
         $stmt->close();
@@ -106,7 +89,7 @@ if ($action === 'create_prod') {
 }
 
 // ==========================================================================
-// 2. ACTUALIZAR PLATO EXISTENTE (Maneja actualización opcional de imagen)
+// 2. ACTUALIZAR PLATO EXISTENTE (Maneja actualización opcional de imagen y seguridad de pertenencia)
 // ==========================================================================
 if ($action === 'update_prod') {
     $id     = intval($_POST['id']);
@@ -114,8 +97,8 @@ if ($action === 'update_prod') {
     $desc   = trim($_POST['descripcion']);
     $precio = intval($_POST['precio']); 
     $stock  = intval($_POST['stock'] ?? 0);
+    $id_restaurante_actual = (int)$dataRestaurante['restaurante_id'];
 
-    // 🟢 VALIDAMOS SI SUBIERON UNA NUEVA IMAGEN PARA REEMPLAZAR LA ANTERIOR
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
         $fileTmpPath = $_FILES['imagen']['tmp_name'];
         $fileName = $_FILES['imagen']['name'];
@@ -123,7 +106,6 @@ if ($action === 'update_prod') {
         $fileNameCmps = explode(".", $fileName);
         $fileExtension = strtolower(end($fileNameCmps));
         
-        // 🚨 CONTROL DE FORMATO ESTRICTO AL EDITAR:
         if ($fileExtension !== 'webp') {
             die("<script>
                 alert('⚠️ Por favor, sube tu archivo en formato WEBP para mejorar la experiencia de los clientes y optimizar la velocidad de la página.');
@@ -132,23 +114,21 @@ if ($action === 'update_prod') {
         }
         
         $nombre_imagen = time() . '_' . preg_replace("/[^a-zA-Z0-9]/", "", $fileNameCmps[0]) . '.' . $fileExtension;
-        
         $directoryPath = '../assets/images/';
         $dest_path = $directoryPath . $nombre_imagen;
 
         if (move_uploaded_file($fileTmpPath, $dest_path)) {
-            // Si la foto subió bien y es webp, actualizamos todo incluyendo la nueva ruta
-            $query_update = "UPDATE mis_productos SET name = ?, description = ?, price = ?, stock = ?, imagen = ? WHERE id = ?";
+            // El query añade un WHERE de restaurante_id para asegurar que ningún usuario altere productos de otros comercios
+            $query_update = "UPDATE mis_productos SET name = ?, description = ?, price = ?, stock = ?, imagen = ? WHERE id = ? AND restaurante_id = ?";
             $stmt = $db->prepare($query_update);
-            $stmt->bind_param("ssiisi", $nombre, $desc, $precio, $stock, $nombre_imagen, $id);
+            $stmt->bind_param("ssiisii", $nombre, $desc, $precio, $stock, $nombre_imagen, $id, $id_restaurante_actual);
         } else {
             die("Error al mover el nuevo archivo de imagen al servidor.");
         }
     } else {
-        // 🟢 SI NO SUBIÓ FOTO NUEVA (Campo vacío en el HTML): Mantenemos intacta la foto que ya tenía
-        $query_update = "UPDATE mis_productos SET name = ?, description = ?, price = ?, stock = ? WHERE id = ?";
+        $query_update = "UPDATE mis_productos SET name = ?, description = ?, price = ?, stock = ? WHERE id = ? AND restaurante_id = ?";
         $stmt = $db->prepare($query_update);
-        $stmt->bind_param("ssiii", $nombre, $desc, $precio, $stock, $id);
+        $stmt->bind_param("ssiiii", $nombre, $desc, $precio, $stock, $id, $id_restaurante_actual);
     }
     
     if ($stmt->execute()) {
@@ -161,14 +141,15 @@ if ($action === 'update_prod') {
 }
 
 // ==========================================================================
-// 3. ELIMINAR PLATO 
+// 3. ELIMINAR PLATO (Filtro por comercio)
 // ==========================================================================
 if ($action === 'delete_prod') {
     $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    $id_restaurante_actual = (int)$dataRestaurante['restaurante_id'];
     
     if ($id > 0) {
-        $stmt = $db->prepare("DELETE FROM mis_productos WHERE id = ?");
-        $stmt->bind_param("i", $id);
+        $stmt = $db->prepare("DELETE FROM mis_productos WHERE id = ? AND restaurante_id = ?");
+        $stmt->bind_param("ii", $id, $id_restaurante_actual);
         $stmt->execute();
         $stmt->close();
     }
@@ -191,7 +172,6 @@ if ($action === 'update_status') {
         $tabla = preg_replace("/[^a-zA-Z0-9_]/", "", $_POST['tabla']); 
         $estado = trim($_POST['estado']);
 
-        // Evaluación de las columnas según la tabla elegida
         if ($tabla === 'pedidos_registrados') {
             $columna_estado = "estado"; 
         } elseif ($tabla === 'orden') {
@@ -201,9 +181,7 @@ if ($action === 'update_status') {
             exit();
         }
 
-        // Armamos el query dinámico seguro para la tabla, pero parametrizamos el valor
         $query_status = "UPDATE $tabla SET $columna_estado = ? WHERE id = ?";
-        
         $stmt = $db->prepare($query_status);
         $stmt->bind_param("si", $estado, $id);
 
@@ -222,7 +200,48 @@ if ($action === 'update_status') {
     exit();
 }
 
-// Si intentan entrar directo a la URL de este archivo sin enviar una acción
+if ($action === 'registrar_empleado') {
+    // Capturamos y sanitizamos los datos enviados desde el formulario premium
+    $nombre = mysqli_real_escape_string($db, trim($_POST['nombre_empleado']));
+    $correo = mysqli_real_escape_string($db, trim($_POST['correo_empleado']));
+    $password_clara = trim($_POST['password_empleado']);
+    $restaurante_id_asociado = (int)$_POST['restaurante_id'];
+
+    // 🔒 1. Validación de seguridad: Evitar correos duplicados en el sistema
+    $check_email = $db->query("SELECT id FROM datos WHERE correo = '$correo'");
+    if ($check_email && $check_email->num_rows > 0) {
+        die("<script>
+            alert('⚠️ El correo electrónico ya está registrado por otro usuario.');
+            window.history.back();
+        </script>");
+    }
+
+    // 🔒 2. Encriptación segura de la contraseña usando el estándar nativo de PHP
+    $password_encriptada = password_hash($password_clara, PASSWORD_BCRYPT);
+    
+    // Forzamos el tipo 'empresa' para que el sistema le conceda acceso al Dashboard administrativo
+    $tipo_usuario = 'empresa'; 
+
+    // 3. Sentencia preparada para inyectar el nuevo empleado amarrado al restaurante actual
+    $query_empleado = "INSERT INTO datos (nombre, correo, contraseña, tipo, restaurante_id) 
+                       VALUES (?, ?, ?, ?, ?)";
+    
+    $stmt = $db->prepare($query_empleado);
+    $stmt->bind_param("ssssi", $nombre, $correo, $password_encriptada, $tipo_usuario, $restaurante_id_asociado);
+    
+    if ($stmt->execute()) {
+        $stmt->close();
+        // Redirección limpia de vuelta al panel con un aviso amigable de éxito
+        echo "<script>
+            alert('🎉 ¡Colaborador vinculado exitosamente a tu sucursal!');
+            window.location.href = 'admin_dashboard?seccion=empleados';
+        </script>";
+        exit();
+    } else {
+        die("❌ Error interno al registrar el empleado: " . $db->error);
+    }
+}
+
 header("Location: admin_dashboard");
 exit();
 ?>

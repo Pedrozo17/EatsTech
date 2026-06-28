@@ -45,7 +45,8 @@ function toggleRestauranteSelector(show) {
                     select.innerHTML = '<option value="">No tienes restaurantes asignados</option>';
                 } else {
                     data.forEach(rest => {
-                        select.innerHTML += `<option value="${rest.slug_carpeta}">${rest.nombre_restaurante}</option>`;
+                        // 🔑 Ahora inyectamos el ID numérico en el value para procesarlo directamente en el login
+                        select.innerHTML += `<option value="${rest.id}">${rest.nombre_restaurante}</option>`;
                     });
                 }
             })

@@ -26,13 +26,20 @@ if (!isset($db)) {
 // Detectar sección activa
 $seccion = isset($_GET['seccion']) ? $_GET['seccion'] : 'pedidos';
 
-// 1. Sumar las ventas reales de la tabla orden
-$queryVentas = $db->query("SELECT SUM(total_price) as total_finanzas FROM orden WHERE status = 'Pagado'");
+// 🔑 CAPTURAMOS EL ID DEL RESTAURANTE DE LA SESIÓN ACTUAL (Establecido por control_plan.php)
+$id_restaurante_actual = (int)$dataRestaurante['restaurante_id'];
+
+// =================================================================
+// 📊 MÉTRICAS MULTI-INQUILINO FILTRADAS POR RESTAURANTE
+// =================================================================
+
+// 1. Sumar las ventas reales de la tabla orden (Filtrado por restaurante_id)
+$queryVentas = $db->query("SELECT SUM(total_price) as total_finanzas FROM orden WHERE status = 'Pagado' AND restaurante_id = '$id_restaurante_actual'");
 $rowVentas = $queryVentas->fetch_assoc();
 $total_ventas = $rowVentas['total_finanzas'] ?? 0;
 
-// 2. Tráfico comercial: Total de órdenes históricas
-$queryVisitas = $db->query("SELECT COUNT(*) as total_ordenes FROM orden");
+// 2. Tráfico comercial: Total de órdenes históricas (Filtrado por restaurante_id)
+$queryVisitas = $db->query("SELECT COUNT(*) as total_ordenes FROM orden WHERE restaurante_id = '$id_restaurante_actual'");
 $rowVisitas = $queryVisitas->fetch_assoc();
 $total_visitas = $rowVisitas['total_ordenes'] ?? 0;
 
@@ -40,15 +47,15 @@ $total_visitas = $rowVisitas['total_ordenes'] ?? 0;
 // 🍔 TRUCO ALGORÍTMICO: EXTRAER EL PLATO MÁS VENDIDO DEL RESUMEN
 // =================================================================
 
-// Traemos todos los productos existentes en tu menú para buscar coincidencias exactas
-$queryMenu = $db->query("SELECT name FROM mis_productos");
+// Traemos SOLO los productos existentes en el menú DE ESTE restaurante
+$queryMenu = $db->query("SELECT name FROM mis_productos WHERE restaurante_id = '$id_restaurante_actual'");
 $todos_los_platos = [];
 while ($platoMenu = $queryMenu->fetch_assoc()) {
     $todos_los_platos[] = $platoMenu['name'];
 }
 
-// Traemos todos los textos de los resúmenes de los pedidos exitosos
-$queryResumenes = $db->query("SELECT resumen_productos FROM pedidos_registrados WHERE estado != 'Pendiente'");
+// Traemos los textos de los resúmenes de los pedidos exitosos DE ESTE restaurante
+$queryResumenes = $db->query("SELECT resumen_productos FROM pedidos_registrados WHERE estado != 'Pendiente' AND restaurante_id = '$id_restaurante_actual'");
 $conteo_platos = array_fill_keys($todos_los_platos, 0); // Inicializamos el contador de cada plato en 0
 
 while ($pedido = $queryResumenes->fetch_assoc()) {
@@ -96,7 +103,6 @@ if (array_sum($platos_cantidades) === 0) {
         <img src="../assets/images/logo_empresa-removebg-preview.png" alt="Logo" class="nav-logo">
         <a href="./cambiar_plan.php" class="btn-plan">Sube de nivel ⏫</a>
         <a href="../modules/usuarios/logout" class="btn-logout">Cerrar Sesión</a>
-        
     </nav>
 
     <div class="dashboard-container">
@@ -105,7 +111,8 @@ if (array_sum($platos_cantidades) === 0) {
             <a href="./admin_dashboard?seccion=pedidos" class="<?php echo $seccion === 'pedidos' ? 'active' : ''; ?>">📦 Pedidos Registrados</a>
             <a href="./admin_dashboard?seccion=productos" class="<?php echo $seccion === 'productos' ? 'active' : ''; ?>">🍔 Menú de Productos</a>
             <a href="./admin_dashboard?seccion=ordenes" class="<?php echo $seccion === 'ordenes' ? 'active' : ''; ?>">🛒 Órdenes en Curso</a>
-            <!-- NUEVO BOTÓN SOLICITADO -->
+            <!-- NUEVA PESTAÑA PARA GESTIÓN DE EMPLEADOS -->
+            <a href="./admin_dashboard?seccion=empleados" class="<?php echo $seccion === 'empleados' ? 'active' : ''; ?>">👥 Personal / Empleados</a>
             <a href="./admin_dashboard?seccion=estadisticas" class="<?php echo $seccion === 'estadisticas' ? 'active' : ''; ?>">📊 Estadísticas de mi Restaurante</a>
         </div>
 
@@ -264,6 +271,84 @@ if (array_sum($platos_cantidades) === 0) {
         </div>
         <?php endif; ?>
 
+        <!-- SECCIÓN: NUEVA COMPONENTE - GESTIÓN DE EMPLEADOS -->
+        <?php if ($seccion === 'empleados'): ?>
+        <div class="panel-box">
+            <div class="panel-header">
+                <h2>Gestión del Personal Técnico y Operativo</h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr; gap: 20px; padding: 10px;">
+                <!-- Formulario Integrado con estilos premium alineados con EatsTech -->
+                <div style="background: #1a1a1a; padding: 25px; border-radius: 10px; border: 1px solid #2e2e2e;">
+                    <h3 style="color: #fff; margin-top: 0; margin-bottom: 8px; font-family: sans-serif;">➕ Registrar Nuevo Empleado</h3>
+                    <p style="color: #999; font-size: 13px; margin-bottom: 20px;">Crea credenciales únicas para tus colaboradores. Ellos compartirán el acceso automatizado a este restaurante.</p>
+                    
+                    <form action="crud_operaciones.php?action=registrar_empleado" method="POST" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: end;">
+                        <input type="hidden" name="restaurante_id" value="<?php echo $id_restaurante_actual; ?>">
+                        
+                        <div>
+                            <label style="color: #ccc; font-size: 12px; display: block; margin-bottom: 5px;">Nombre Completo</label>
+                            <input type="text" name="nombre_empleado" placeholder="Ej. Juan Pérez" required style="width: 100%; padding: 11px; border-radius: 6px; border: 1px solid #333; background: #252525; color: #fff; box-sizing: border-box;">
+                        </div>
+                        
+                        <div>
+                            <label style="color: #ccc; font-size: 12px; display: block; margin-bottom: 5px;">Correo Electrónico</label>
+                            <input type="email" name="correo_empleado" placeholder="juan@restaurante.com" required style="width: 100%; padding: 11px; border-radius: 6px; border: 1px solid #333; background: #252525; color: #fff; box-sizing: border-box;">
+                        </div>
+                        
+                        <div>
+                            <label style="color: #ccc; font-size: 12px; display: block; margin-bottom: 5px;">Contraseña de Acceso</label>
+                            <input type="password" name="password_empleado" placeholder="••••••••" required style="width: 100%; padding: 11px; border-radius: 6px; border: 1px solid #333; background: #252525; color: #fff; box-sizing: border-box;">
+                        </div>
+                        
+                        <div>
+                            <button type="submit" style="width: 100%; background: #FFB900; color: #141414; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s;">
+                                Vincular Miembro
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Tabla Dinámica Opcional: Lista de Empleados Existentes del Restaurante -->
+                <div class="table-responsive" style="margin-top: 10px;">
+                    <h3 style="color: #fff; font-family: sans-serif; font-size: 16px; margin-bottom: 15px;">👥 Personal de esta Sucursal</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Correo de Acceso</th>
+                                <th>Rol en Plataforma</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php 
+                            $empleados = $db->query("SELECT nombre, correo, tipo FROM datos WHERE restaurante_id = '$id_restaurante_actual'");
+                            if($empleados && $empleados->num_rows > 0):
+                                while($emp = $empleados->fetch_assoc()):
+                            ?>
+                            <tr>
+                                <td><strong><?php echo htmlspecialchars($emp['nombre']); ?></strong></td>
+                                <td><?php echo htmlspecialchars($emp['correo']); ?></td>
+                                <td><span style="background: rgba(255, 185, 0, 0.1); color: #ffb900; padding: 3px 8px; border-radius: 4px; font-size: 12px;">Staff (<?php echo htmlspecialchars($emp['tipo']); ?>)</span></td>
+                                <td style="color: #28a745;">🟢 Activo</td>
+                            </tr>
+                            <?php 
+                                endwhile;
+                            else:
+                            ?>
+                            <tr>
+                                <td colspan="4" style="text-align: center; color: #888; padding: 20px;">No has registrado empleados todavía para este restaurante.</td>
+                            </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
         <!-- NUEVA SECCIÓN: ESTADÍSTICAS DEL RESTAURANTE -->
         <?php if ($seccion === 'estadisticas'): ?>
             <div class="panel-box">
@@ -315,9 +400,9 @@ if (array_sum($platos_cantidades) === 0) {
         <h3 style="color: #FFFFFF; font-family: sans-serif; font-size: 18px; margin-bottom: 10px;">📋 Tu Menú Digital</h3>
         <p style="color: #8a8a8a; font-size: 13px; margin-bottom: 20px;">Coloca este código en tus mesas físicas para que los clientes escaneen el menú.</p>
     
-        <div id="contenedor-qr" 
-             data-slug="<?php echo (isset($_SESSION['tipo']) && $_SESSION['tipo'] === 'empresa') ? strtolower($_SESSION['nombre']) : 'index'; ?>" 
-             style="display: inline-block; padding: 15px; background: white; border-radius: 8px;">
+       <div id="contenedor-qr" 
+            data-slug="<?php echo isset($_SESSION['slug_restaurante']) ? $_SESSION['slug_restaurante'] : 'index'; ?>" 
+            style="display: inline-block; padding: 15px; background: white; border-radius: 8px;">
         </div>
         
         <div style="margin-top: 15px;">
@@ -336,7 +421,5 @@ if (array_sum($platos_cantidades) === 0) {
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="../assets/js/admin.js"></script>
-</body>
-</html>
 </body>
 </html>
