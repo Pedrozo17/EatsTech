@@ -56,6 +56,7 @@ if (strpos($plan_actual, 'start') !== false || strpos($plan_actual, 'gratis') !=
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planes de Suscripción - EatsTech</title>
     <link rel="stylesheet" href="../assets/css/estiloADM.css">
+    <link rel="icon" type="image/x-icon" href="../assets/images/logo.png">
     <style>
 :root {
     --bg-eatstech: #323232;
