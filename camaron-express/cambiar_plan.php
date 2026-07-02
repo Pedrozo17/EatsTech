@@ -405,7 +405,7 @@ body {
                     <h3 class="plan-name">Plan Start</h3>
                     <div class="plan-ideal">Emprendimientos y cocinas ocultas validando su producto.</div>
                     <div class="plan-price"><span class="price-val" data-mensual="$0" data-anual="$0">$0</span><span> / mes</span></div>
-                    <div class="plan-comision">Comisión: 2.5% x pedido</div>
+                    <div class="plan-comision">Comisión: 15% x pedido</div>
                     <ul class="plan-features">
                         <li>Catálogo digital básico</li>
                         <li>Hasta 15 productos</li>
@@ -426,7 +426,7 @@ body {
                     <h3 class="plan-name">Plan Basic</h3>
                     <div class="plan-ideal">Negocios pequeños que buscan ordenar sus flujos operativos.</div>
                     <div class="plan-price"><span class="price-val" data-mensual="$39.000" data-anual="$390.000">$39.000</span><span> / mes</span></div>
-                    <div class="plan-comision">Comisión: 1.0% x pedido</div>
+                    <div class="plan-comision">Comisión: 5% x pedido</div>
                     <ul class="plan-features">
                         <li>Hasta 50 productos</li>
                         <li>Panel de administración básico</li>
