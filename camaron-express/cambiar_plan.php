@@ -408,7 +408,7 @@ body {
                     <div class="plan-comision">Comisión: 15% x pedido</div>
                     <ul class="plan-features">
                         <li>Catálogo digital básico</li>
-                        <li>Hasta 15 productos</li>
+                        <li>Hasta 20 productos</li>
                         <li>Enlace para Instagram o WhatsApp</li>
                     </ul>
                 </div>

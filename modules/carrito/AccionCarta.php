@@ -26,8 +26,6 @@ if (!empty($action)) {
         
         if ($row) {
             // 🟢 SOLUCIÓN CRÍTICA: Guardamos en la sesión el restaurante_id al que pertenece este plato
-            // Asumiendo que tu tabla 'mis_productos' tiene una columna 'restaurante_id' o 'id_restaurante'
-            // (Asegúrate de cambiar 'restaurante_id' si en tu tabla tiene otro nombre)
             if (isset($row['restaurante_id'])) {
                 $_SESSION['carrito_restaurante_id'] = intval($row['restaurante_id']);
             }
@@ -105,11 +103,38 @@ if (!empty($action)) {
         $stmt_user->close();
         
         $fechaActual = date("Y-m-d H:i:s");
-
-        // Agregamos restaurante_id al INSERT de la tabla 'orden'
-        $stmt_order = $db->prepare("INSERT INTO orden (customer_id, restaurante_id, total_price, created, modified, metodo_pago, nombre_cliente, telefono, direccion, correo_cliente) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $totalCart = $cart->total();
-        $stmt_order->bind_param("iidsssssss", $customerID, $restauranteID, $totalCart, $fechaActual, $fechaActual, $metodoPago, $nombreCliente, $telefonoCliente, $direccionCliente, $correoSession);
+
+        // =========================================================================
+        // 🚀 LÓGICA DE NEGOCIO EN DETALLE: CÁLCULO DE COMISIÓN ANTES DEL INSERT
+        // =========================================================================
+        $planRestaurante = 'start'; 
+        $comisionPlataforma = 0.00;
+
+        // Consultamos la columna real 'plan_id'
+        $stmt_plan = $db->prepare("SELECT plan_id FROM restaurantes WHERE id = ? LIMIT 1");
+        if ($stmt_plan) {
+            $stmt_plan->bind_param("i", $restauranteID);
+            $stmt_plan->execute();
+            $res_plan = $stmt_plan->get_result();
+            if ($row_plan = $res_plan->fetch_assoc()) {
+                $planRestaurante = trim(strtolower((string)$row_plan['plan_id']));
+            }
+            $stmt_plan->close();
+        }
+
+        // Evaluamos el plan para asignar la comisión correcta
+        if ($planRestaurante === 'start' || $planRestaurante === 'gratis' || $planRestaurante === '1') {
+            $comisionPlataforma = $totalCart * 0.15; // 15% Plan Start
+        } elseif ($planRestaurante === 'basic' || $planRestaurante === '2' || strpos($planRestaurante, 'basic') !== false) {
+            $comisionPlataforma = $totalCart * 0.05; // 5% Plan Basic
+        }
+        // =========================================================================
+
+        // 🚀 CAMBIO CRÍTICO: Agregamos 'comision_plataforma' al INSERT de la tabla 'orden'
+        // Agregamos un "?" en los VALUES y una "d" en bind_param para el número decimal de la comisión
+        $stmt_order = $db->prepare("INSERT INTO orden (customer_id, restaurante_id, total_price, comision_plataforma, created, modified, metodo_pago, nombre_cliente, telefono, direccion, correo_cliente) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt_order->bind_param("iiddsssssss", $customerID, $restauranteID, $totalCart, $comisionPlataforma, $fechaActual, $fechaActual, $metodoPago, $nombreCliente, $telefonoCliente, $direccionCliente, $correoSession);
         
         if ($stmt_order->execute()) {
             $orderID = $db->insert_id;
@@ -134,9 +159,9 @@ if (!empty($action)) {
             $db_telefono  = $telefonoCliente ?: 'No registrado';
             $db_direccion = $direccionCliente ?: 'No registrada';
 
-            // Agregamos restaurante_id al INSERT de 'pedidos_registrados'
-            $stmt_pedidos = $db->prepare("INSERT INTO pedidos_registrados (restaurante_id, nombre_cliente, correo_cliente, telefono, direccion, resumen_productos, total_pagar, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt_pedidos->bind_param("isssssds", $restauranteID, $nombreCliente, $correoSession, $db_telefono, $db_direccion, $db_productos, $totalCart, $fechaActual);
+            // Agregamos restaurante_id y comision_plataforma al INSERT de 'pedidos_registrados' (Se mantiene como ya funcionaba)
+            $stmt_pedidos = $db->prepare("INSERT INTO pedidos_registrados (restaurante_id, nombre_cliente, correo_cliente, telefono, direccion, resumen_productos, total_pagar, comision_plataforma, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt_pedidos->bind_param("isssssdds", $restauranteID, $nombreCliente, $correoSession, $db_telefono, $db_direccion, $db_productos, $totalCart, $comisionPlataforma, $fechaActual);
             $stmt_pedidos->execute();
             $stmt_pedidos->close();
 
@@ -152,7 +177,6 @@ if (!empty($action)) {
             exit();
         }
     }
-}
 
 header("Location: ../../pages/index");
 exit();

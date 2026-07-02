@@ -115,8 +115,7 @@ if (array_sum($platos_cantidades) === 0) {
             <a href="./admin_dashboard?seccion=empleados" class="<?php echo $seccion === 'empleados' ? 'active' : ''; ?>">👥 Personal / Empleados</a>
             <a href="./admin_dashboard?seccion=estadisticas" class="<?php echo $seccion === 'estadisticas' ? 'active' : ''; ?>">📊 Estadísticas de mi Restaurante</a>
         </div>
-
-        <!-- SECCIÓN: PEDIDOS -->
+<!-- SECCIÓN: PEDIDOS -->
         <?php if ($seccion === 'pedidos'): 
             $res = $db->query("SELECT * FROM pedidos_registrados ORDER BY id DESC");
         ?>
@@ -133,7 +132,9 @@ if (array_sum($platos_cantidades) === 0) {
                             <th>Contacto</th>
                             <th>Dirección de Envío</th>
                             <th>Resumen de Productos</th>
-                            <th>Total Pagado</th>
+                            <th>Total Bruto</th>
+                            <th>Comisión (EatsTech)</th>
+                            <th>Ganancia Neta</th> <!-- 🚀 CAMBIO: Total con la comisión restada -->
                             <th>Fecha Registro</th>
                             <th>Estado</th>
                         </tr>
@@ -141,6 +142,11 @@ if (array_sum($platos_cantidades) === 0) {
                     <tbody>
                         <?php while($row = $res->fetch_assoc()): 
                             $estado_actual = isset($row['estado']) ? $row['estado'] : 'Pagado';
+                            $total_bruto = $row['total_pagar'];
+                            $comision = isset($row['comision_plataforma']) ? $row['comision_plataforma'] : 0;
+                            
+                            // Cálculo matemático en caliente para la ganancia neta
+                            $ganancia_neta = $total_bruto - $comision;
                         ?>
                         <tr>
                             <td>#<?php echo $row['id']; ?></td>
@@ -148,9 +154,22 @@ if (array_sum($platos_cantidades) === 0) {
                             <td><?php echo htmlspecialchars($row['telefono']); ?></td>
                             <td><?php echo htmlspecialchars($row['direccion']); ?></td>
                             <td style="font-size: 13px; color: #3b3128; max-width: 300px; white-space: pre-line;"><?php echo htmlspecialchars($row['resumen_productos']); ?></td>
-                            <td style="color: var(--amarillo); font-weight: bold; font-size: 15px;">
-                                $<?php echo number_format($row['total_pagar'], 0, ',', '.'); ?> COP
+                            
+                            <!-- Total que pagó el cliente -->
+                            <td style="color: #666; font-size: 14px;">
+                                $<?php echo number_format($total_bruto, 0, ',', '.'); ?> COP
                             </td>
+                            
+                            <!-- Lo que se queda EatsTech -->
+                            <td style="color: #d9534f; font-weight: 500;">
+                                -$<?php echo number_format($comision, 0, ',', '.'); ?> COP
+                            </td>
+                            
+                            <!-- Lo que le entra real al restaurante -->
+                            <td style="color: #28a745; font-weight: bold; font-size: 15px;">
+                                $<?php echo number_format($ganancia_neta, 0, ',', '.'); ?> COP
+                            </td>
+                            
                             <td><?php echo $row['fecha_registro']; ?></td>
                             <td>
                                 <div class="status-select-container">
@@ -170,7 +189,6 @@ if (array_sum($platos_cantidades) === 0) {
         </div>
         <?php endif; ?>
 
-        <!-- SECCIÓN: PRODUCTOS -->
         <?php if ($seccion === 'productos'): 
             $res = $db->query("SELECT * FROM mis_productos ORDER BY id ASC");
         ?>
@@ -213,7 +231,6 @@ if (array_sum($platos_cantidades) === 0) {
         </div>
         <?php endif; ?>
 
-        <!-- SECCIÓN: ÓRDENES -->
         <?php if ($seccion === 'ordenes'): 
             $res = $db->query("SELECT o.*, u.nombre AS nombre_cliente 
                                FROM orden o 
@@ -230,14 +247,23 @@ if (array_sum($platos_cantidades) === 0) {
                         <tr>
                             <th>ID Orden</th>
                             <th>Cliente</th>
-                            <th>Total de la Orden</th>
+                            <th>Total Bruto</th>
+                            <th>Comisión (EatsTech)</th>
+                            <th>Ganancia Neta</th> <!-- 🚀 CAMBIO: Restado de una vez -->
                             <th>Método de Pago</th>
                             <th>Fecha Entrada</th>
                             <th>Estado Actual</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while($row = $res->fetch_assoc()): ?>
+                        <?php while($row = $res->fetch_assoc()): 
+                            $total_orden = $row['total_price'];
+                            // Ahora lee directo de tu nueva columna creada en 'orden'
+                            $comision_orden = isset($row['comision_plataforma']) ? $row['comision_plataforma'] : 0; 
+                            
+                            // Restamos la comisión de una vez
+                            $neto_orden = $total_orden - $comision_orden;
+                        ?>
                         <tr>
                             <td>#<?php echo $row['id']; ?></td>
                             <td>
@@ -247,9 +273,22 @@ if (array_sum($platos_cantidades) === 0) {
                                     User ID: <?php echo $row['customer_id']; ?>
                                 </span>
                             </td>
-                            <td style="color: var(--amarillo); font-weight: bold; font-size: 15px;">
-                                $<?php echo number_format($row['total_price'], 0, ',', '.'); ?> COP
+                            
+                            <!-- Valor total bruto -->
+                            <td style="color: #666; font-size: 14px;">
+                                $<?php echo number_format($total_orden, 0, ',', '.'); ?> COP
                             </td>
+                            
+                            <!-- Desglose de comisión -->
+                            <td style="color: #cd6a62; font-weight: 500;">
+                                -$<?php echo number_format($comision_orden, 0, ',', '.'); ?> COP
+                            </td>
+                            
+                            <!-- Total Neto Restado -->
+                            <td style="color: #28a745; font-weight: bold; font-size: 15px;">
+                                $<?php echo number_format($neto_orden, 0, ',', '.'); ?> COP
+                            </td>
+                            
                             <td style="text-transform: capitalize; color: #5a4f44;">
                                 💳 <?php echo htmlspecialchars($row['metodo_pago']); ?>
                             </td>
