@@ -90,7 +90,16 @@ if (array_sum($platos_cantidades) === 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Control - EatsTech</title>
-    <link rel="shortcut icon" href="../../assets/images/logo_empresa-removebg-preview.png" type="image/x-icon">
+    <!-- Favicon tradicional para escritorio -->
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-camaron.png">
+    
+    <!-- 📱 Para Dispositivos Móviles (iOS y Android) -->
+    <!-- Apple (Safari y accesos directos en iPhone/iPad) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon-camaron.png">
+    
+    <!-- Android (Chrome Mobile y pantallas de inicio) -->
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/images/web-app-manifest-192x192-camaron.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../assets/images/web-app-manifest-512x512-camaron.png">
     <link rel="stylesheet" href="../assets/css/estiloADM.css">
     <!-- Cargamos Chart.js solo si estamos en la sección de estadísticas -->
     <?php if ($seccion === 'estadisticas'): ?>

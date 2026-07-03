@@ -177,6 +177,7 @@ if (!empty($action)) {
             exit();
         }
     }
+}
 
 header("Location: ../../pages/index");
 exit();

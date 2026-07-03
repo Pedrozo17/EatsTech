@@ -62,7 +62,15 @@ $waNumber = "573248933841";
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/style4.css">
-    <link rel="shortcut icon" href="../../assets/images/logo_empresa-removebg-preview.png" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon-camaron.png">
+    
+    <!-- 📱 Para Dispositivos Móviles (iOS y Android) -->
+    <!-- Apple (Safari y accesos directos en iPhone/iPad) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/images/apple-touch-icon-camaron.png">
+    
+    <!-- Android (Chrome Mobile y pantallas de inicio) -->
+    <link rel="icon" type="image/png" sizes="192x192" href="../../assets/images/web-app-manifest-192x192-camaron.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../../assets/images/web-app-manifest-512x512-camaron.png">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 

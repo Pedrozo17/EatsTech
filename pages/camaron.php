@@ -8,9 +8,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Camaron Express | EATSTECH</title>
   <meta name="title" content="Camaron Express | EATSTECH">
-
-  <link rel="shortcut icon" href="../assets/images/logo_empresa-removebg-preview.png" type="image/svg+xml">
-
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon-camaron.png">
+  
+  <!-- 📱 Para Dispositivos Móviles (iOS y Android) -->
+  <!-- Apple (Safari y accesos directos en iPhone/iPad) -->
+  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/images/apple-touch-icon-camaron.png">
+  
+  <!-- Android (Chrome Mobile y pantallas de inicio) -->
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/images/web-app-manifest-192x192-camaron.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="../../assets/images/web-app-manifest-512x512-camaron.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap" rel="stylesheet">
